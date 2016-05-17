@@ -1,0 +1,10 @@
+{
+  "name": "bottin-umf",
+  "version": "1.0.0",
+  "description": "Bottin des ressources de l'UMF de St-Eustache",
+  "scripts": {
+    "start": "meteor --settings settings-development.json",
+    "staging": "meteor deploy staging.meteor.com --settings settings-development.json",
+    "production": "meteor deploy tmc-014-demo.meteor.com --settings settings-production.json"
+  }
+}

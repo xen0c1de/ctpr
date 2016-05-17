@@ -1,0 +1,9 @@
+<template name="publicNavigation">
+  <ul class="nav navbar-nav">
+    <li class="{{currentRoute 'home'}}"><a href="{{pathFor 'home'}}">Acceuil</a></li>
+    <li class="{{currentRoute 'ressources'}}"><a href="{{pathFor 'ressources'}}">Bottin</a></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <li class="{{currentRoute 'login'}}"><a href="{{pathFor 'login'}}">Connexion</a></li>
+  </ul>
+</template>

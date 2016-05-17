@@ -1,0 +1,51 @@
+.jumbotron {
+    background-color: #2f87c2; /* bleu csss */
+    color: #ffffff;
+    padding: 100px 25px;
+}
+
+.bg-grey {
+    background-color: #f6f6f6;
+}
+
+.container-fluid {
+    padding: 60px 50px;
+}
+
+/* Add an orange color to all icons and set the font-size */
+.logo-small {
+    color: #2f87c2;
+    font-size: 50px;
+}
+
+.logo {
+    color: #2f87c2;
+    font-size: 200px;
+}
+
+@media screen and (max-width: 768px) {
+    .col-sm-4 {
+        text-align: center;
+        margin: 25px 0;
+    }
+}
+
+.page-header small {
+  color: #ffffff;
+}
+
+.map_container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
+}
+
+.map_container .map_canvas{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
