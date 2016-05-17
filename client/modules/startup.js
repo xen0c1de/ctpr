@@ -1,5 +1,3 @@
-let startup = () => {
-  GoogleMaps.load();
-};
+let startup = () => {};
 
 Modules.client.startup = startup;

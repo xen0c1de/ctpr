@@ -1,5 +1,5 @@
 const admins = [
-  { "email": "admin@bottin-umf.ca" }
+  { "email": "support@o-led.ca" }
 ];
 
 let setAdmins = () => {

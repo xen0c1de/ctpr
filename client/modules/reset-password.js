@@ -11,18 +11,18 @@ let validation = ( template ) => {
     rules: {
       newPassword: {
         required: true,
-        minlength: 6
+        minlength: 8
       },
       repeatNewPassword: {
         required: true,
-        minlength: 6,
+        minlength: 8,
         equalTo: '[name="newPassword"]'
       }
     },
     messages: {
       newPassword: {
         required: "Entrer un nouveau mot de passe.",
-        minlength: "Minimum de 6 caractères."
+        minlength: "Minimum de 8 caractères."
       },
       repeatNewPassword: {
         required: "Répéter le mot de passe.",

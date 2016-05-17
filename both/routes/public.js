@@ -16,13 +16,6 @@ publicRoutes.route( '/', {
   }
 });
 
-publicRoutes.route( '/ressources', {
-  name: 'ressources',
-  action() {
-    BlazeLayout.render( 'default', { yield: 'ressources' } );
-  }
-});
-
 publicRoutes.route( '/invite/:token', {
   name: 'invite',
   action() {
