@@ -1,51 +1,133 @@
+body {
+	  font: 400 15px Lato, sans-serif;
+	  line-height: 1.8;
+	  color: #818181;
+}
+
+h2 {
+	font-size: 24px;
+	text-transform: uppercase;
+	color: #303030;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+
+h4 {
+	font-size: 19px;
+	line-height: 1.375em;
+	color: #303030;
+	font-weight: 400;
+	margin-bottom: 30px;
+}
+
 .jumbotron {
-    background-color: #2f87c2; /* bleu csss */
+    background-color: #8CC63E;
     color: #ffffff;
     padding: 100px 25px;
 }
 
 .bg-grey {
-    background-color: #f6f6f6;
+    background-color: #c0c0c0;
+}
+
+.container {
+	width: 100%;
 }
 
 .container-fluid {
     padding: 60px 50px;
 }
 
-/* Add an orange color to all icons and set the font-size */
 .logo-small {
-    color: #2f87c2;
+    color: #8CC63E;
     font-size: 50px;
 }
 
 .logo {
-    color: #2f87c2;
+    color: #8CC63E;
     font-size: 200px;
 }
 
-@media screen and (max-width: 768px) {
-    .col-sm-4 {
-        text-align: center;
-        margin: 25px 0;
-    }
+.thumbnail {
+	padding: 0 0 15px 0;
+}
+
+.thumbnail:hover {
+	box-shadow: 5px 0px 40px rgba(0,0,0, .5);
+}
+
+.thumbnail img {
+	width: 100%;
+	height: 100%;
+	margin-bottom: 10px;
 }
 
 .page-header small {
   color: #ffffff;
 }
 
-.map_container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; /* Ratio 16:9 ( 100%/16*9 = 56.25% ) */
+.navbar {
+	margin-bottom: 0;
+	background-color: #000;
+	z-index: 9999;
+	border: 0;
+	font-size: 12px;
+	line-height: 1.42857143;
+	letter-spacing: 4px;
+	border-radius: 0;
+	font-family: Montserrat, sans-serif;
 }
 
-.map_container .map_canvas{
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: 0;
-    padding: 0;
+.navbar .navbar-brand {
+	color: #8CC63E;
+}
+
+.selected {
+	box-shadow: 5px 0px 40px rgba(0,0,0, .5);
+}
+
+.greyout_p {
+    opacity: 0.3;
+    filter: alpha(opacity=30); /* msie */
+    background-color: #000;
+}
+
+.lens_grey {
+    opacity: 0.3;
+    filter: alpha(opacity=30); /* msie */
+    background-color: #000;
+}
+
+.endcap_grey {
+    opacity: 0.3;
+    filter: alpha(opacity=30); /* msie */
+    background-color: #000;
+}
+
+.bracket_grey {
+    opacity: 0.3;
+    filter: alpha(opacity=30); /* msie */
+    background-color: #000;
+}
+
+footer .glyphicon {
+	font-size: 20px;
+	margin-bottom: 20px;
+	color: #8CC63E;
+}
+
+@media screen and (max-width: 768px) {
+	.col-sm-4 {
+		text-align: center;
+		margin: 25px 0;
+	}
+	.btn-lg {
+		width: 100%;
+		margin-bottom: 35px;
+	}
+}
+@media screen and (max-width: 480px) {
+	.logo {
+		font-size: 150px;
+	}
 }

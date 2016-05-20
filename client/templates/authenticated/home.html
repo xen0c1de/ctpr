@@ -1,0 +1,174 @@
+<template name="home">
+  {{#if isInRole 'admin,manager,user'}}
+  <div class="jumbotron text-center">
+    <h1><span class="glyphicon glyphicon-list-alt"></span> CTPR <small>Profilé sur mesure!</small></h1>
+    <p>
+      Le CTPR est une fiche interactive de O-LED qui vous aide à selectionner les composantes pour créer des profilés sur mesure. Profilé, ruban, embout, braquette, transformateurs, nous vous aiderons à choisir se dont vous avez de besoin pour le meilleur prix.
+    </p>
+  </div>
+
+  <div id="profile" class="container-fluid text-center">
+  <div class="row content">
+		<div class="col-sm-3">
+			<div id="1011" class="thumbnail profile">
+				<img src="1011.png" alt="profilé 1011"/>
+				<p><strong>OLED-PRFL-PR-1011</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div id="1012" class="thumbnail profile">
+				<img src="1012.png" alt="profilé 1012"/>
+				<p><strong>OLED-PRFL-PR-1012</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div id="1013" class="thumbnail profile">
+				<img src="1013.png" alt="profilé 1013"/>
+				<p><strong>OLED-PRFL-PR-1013</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div id="2020" class="thumbnail profile">
+				<img src="2020.png" alt="profilé 2020"/>
+				<p><strong>OLED-PRFL-PR-2020</strong></p>
+			</div>
+		</div>
+  </div>
+</div>
+<div id="lens" class="container-fluid text-center">
+	<div class="row content">
+		<div class="col-sm-2">
+			<div id="wo" class="thumbnail lens">
+				<img src="wo.png" alt="WO=BLANC OPALIN"/>
+				<p><strong>BLANC OPALIN</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="tr" class="thumbnail lens">
+				<img src="tr.png" alt="TR=LENTILLE DE DIFFUSION"/>
+				<p><strong>LENTILLE DE DIFFUSION</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="wf" class="thumbnail lens">
+				<img src="wf.png" alt="WF=BLANC GIVRÉ"/>
+				<p><strong>BLANC GIVRÉ</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="fo" class="thumbnail lens">
+				<img src="fo.png" alt="FO=FOCUS"/>
+				<p><strong>FOCUS</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="cl" class="thumbnail lens">
+				<img src="cl.png" alt="CL=CLAIR"/>
+				<p><strong>CLAIR</strong></p>
+			</div>
+		</div>
+    <div class="col-sm-2">
+			<div id="wfr" class="thumbnail lens">
+				<img src="wfr.png" alt="WFR=BLANC GIVRÉ ROND"/>
+				<p><strong>BLANC GIVRÉ ROND</strong></p>
+			</div>
+		</div>
+  </div>
+  <div class="row content">
+		<div class="col-sm-2">
+			<div id="wor" class="thumbnail lens">
+				<img src="wor.png" alt="WOR=BLANC OPALIN ROND"/>
+				<p><strong>BLANC OPALIN ROND</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="wfs" class="thumbnail lens">
+				<img src="wfs.png" alt="WFS=BLANC GIVRÉ CARRÉ"/>
+				<p><strong>BLANC GIVRÉ CARRÉ</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="wos" class="thumbnail lens">
+				<img src="wos.png" alt="WOS=BLANC OPALIN CARRÉ"/>
+				<p><strong>BLANC OPALIN CARRÉ</strong></p>
+			</div>
+		</div>
+  </div>
+</div>
+<div id="endcap" class="container-fluid text-center">
+	<div class="row content">
+		<div class="col-sm-2">
+			<div id="0200" class="thumbnail endcap">
+				<img src="0200.jpg" alt="0200"/>
+				<p><strong>EMBOUT 0200</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="0025" class="thumbnail endcap">
+				<img src="0025.jpg" alt="0025"/>
+				<p><strong>EMBOUT 0025</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="0050" class="thumbnail endcap">
+				<img src="0050.jpg" alt="0050"/>
+				<p><strong>EMBOUT 0050 (LENTILLE FOCUS)</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="0075" class="thumbnail endcap">
+				<img src="0075.jpg" alt="0075"/>
+				<p><strong>EMBOUT 0075</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="0175" class="thumbnail endcap">
+				<img src="0175.jpg" alt="0175"/>
+				<p><strong>EMBOUT 0175</strong></p>
+			</div>
+		</div>
+    <div class="col-sm-2">
+			<div id="0150" class="thumbnail endcap">
+				<img src="0150.jpg" alt="0150"/>
+				<p><strong>EMBOUT 0150</strong></p>
+			</div>
+		</div>
+  </div>
+</div>
+<div id="bracket" class="container-fluid text-center">
+	<div class="row content">
+		<div class="col-sm-2">
+			<div id="2025" class="thumbnail bracket">
+				<img src="2025.jpg" alt="2025"/>
+				<p><strong>BRAQUETTE 2025</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="2050" class="thumbnail bracket">
+				<img src="2050.jpg" alt="2050"/>
+				<p><strong>BRAQUETTE 2050</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="2075" class="thumbnail bracket">
+				<img src="2075.jpg" alt="2075"/>
+				<p><strong>BRAQUETTE 2075</strong></p>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div id="2175" class="thumbnail bracket">
+				<img src="2175.jpg" alt="2175"/>
+				<p><strong>BRAQUETTE 2175</strong></p>
+			</div>
+		</div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center bg-grey">
+  <a href="#" title="To Top">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a>
+  <p>O-LED CTPR APP</p>
+</footer>
+{{/if}}
+</template>

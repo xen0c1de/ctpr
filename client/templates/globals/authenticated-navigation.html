@@ -4,12 +4,11 @@
       <li class="{{currentRoute 'users'}}"><a href="{{pathFor 'users'}}">Utilisateurs</a></li>
     {{/if}}
 
-    <!--{{#if isInRole 'admin,manager'}}
-      <li class="{{currentRoute 'managers'}}"><a href="{{pathFor 'managers'}}">Gestion du bottin</a></li>
-    {{/if}}-->
+    {{#if isInRole 'admin,manager'}}
+      <li class="{{currentRoute 'managers'}}"><a href="{{pathFor 'managers'}}">Gestion du CTPR</a></li>
+    {{/if}}
 
-    <li class="{{currentRoute 'list'}}"><a href="{{pathFor 'list'}}">Bottin</a></li>
-    <li class="{{currentRoute 'home-auth'}}"><a href="{{pathFor 'home-auth'}}">Acceuil</a></li>
+    <li class="{{currentRoute 'home'}}"><a href="{{pathFor 'home'}}">CTPR</a></li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
