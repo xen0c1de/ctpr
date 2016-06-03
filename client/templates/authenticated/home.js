@@ -4,7 +4,7 @@ Template.home.events({
       return;
     }
     else {
-      //reset ui by removeing all greyout items
+      //reset ui by removing all greyout items
       $(".selected").removeClass("selected");
       $(".greyout_p").removeClass("greyout_p");
       $(".lens_grey").addClass("lens");
@@ -42,7 +42,7 @@ Template.home.events({
       return;
     }
     else {
-      //reset ui by removeing all greyout items
+      //reset ui by removing all greyout items
       $(".selected").removeClass("selected");
       $(".greyout_p").removeClass("greyout_p");
       $(".lens_grey").addClass("lens");
@@ -82,7 +82,7 @@ Template.home.events({
       return;
     }
     else {
-      //reset ui by removeing all greyout items
+      //reset ui by removing all greyout items
       $(".selected").removeClass("selected");
       $(".greyout_p").removeClass("greyout_p");
       $(".lens_grey").addClass("lens");
@@ -120,7 +120,7 @@ Template.home.events({
       return;
     }
     else {
-      //reset ui by removeing all greyout items
+      //reset ui by removing all greyout items
       $(".selected").removeClass("selected");
       $(".greyout_p").removeClass("greyout_p");
       $(".lens_grey").addClass("lens");
@@ -191,5 +191,16 @@ Template.home.events({
       //select the clicked bracket
       $("#"+bracket_id).addClass("selected");
     }
+  },
+  'click .strip' (event) {
+    //get the id of current click target
+    var strip_id = event.currentTarget.id;
+    //remove other strip selection first (if any) and greyout
+    $(".strip").removeClass("selected");
+    $(".strip").removeClass("greyout_s");
+    //select the clicked strip and greyout others
+    $(".strip").addClass("greyout_s");
+    $("#"+strip_id).removeClass("greyout_s");
+    $("#"+strip_id).addClass("selected");
   }
 });
