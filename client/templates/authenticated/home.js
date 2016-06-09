@@ -1,4 +1,16 @@
 Template.home.events({
+  'click .glyphicon-menu-down' (event) {
+    $("span:hidden").show();
+    $(".glyphicon-menu-down").hide();
+    $(".resume").fadeOut(300);
+    $(".cart").animate({'width':'100px','height':'100px'}, 300);
+  },
+  'click .glyphicon-menu-left' (event) {
+    $(".glyphicon-menu-down").show();
+    $(".glyphicon-menu-left").hide();
+    $(".cart").animate({'width':'25%','height':'40%'}, 300);
+    $(".resume").fadeIn(300);
+  },
   'click #1011' (event) {
     if ($("#1011").hasClass("selected")){
       return;
@@ -35,6 +47,8 @@ Template.home.events({
       //greyout non-compatible brackets
       $("#2175").addClass("bracket_grey");
       $("#2175").removeClass("bracket");
+      //add selection to sidebar
+      
     }
   },
   'click #1012' () {

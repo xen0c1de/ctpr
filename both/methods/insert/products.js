@@ -1,0 +1,21 @@
+Meteor.methods({
+  addProduct( product ) {
+    check( product, {
+      pn: String,
+      desc: String,
+      category: String,
+      price: Number
+    });
+
+    try {
+      Modules.server.addProduct({
+        pn: product.pn,
+        desc: product.desc,
+        category: product.category,
+        price: product.price
+      });
+    } catch( exception ) {
+      return exception;
+    }
+  }
+});

@@ -20,14 +20,49 @@ h4 {
 	margin-bottom: 30px;
 }
 
+table {
+  width:100%;
+}
+
+table, th, td {
+  border: 1px solid #bbb	;
+  border-collapse: collapse;
+}
+
+caption {
+	font-size: 18px;
+	text-transform: uppercase;
+	color: #303030;
+	font-weight: 400;
+}
+
+
+th, td {
+  padding: 5px;
+  text-align: left;
+}
+
+tr:nth-child(odd) {
+  background-color: #eee;
+}
+
+tr:nth-child(even) {
+ background-color:#fff;
+}
+
+th {
+  background-color: #8CC63E;
+  color: white;
+}
+
 .jumbotron {
-    background-color: #8CC63E;
-    color: #ffffff;
-    padding: 100px 25px;
+  background-color: #8CC63E;
+  color: #ffffff;
+  padding: 100px 25px;
 }
 
 .bg-grey {
-    background-color: #c0c0c0;
+  background-color: #c0c0c0;
 }
 
 .container {
@@ -53,8 +88,8 @@ h4 {
 }
 
 .thumbnail img {
-	width: 100%;
-	height: 100%;
+	width: 70%;
+	height: 70%;
 	margin-bottom: 10px;
 }
 
@@ -101,12 +136,34 @@ h4 {
 
 .panel-footer {
     background-color: #fff !important;
+		overflow-x:auto;
 }
 
-.panel-footer .btn {
+.panel-footer .tablehead {
     margin: 15px 0;
     background-color: #8CC63E;
     color: #fff;
+}
+
+.cart {
+	position:fixed;
+	border: 2px solid #8CC63E;
+	top: 8%;
+	right: 2%;
+	background-color: white;
+	width: 25%;
+	height: 40%;
+	z-index: 100;
+	padding: 25px;
+	box-shadow: 5px 0px 40px rgba(0,0,0, .5);
+}
+
+.cart .glyphicon {
+	float: right;
+}
+
+.hidden {
+	display: none;
 }
 
 .selected {
