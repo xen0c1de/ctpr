@@ -31,6 +31,10 @@ let ProductsSchema = new SimpleSchema({
     type: Number,
     label: "Prix du produit",
     decimal: true
+  },
+  properties: {
+    type: [String],
+    label: "Liste des caractéristiques"
   }
 });
 

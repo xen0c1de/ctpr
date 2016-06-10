@@ -4,7 +4,8 @@ Meteor.methods({
       pn: String,
       desc: String,
       category: String,
-      price: Number
+      price: Number,
+      properties: [Number]
     });
 
     try {
@@ -12,7 +13,8 @@ Meteor.methods({
         pn: product.pn,
         desc: product.desc,
         category: product.category,
-        price: product.price
+        price: product.price,
+        properties: product.properties
       });
     } catch( exception ) {
       return exception;
