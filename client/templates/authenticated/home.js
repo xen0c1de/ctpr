@@ -42,18 +42,39 @@ Template.home.helpers({
 
 Template.home.events({
   //hides the "cart" to better see page
-  'click .glyphicon-menu-down' (event) {
-    $("span:hidden").show();
-    $(".glyphicon-menu-down").hide();
+  'click .cart-hide' (event) {
+    $("button:hidden").show();
+    $(".cart-hide").hide();
     $(".resume").fadeOut(300);
-    $(".cart").animate({'width':'100px','height':'100px'}, 300);
+    $(".footer").fadeOut(300);
+    $(".cart").animate({'width':'130px','height':'120px'}, 300);
   },
   //shows the cart again
-  'click .glyphicon-menu-left' (event) {
-    $(".glyphicon-menu-down").show();
-    $(".glyphicon-menu-left").hide();
+  'click .cart-show' (event) {
+    $(".cart-hide").show();
+    $(".cart-show").hide();
     $(".cart").animate({'width':'25%','height':'40%'}, 300);
     $(".resume").fadeIn(300);
+    $(".footer").fadeIn(300);
+  },
+  //clicking the reset button resets everything
+  'click .reset' () {
+    $(".item-list").empty();
+    $(".selected").removeClass("selected");
+    $(".greyout_p").removeClass("greyout_p");
+    $(".lens_grey").addClass("lens");
+    $(".lens_grey").removeClass("lens_grey");
+    $(".endcap_grey").addClass("endcap");
+    $(".endcap_grey").removeClass("endcap_grey");
+    $(".bracket_grey").addClass("bracket");
+    $(".bracket_grey").removeClass("bracket_grey");
+    $(".strip").removeClass("selected");
+    $(".strip").removeClass("greyout_s");
+  },
+  //clicking the continue button takes you to the next step
+  'click .continue' () {
+    //check that all items have been selected
+    //open finishing touches modal window
   },
   //when we select the 1011 profilé
   'click #1011' (event) {
@@ -61,7 +82,7 @@ Template.home.events({
       return;
     }
     else {
-      //reset ui by removing all greyout items and clearing cart
+      //reset ui by removing all greyout items
       $(".selected").removeClass("selected");
       $(".greyout_p").removeClass("greyout_p");
       $(".lens_grey").addClass("lens");
@@ -70,14 +91,16 @@ Template.home.events({
       $(".endcap_grey").removeClass("endcap_grey");
       $(".bracket_grey").addClass("bracket");
       $(".bracket_grey").removeClass("bracket_grey");
-      $(".item-list").empty();
+      //clear cart except for strips
+
       //select clicked one and greyout the rest
       $("#1011").addClass("selected");
       $("#1012").addClass("greyout_p");
       $("#1013").addClass("greyout_p");
       $("#2020").addClass("greyout_p");
       //add selected to sidebar
-      $(".item-list").append('<li>test</li>');
+      var profile = Products.find({ pn: "1011" }).fetch();
+      $(".item-list").append('<li>'+profile[0].desc+'</li>');
       //greyout non-compatible lens
       $("#wfr").removeClass("lens");
       $("#wfr").addClass("lens_grey");
@@ -112,11 +135,15 @@ Template.home.events({
       $(".endcap_grey").removeClass("endcap_grey");
       $(".bracket_grey").addClass("bracket");
       $(".bracket_grey").removeClass("bracket_grey");
+      $(".item-list").empty();
       //select clicked one and greyout the rest
       $("#1012").addClass("selected");
       $("#1011").addClass("greyout_p");
       $("#1013").addClass("greyout_p");
       $("#2020").addClass("greyout_p");
+      //add selected to sidebar
+      var profile = Products.find({ pn: "1012" }).fetch();
+      $(".item-list").append('<li>'+profile[0].desc+'</li>');
       //greyout non-compatible lens
       $("#wfr").removeClass("lens");
       $("#wfr").addClass("lens_grey");
@@ -153,11 +180,15 @@ Template.home.events({
       $(".endcap_grey").removeClass("endcap_grey");
       $(".bracket_grey").addClass("bracket");
       $(".bracket_grey").removeClass("bracket_grey");
+      $(".item-list").empty();
       //select clicked one and greyout the rest
       $("#1013").addClass("selected");
       $("#1011").addClass("greyout_p");
       $("#1012").addClass("greyout_p");
       $("#2020").addClass("greyout_p");
+      //add selected to sidebar
+      var profile = Products.find({ pn: "1013" }).fetch();
+      $(".item-list").append('<li>'+profile[0].desc+'</li>');
       //greyout non-compatible lens
       $("#wfr").removeClass("lens");
       $("#wfr").addClass("lens_grey");
@@ -192,11 +223,15 @@ Template.home.events({
       $(".endcap_grey").removeClass("endcap_grey");
       $(".bracket_grey").addClass("bracket");
       $(".bracket_grey").removeClass("bracket_grey");
+      $(".item-list").empty();
       //select clicked one and greyout the rest
       $("#2020").addClass("selected");
       $("#1011").addClass("greyout_p");
       $("#1012").addClass("greyout_p");
       $("#1013").addClass("greyout_p");
+      //add selected to sidebar
+      var profile = Products.find({ pn: "2020" }).fetch();
+      $(".item-list").append('<li>'+profile[0].desc+'</li>');
       //greyout non-compatible lens
       $("#wo").removeClass("lens");
       $("#wo").addClass("lens_grey");
@@ -225,45 +260,77 @@ Template.home.events({
   'click .lens' (event) {
     //get the id of current click target
     var lens_id = event.currentTarget.id;
-    //check that a profile was selected first
-    if( $(".profile").hasClass("selected") ){
-      //remove other lens selection first (if any)
-      $(".lens").removeClass("selected");
+    //check that a profile was selected first and that this isn't the already selected lens
+    if( $(".profile").hasClass("selected") && !$("#"+lens_id).hasClass("selected") ){
+      //if a lens was already selected
+      if( $(".lens").hasClass("selected") ) {
+        //remove other lens selection
+        $(".lens").removeClass("selected");
+        //remove from sidebar
+        $("li.lens").remove();
+      }
       //select the clicked lens
       $("#"+lens_id).addClass("selected");
+      //add selected to sidebar
+      var lens = Products.find({ pn: lens_id }).fetch();
+      $(".item-list").append('<li class="lens">'+lens[0].desc+'</li>');
     }
   },
   'click .endcap' (event) {
     //get the id of current click target
     var endcap_id = event.currentTarget.id;
-    //check that a profile was selected first
-    if( $(".profile").hasClass("selected") ){
-      //remove other endcap selection first (if any)
-      $(".endcap").removeClass("selected");
+    //check that a profile was selected first and that this isn't the already selected endcap
+    if( $(".profile").hasClass("selected") && !$("#"+endcap_id).hasClass("selected") ){
+      //if a endcap was already selected
+      if( $(".endcap").hasClass("selected") ) {
+        //remove other endcap selection
+        $(".endcap").removeClass("selected");
+        //remove from sidebar
+        $("li.endcap").remove();
+      }
       //select the clicked endcap
       $("#"+endcap_id).addClass("selected");
+      //add selected to sidebar
+      var endcap = Products.find({ pn: endcap_id }).fetch();
+      $(".item-list").append('<li class="endcap">'+endcap[0].desc+'</li>');
     }
   },
   'click .bracket' (event) {
     //get the id of current click target
     var bracket_id = event.currentTarget.id;
-    //check that a profile was selected first
-    if( $(".profile").hasClass("selected") ){
-      //remove other bracket selection first (if any)
-      $(".bracket").removeClass("selected");
+    //check that a profile was selected first and that this isn't the already selected bracket
+    if( $(".profile").hasClass("selected") && !$("#"+bracket_id).hasClass("selected") ){
+      //if a bracket was already selected
+      if( $(".bracket").hasClass("selected") ) {
+        //remove other bracket selection
+        $(".bracket").removeClass("selected");
+        //remove from sidebar
+        $("li.bracket").remove();
+      }
       //select the clicked bracket
       $("#"+bracket_id).addClass("selected");
+      //add selected to sidebar
+      var bracket = Products.find({ pn: bracket_id }).fetch();
+      $(".item-list").append('<li class="bracket">'+bracket[0].desc+'</li>');
     }
   },
   'click .strip' (event) {
     //get the id of current click target
     var strip_id = event.currentTarget.id;
-    //remove other strip selection first (if any) and greyout
-    $(".strip").removeClass("selected");
-    $(".strip").removeClass("greyout_s");
-    //select the clicked strip and greyout others
-    $(".strip").addClass("greyout_s");
-    $("#"+strip_id).removeClass("greyout_s");
-    $("#"+strip_id).addClass("selected");
+    if( !$("#"+strip_id).hasClass("selected") ) {
+      //remove other strip selection
+      $(".strip").removeClass("selected");
+      //remove greyout from other strips
+      $(".strip").removeClass("greyout_s");
+      //remove from sidebar
+      $("li.strip").remove();
+      //select the clicked strip and greyout others
+      $(".strip").addClass("greyout_s");
+      $("#"+strip_id).removeClass("greyout_s");
+      $("#"+strip_id).addClass("selected");
+      //add selected to sidebar
+      var strip = Products.find({ pn: strip_id }).fetch();
+      $(".item-list").append('<li class="strip">'+strip[0].desc+'</li>');
+    }
   }
 });

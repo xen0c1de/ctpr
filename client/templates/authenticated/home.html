@@ -7,11 +7,21 @@
   </p>
 </div>
 <div class="cart">
-  <span class="glyphicon glyphicon-menu-down logo-small" aria-hidden="true"></span>
-  <span class="glyphicon glyphicon-menu-left logo-small" style="display:none;" aria-hidden="true"></span>
+  <button class="btn btn-default cart-hide">
+    <span class="glyphicon glyphicon-menu-down logo-small" aria-hidden="true"></span>
+  </button>
+  <button class="btn btn-default cart-show" style="display:none;">
+    <span class="glyphicon glyphicon-menu-left logo-small" aria-hidden="true"></span>
+  </button>
   <div class="resume text-center">
     <h2><u>résumé</u></h2>
-    <ul class="item-list"></ul>
+    <div class="text-left">
+      <ul class="item-list"></ul>
+    </div>
+  </div>
+  <div class="footer">
+    <a href="#" class="reset btn"><span class="glyphicon glyphicon-remove-sign logo-small-red" aria-hidden="true"></span></a>
+    <a href="#" class="continue btn"><span class="glyphicon glyphicon-ok-sign logo-small" aria-hidden="true"></span></a>
   </div>
 </div>
 <div id="profile" class="container-fluid text-center">
@@ -21,7 +31,7 @@
   <div class="row content">
     {{#each profiles}}
     <div class="col-sm-3">
-      <div id="{{pn}}" class="panel panel-default text-center {{category}}">
+      <div id="{{pn}}" class="panel panel-default text-center profile">
         <div class="panel-heading">
           <h1>{{pn}}</h1>
         </div>
@@ -41,322 +51,80 @@
 </div>
 <div id="lens" class="container-fluid text-center">
 	<div class="row content">
-		<div class="col-sm-2">
-      <div id="wo" class="panel panel-default text-center lens">
-        <div class="panel-heading">
-          <h1>WO</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="wo.png" alt="WO=BLANC OPALIN"/>
-        </div>
-        <div class="panel-footer">
-          <p>Lentille blanche opaline</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="tr" class="panel panel-default text-center lens">
-        <div class="panel-heading">
-          <h1>TR</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="tr.png" alt="TR=LENTILLE DE DIFFUSION"/>
-        </div>
-        <div class="panel-footer">
-          <p>Lentille de diffusion</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="wf" class="panel panel-default text-center lens">
-        <div class="panel-heading">
-          <h1>WF</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="wf.png" alt="WF=BLANC GIVRÉ"/>
-        </div>
-        <div class="panel-footer">
-          <p>Lentille blanche givrée</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="fo" class="panel panel-default text-center lens">
-        <div class="panel-heading">
-          <h1>FO</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="fo.png" alt="FO=FOCUS"/>
-        </div>
-        <div class="panel-footer">
-          <p>Lentille de focus</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="cl" class="panel panel-default text-center lens">
-        <div class="panel-heading">
-          <h1>CL</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="cl.png" alt="CL=CLAIR"/>
-        </div>
-        <div class="panel-footer">
-          <p>Lentille claire</p>
-        </div>
-      </div>
-		</div>
+    {{#each lenses}}
     <div class="col-sm-2">
-      <div id="wfr" class="panel panel-default text-center lens">
+      <div id="{{pn}}" class="panel panel-default text-center lens">
         <div class="panel-heading">
-          <h1>WFR</h1>
+          <h1>{{pn}}</h1>
         </div>
         <div class="panel-body thumbnail">
-          <img src="wfr.png" alt="WFR=BLANC GIVRÉ ROND"/>
+          <img src="{{pn}}.png" alt="{{pn}}"/>
         </div>
         <div class="panel-footer">
-          <p>Lentille blanche givrée ronde</p>
+          <p>{{desc}}</p>
+          {{#each property in properties}}
+            <p>{{property}}</p>
+          {{/each}}
         </div>
       </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="wor" class="panel panel-default text-center lens">
-        <div class="panel-heading">
-          <h1>WOR</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="wor.png" alt="WOR=BLANC OPALIN ROND"/>
-        </div>
-        <div class="panel-footer">
-          <p>Lentille blanche opaline ronde</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="wfs" class="panel panel-default text-center lens">
-        <div class="panel-heading">
-          <h1>WFS</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="wfs.png" alt="WFS=BLANC GIVRÉ CARRÉ"/>
-        </div>
-        <div class="panel-footer">
-          <p>Lentille blanche givrée carrée</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="wos" class="panel panel-default text-center lens">
-        <div class="panel-heading">
-          <h1>WOS</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="wos.png" alt="WOS=BLANC OPALIN CARRÉ"/>
-        </div>
-        <div class="panel-footer">
-          <p>Lentille blanche opaline carrée</p>
-        </div>
-      </div>
-		</div>
+    </div>
+    {{/each}}
   </div>
 </div>
 <div id="endcap" class="container-fluid text-center">
 	<div class="row content">
-		<div class="col-sm-2">
-      <div id="0200" class="panel panel-default text-center endcap">
-        <div class="panel-heading">
-          <h1>0200</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="0200.jpg" alt="0200"/>
-        </div>
-        <div class="panel-footer">
-          <p>Embout pour profilé série 1011</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="0025" class="panel panel-default text-center endcap">
-        <div class="panel-heading">
-          <h1>0025</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="0025.jpg" alt="0025"/>
-        </div>
-        <div class="panel-footer">
-          <p>Embout pour profilé série 1012</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="0050" class="panel panel-default text-center endcap">
-        <div class="panel-heading">
-          <h1>0050</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="0050.jpg" alt="0050"/>
-        </div>
-        <div class="panel-footer">
-          <p>Embout pour profilé série 1012</p>
-          <p>Lentille focus seulement</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="0075" class="panel panel-default text-center endcap">
-        <div class="panel-heading">
-          <h1>0075</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="0075.jpg" alt="0075"/>
-        </div>
-        <div class="panel-footer">
-          <p>Embout pour profilé série 1013</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="0175" class="panel panel-default text-center endcap">
-        <div class="panel-heading">
-          <h1>0175</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="0175.jpg" alt="0175"/>
-        </div>
-        <div class="panel-footer">
-          <p>Embout pour profilé série 2020</p>
-          <p>Lentille carrée seulement</p>
-        </div>
-      </div>
-		</div>
+    {{#each endcaps}}
     <div class="col-sm-2">
-      <div id="0150" class="panel panel-default text-center endcap">
+      <div id="{{pn}}" class="panel panel-default text-center endcap">
         <div class="panel-heading">
-          <h1>0150</h1>
+          <h1>{{pn}}</h1>
         </div>
         <div class="panel-body thumbnail">
-          <img src="0150.jpg" alt="0150"/>
+          <img src="{{pn}}.jpg" alt="{{pn}}"/>
         </div>
         <div class="panel-footer">
-          <p>Embout pour profilé série 2020</p>
-          <p>Lentille ronde seulement</p>
+          <p>{{desc}}</p>
+          {{#each property in properties}}
+            <p>{{property}}</p>
+          {{/each}}
         </div>
       </div>
-		</div>
+    </div>
+    {{/each}}
   </div>
 </div>
 <div id="bracket" class="container-fluid text-center">
 	<div class="row content">
-		<div class="col-sm-2">
-      <div id="2025" class="panel panel-default text-center bracket">
+    {{#each brackets}}
+    <div class="col-sm-2">
+      <div id="{{pn}}" class="panel panel-default text-center bracket">
         <div class="panel-heading">
-          <h1>2025</h1>
+          <h1>{{pn}}</h1>
         </div>
         <div class="panel-body thumbnail">
-          <img src="2025.jpg" alt="2025"/>
+          <img src="{{pn}}.jpg" alt="{{pn}}"/>
         </div>
         <div class="panel-footer">
-          <p>Braquette pour profilé série 1011 1012 1013</p>
+          <p>{{desc}}</p>
+          {{#each property in properties}}
+            <p>{{property}}</p>
+          {{/each}}
         </div>
       </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="2050" class="panel panel-default text-center bracket">
-        <div class="panel-heading">
-          <h1>2050</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="2050.jpg" alt="2050"/>
-        </div>
-        <div class="panel-footer">
-          <p>Braquette pour profilé série 1011 1012 1013</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="2075" class="panel panel-default text-center bracket">
-        <div class="panel-heading">
-          <h1>2075</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="2075.jpg" alt="2075"/>
-        </div>
-        <div class="panel-footer">
-          <p>Braquette pour profilé série 1011 1012 1013</p>
-        </div>
-      </div>
-		</div>
-		<div class="col-sm-2">
-      <div id="2175" class="panel panel-default text-center bracket">
-        <div class="panel-heading">
-          <h1>2175</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="2175.jpg" alt="2175"/>
-        </div>
-        <div class="panel-footer">
-          <p>Braquette pour profilé série 2020</p>
-        </div>
-      </div>
-		</div>
+    </div>
+    {{/each}}
   </div>
 </div>
 <div id="strip" class="container-fluid text-center">
-	<div class="row content">
-		<div class="col-sm-12">
-      <div id="3528-60" class="panel panel-default text-center strip">
-        <div class="panel-heading">
-          <h1>RUBAN 3528-60</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="3528-60.jpg" alt="3528-60"/>
-        </div>
-        <div class="panel-footer">
-          <table>
-            <caption>Caractéristiques</caption>
-            <tr>
-              <th>DEL AU MÈTRE</th>
-              <th>TENSION D'ENTRÉE</th>
-              <th>COUPE</th>
-              <th>DIMENSION</th>
-              <th>ANGLE DU FAISCEAU</th>
-              <th>TEMPÉRATURE</th>
-              <th>FLUX LUMINEUX</th>
-              <th>WATT AU MÈTRE</th>
-              <th>IP</th>
-            </tr>
-            <tr>
-              <td>60 DEL AU MÈTRE</td>
-              <td>12V DC (24V DC DISPONIBLE)</td>
-              <td>CHAQUE 3 DEL</td>
-              <td>8MM DE LARGEUR</td>
-              <td>120 DEGRÉS</td>
-              <td>
-                3000K<br>
-                3500K<br>
-                4000K<br>
-              </td>
-              <td>312 LM/M</td>
-              <td>4.8 W/M</td>
-              <td>
-                22<br>
-                65<br>
-                68<br>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-		</div>
-  </div>
+  {{#each strips}}
   <div class="row content">
 		<div class="col-sm-12">
-      <div id="3528-120" class="panel panel-default text-center strip">
+      <div id="{{pn}}" class="panel panel-default text-center strip">
         <div class="panel-heading">
-          <h1>RUBAN 3528-120</h1>
+          <h1>{{desc}}</h1>
         </div>
         <div class="panel-body thumbnail">
-          <img src="3528-120.jpg" alt="3528-120"/>
+          <img src="{{pn}}.jpg" alt="{{pn}}"/>
         </div>
         <div class="panel-footer">
           <table>
@@ -373,167 +141,16 @@
               <th>IP</th>
             </tr>
             <tr>
-              <td>120 DEL AU MÈTRE</td>
-              <td>12V DC</td>
-              <td>CHAQUE 3 DEL</td>
-              <td>9MM DE LARGEUR</td>
-              <td>120 DEGRÉS</td>
-              <td>
-                3000K<br>
-                3500K<br>
-                4000K<br>
-              </td>
-              <td>720 LM/M</td>
-              <td>9.6 W/M</td>
-              <td>
-                22<br>
-                65<br>
-                68<br>
-              </td>
+              {{#each property in properties}}
+                <td>{{property}}</td>
+              {{/each}}
             </tr>
           </table>
         </div>
       </div>
 		</div>
   </div>
-  <div class="row content">
-		<div class="col-sm-12">
-      <div id="5050-60-RGB" class="panel panel-default text-center strip">
-        <div class="panel-heading">
-          <h1>RUBAN 5050-60-RGB</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="5050-60-rgb.jpg" alt="5050-60-RGB"/>
-        </div>
-        <div class="panel-footer">
-          <table>
-            <caption>Caractéristiques</caption>
-            <tr>
-              <th>DEL AU MÈTRE</th>
-              <th>TENSION D'ENTRÉE</th>
-              <th>COUPE</th>
-              <th>DIMENSION</th>
-              <th>ANGLE DU FAISCEAU</th>
-              <th>TEMPÉRATURE</th>
-              <th>FLUX LUMINEUX</th>
-              <th>WATT AU MÈTRE</th>
-              <th>IP</th>
-            </tr>
-            <tr>
-              <td>60 DEL AU MÈTRE</td>
-              <td>12-24V DC</td>
-              <td>
-                CHAQUE 6 DEL (24V)<br>
-                CHAQUE 3 DEL (12V)
-              </td>
-              <td>10MM DE LARGEUR</td>
-              <td>120 DEGRÉS</td>
-              <td>RGB = Rouge, vert et bleu</td>
-              <td>1250 LM/M</td>
-              <td>14.4 W/M</td>
-              <td>
-                22<br>
-                65<br>
-                68<br>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-		</div>
-  </div>
-  <div class="row content">
-		<div class="col-sm-12">
-      <div id="5050-72" class="panel panel-default text-center strip">
-        <div class="panel-heading">
-          <h1>RUBAN 5050-72</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="5050-72.jpg" alt="5050-72"/>
-        </div>
-        <div class="panel-footer">
-          <table>
-            <caption>Caractéristiques</caption>
-            <tr>
-              <th>DEL AU MÈTRE</th>
-              <th>TENSION D'ENTRÉE</th>
-              <th>COUPE</th>
-              <th>DIMENSION</th>
-              <th>ANGLE DU FAISCEAU</th>
-              <th>TEMPÉRATURE</th>
-              <th>FLUX LUMINEUX</th>
-              <th>WATT AU MÈTRE</th>
-              <th>IP</th>
-            </tr>
-            <tr>
-              <td>72 DEL AU MÈTRE</td>
-              <td>12V DC</td>
-              <td>CHAQUE DEL</td>
-              <td>10MM DE LARGEUR</td>
-              <td>120 DEGRÉS</td>
-              <td>
-                3000K<br>
-                3500K<br>
-                4000K<br>
-              </td>
-              <td>1602 LM/M</td>
-              <td>17.8 W/M</td>
-              <td>
-                22<br>
-                68<br>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-		</div>
-  </div>
-  <div class="row content">
-    <div class="col-sm-12">
-      <div id="5630-60" class="panel panel-default text-center strip">
-        <div class="panel-heading">
-          <h1>RUBAN 5630-60</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="5630-60.jpg" alt="5630-60"/>
-        </div>
-        <div class="panel-footer">
-          <table>
-            <caption>Caractéristiques</caption>
-            <tr>
-              <th>DEL AU MÈTRE</th>
-              <th>TENSION D'ENTRÉE</th>
-              <th>COUPE</th>
-              <th>DIMENSION</th>
-              <th>ANGLE DU FAISCEAU</th>
-              <th>TEMPÉRATURE</th>
-              <th>FLUX LUMINEUX</th>
-              <th>WATT AU MÈTRE</th>
-              <th>IP</th>
-            </tr>
-            <tr>
-              <td>60 DEL AU MÈTRE</td>
-              <td>24V DC</td>
-              <td>CHAQUE 6 DEL</td>
-              <td>14MM DE LARGEUR</td>
-              <td>120 DEGRÉS</td>
-              <td>
-                3000K<br>
-                3500K<br>
-                4000K<br>
-              </td>
-              <td>1750 LM/M</td>
-              <td>21.7 W/M</td>
-              <td>
-                43<br>
-                67<br>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-		</div>
-  </div>
+  {{/each}}
 </div>
 
 <footer class="container-fluid text-center bg-grey">
