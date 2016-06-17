@@ -11,15 +11,28 @@ Template.sendInvitationModal.events({
         role: role
       }, ( error, response ) => {
         if ( error ) {
-          Bert.alert( error.reason, "warning" );
+          Bert.alert({
+            message: error.reason,
+            type: 'warning',
+            style: 'growl-top-right'
+          });
         } else {
           $( "#send-invitation-modal" ).modal( 'hide' );
           $( '.modal-backdrop' ).hide();
-          Bert.alert( "Invitation envoyé!", "success" );
+          Bert.alert({
+            message: "Invitation envoyé!",
+            type: 'success',
+            style: 'growl-top-right'
+          });
         }
       });
     } else {
-      Bert.alert( "S'il vous plaît entrer un courriel et choissir un rôle.", "warning" );
+      Bert.alert({
+        hideDelay: 4000,
+        message: "S'il vous plaît entrer un courriel et choissir un rôle.",
+        type: 'warning',
+        style: 'growl-top-right'
+      });
     }
   }
 });

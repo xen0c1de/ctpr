@@ -28,7 +28,11 @@ Template.invite.events({
 
     Meteor.call( 'acceptInvitation', user, function( error, response ) {
       if ( error ) {
-        Bert.alert( error.reason, 'warning' );
+        Bert.alert({
+          message: error.reason,
+          type: 'warning',
+          style: 'growl-top-right'
+        });
       } else {
         Meteor.loginWithPassword( user.email, password );
       }

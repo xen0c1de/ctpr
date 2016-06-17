@@ -39,9 +39,17 @@ let _handleReset = ( template ) => {
 
   Accounts.resetPassword( token, password, ( error ) => {
     if ( error ) {
-      Bert.alert( error.reason, 'danger' );
+      Bert.alert({
+        message: error.reason,
+        type: 'danger',
+        style: 'growl-top-right'
+      });
     } else {
-      Bert.alert( 'Mot de passe réinitialisé!', 'success' );
+      Bert.alert({
+        message: 'Mot de passe réinitialisé!',
+        type: 'success',
+        style: 'growl-top-right'
+      });
     }
   });
 };

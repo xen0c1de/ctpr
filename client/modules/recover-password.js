@@ -29,9 +29,17 @@ let _handleRecovery = ( template ) => {
 
   Accounts.forgotPassword( { email: email }, ( error ) => {
     if ( error ) {
-      Bert.alert( error.reason, 'warning' );
+      Bert.alert({
+        message: error.reason,
+        type: 'warning',
+        style: 'growl-top-right'
+      });
     } else {
-      Bert.alert( 'Vérifier votre boîte de courriel pour le lien!', 'success' );
+      Bert.alert({
+        message: 'Vérifier votre boîte de courriel pour le lien!',
+        type: 'success',
+        style: 'growl-top-right'
+      });
     }
   });
 };

@@ -74,11 +74,26 @@ Template.home.events({
   //clicking the continue button takes you to the next step
   'click .continue' () {
     //check that all items have been selected
-    //open finishing touches modal window
+    if ( $(".profile").hasClass("selected") &&
+          $(".lens").hasClass("selected") &&
+          $(".endcap").hasClass("selected") &&
+          $(".bracket").hasClass("selected") &&
+          $(".strip").hasClass("selected") ) {
+      //open finishing touches modal window
+      Bert.alert( "bravo", 'success' );
+    }
+    else {
+      Bert.alert({
+        hideDelay: 4000,
+        message: 'Vous devez faire un choix dans chaque catégorie avant de continuer.',
+        type: 'info',
+        style: 'growl-top-right'
+      });
+    }
   },
   //when we select the 1011 profilé
   'click #1011' (event) {
-    if ($("#1011").hasClass("selected")){
+    if ( $("#1011").hasClass("selected") ){
       return;
     }
     else {

@@ -32,7 +32,11 @@ Template.users.events({
       role: role
     }, ( error, response ) => {
       if ( error ) {
-        Bert.alert( error.reason, "warning" );
+        Bert.alert({
+          message: error.reason,
+          type: 'warning',
+          style: 'growl-top-right'
+        });
       }
     });
   },
@@ -40,9 +44,17 @@ Template.users.events({
     if ( confirm( "Êtes-vous certain? c'est permanent." ) ) {
       Meteor.call( "deleteUser", this._id, function( error, response ) {
         if ( error ) {
-          Bert.alert( error.reason, "warning" );
+          Bert.alert({
+            message: error.reason,
+            type: 'warning',
+            style: 'growl-top-right'
+          });
         } else {
-          Bert.alert( "Utilisateur supprimer!", "success" );
+          Bert.alert({
+            message: "Utilisateur supprimer!",
+            type: 'success',
+            style: 'growl-top-right'
+          });
         }
       });
     }
@@ -51,9 +63,17 @@ Template.users.events({
     if ( confirm( "Êtes-vous certain? c'est permanent." ) ) {
       Meteor.call( "revokeInvitation", this._id, function( error, response ) {
         if ( error ) {
-          Bert.alert( error.reason, "warning" );
+          Bert.alert({
+            message: error.reason,
+            type: 'warning',
+            style: 'growl-top-right'
+          });
         } else {
-          Bert.alert( "Invitation révoquer!", "success" );
+          Bert.alert({
+            message: "Invitation révoquer!",
+            type: 'success',
+            style: 'growl-top-right'
+          });
         }
       });
     }

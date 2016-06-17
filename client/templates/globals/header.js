@@ -10,9 +10,18 @@ Template.header.events({
   'click .logout' () {
     Meteor.logout( ( error ) => {
       if ( error ) {
+        Bert.alert({
+          message: error.reason,
+          type: 'warning',
+          style: 'growl-top-right'
+        });
         Bert.alert( error.reason, 'warning' );
       } else {
-        Bert.alert( 'Déconnexion!', 'success' );
+        Bert.alert({
+          message: 'Déconnexion!',
+          type: 'success',
+          style: 'growl-top-right'
+        });
       }
     });
   }
