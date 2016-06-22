@@ -43,7 +43,7 @@ Template.home.helpers({
 Template.home.events({
   //hides the "cart" to better see page
   'click .cart-hide' (event) {
-    $("button:hidden").show();
+    $(".cart-show:hidden").show();
     $(".cart-hide").hide();
     $(".resume").fadeOut(300);
     $(".footer").fadeOut(300);
@@ -72,7 +72,7 @@ Template.home.events({
     $(".strip").removeClass("greyout_s");
   },
   //clicking the continue button takes you to the next step
-  'click .continue' () {
+  'click .continue' (event) {
     //check that all items have been selected
     if ( $(".profile").hasClass("selected") &&
           $(".lens").hasClass("selected") &&
@@ -80,9 +80,13 @@ Template.home.events({
           $(".bracket").hasClass("selected") &&
           $(".strip").hasClass("selected") ) {
       //open finishing touches modal window
-      Bert.alert( "bravo", 'success' );
+      $( ".item-list li" ).each( function(){
+        var item = $(this).text();
+        $( "#item-list" ).append( "<li>"+item+"</li>" );
+      });
     }
     else {
+      event.stopPropagation()
       Bert.alert({
         hideDelay: 4000,
         message: 'Vous devez faire un choix dans chaque catégorie avant de continuer.',

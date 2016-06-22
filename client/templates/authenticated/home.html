@@ -1,5 +1,6 @@
 <template name="home">
 {{#if isInRole 'admin,manager,user'}}
+{{> ctprCompleteModal}}
 <div class="jumbotron text-left">
   <h1><span class="glyphicon glyphicon-list-alt"></span> CTPR <small>Profilé sur mesure!</small></h1>
   <p class="text-block text-left">
@@ -7,10 +8,10 @@
   </p>
 </div>
 <div class="cart">
-  <button class="btn btn-default cart-hide">
+  <button class="btn cart-hide">
     <span class="glyphicon glyphicon-menu-down logo-small" aria-hidden="true"></span>
   </button>
-  <button class="btn btn-default cart-show" style="display:none;">
+  <button class="btn cart-show" style="display:none;">
     <span class="glyphicon glyphicon-menu-left logo-small" aria-hidden="true"></span>
   </button>
   <div class="resume text-center">
@@ -20,8 +21,12 @@
     </div>
   </div>
   <div class="footer">
-    <a href="#" class="reset btn"><span class="glyphicon glyphicon-remove-sign logo-small-red" aria-hidden="true"></span></a>
-    <a href="#" class="continue btn"><span class="glyphicon glyphicon-ok-sign logo-small" aria-hidden="true"></span></a>
+    <button class="reset btn">
+      <span class="glyphicon glyphicon-remove-sign logo-small-red" aria-hidden="true"></span>
+    </button>
+    <button class="continue btn" data-toggle="modal" data-target="#ctpr-complete-modal">
+      <span class="glyphicon glyphicon-ok-sign logo-small" aria-hidden="true"></span>
+    </button>
   </div>
 </div>
 <div id="profile" class="container-fluid text-center">

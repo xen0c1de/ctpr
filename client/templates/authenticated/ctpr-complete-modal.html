@@ -1,0 +1,59 @@
+<template name="ctprCompleteModal">
+  <div class="modal fade" id="ctpr-complete-modal" tabindex="-1" role="dialog" aria-labelledby="ctpr-complete-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="ctpr-complete">Dernière étape</h4>
+        </div>
+        <form id="ctpr-complete-form">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="emailAddress">Adresse courriel pour vous contacter</label>
+              <input type="email" class="form-control" name="emailAddress">
+              <label for="name">Votre nom</label>
+              <input type="text" class="form-control" name="name">
+              <label for="phone">Votre Téléphone</label>
+              <input type="text" class="form-control" name="phone">
+            </div>
+            <div class="form-group">
+              <ul id="item-list" style="display:none;">
+              </ul>
+              <table id="profile-length">
+                <caption>Longueurs de profilé requise (ex: Pour 3 x 96" écrire 3 dans Qté et 96 dans longueur)</caption>
+                <thead>
+                  <th>
+                    Quantité
+                  </th>
+                  <th>
+                    Longueur
+                  </th>
+                  <th>
+                    <button type="button" class="btn plus-sign">
+                      <span class="glyphicon glyphicon-plus-sign logo-small" aria-hidden="true"></span>
+                    </button>
+                  </th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" class="form-control" name="qty0"></td>
+                    <td><input type="text" class="form-control" name="long0"></td>
+                    <td>
+                      <button type="button" class="btn minus-sign">
+                        <span class="glyphicon glyphicon-minus-sign logo-small-red" aria-hidden="true"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="close" type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-success">Envoyer la demande</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
