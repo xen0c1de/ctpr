@@ -4,14 +4,33 @@ Template.ctprCompleteModal.events({
   'submit form' ( event, template ) {
     event.preventDefault();
 
+    //define email variables
     let email = template.find( "[name='emailAddress']" ).value,
         name  = template.find( "[name='name']" ).value,
         phone = template.find( "[name='phone']" ).value;
 
+    var ctpr = [];
+    var qty_len = [];
+
+    //grab each ctpr composite into an array
+    $( "#item-list li" ).each( function(){
+      var item = $(this).text();
+      ctpr.push( item );
+    });
+
+    //grab each define qty and length defined by user into array
+    for ( let j = 0; j < i; j++ ) {
+      qty_len.push( { qty:template.find( "[name='qty"+j+"']" ).value, len:template.find( "[name='long"+j+"']" ).value } );
+    }
+
+    //prepare to send email and return errors if any occor to report to user
     if ( email && name && phone !== "" ) {
       Meteor.call( "sendRequest", {
         email: email,
-        role: role
+        name: name,
+        phone: phone,
+        ctpr: ctpr,
+        qty_len: qty_len
       }, ( error, response ) => {
         if ( error ) {
           Bert.alert({
@@ -20,12 +39,15 @@ Template.ctprCompleteModal.events({
             style: 'growl-top-right'
           });
         } else {
+          //hide modal
           $( "#send-invitation-modal" ).modal( 'hide' );
           $( '.modal-backdrop' ).hide();
+          //empty componants on modal list
           $( "#item-list" ).empty();
+          //reset qty len counter
           i=0;
           Bert.alert({
-            message: "Invitation envoyé!",
+            message: "Demande envoyé!",
             type: 'success',
             style: 'growl-top-right'
           });
@@ -34,7 +56,7 @@ Template.ctprCompleteModal.events({
     } else {
       Bert.alert({
         hideDelay: 4000,
-        message: "S'il vous plaît entrer un courriel et choissir un rôle.",
+        message: "S'il vous plaît saisir un courriel, nom et # de téléphone.",
         type: 'warning',
         style: 'growl-top-right'
       });

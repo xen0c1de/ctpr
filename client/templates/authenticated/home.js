@@ -53,7 +53,7 @@ Template.home.events({
   'click .cart-show' (event) {
     $(".cart-hide").show();
     $(".cart-show").hide();
-    $(".cart").animate({'width':'25%','height':'40%'}, 300);
+    $(".cart").animate({'width':'25%','height':'50%'}, 300);
     $(".resume").fadeIn(300);
     $(".footer").fadeIn(300);
   },

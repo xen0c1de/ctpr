@@ -36,10 +36,10 @@ caption {
 	font-weight: 400;
 }
 
-
 th, td {
   padding: 5px;
   text-align: left;
+	font-weight: bold;
 }
 
 tr:nth-child(odd) {
@@ -165,7 +165,7 @@ th .btn:hover{
 	right: 2%;
 	background-color: white;
 	width: 25%;
-	height: 40%;
+	height: 50%;
 	z-index: 100;
 	padding: 25px;
 	box-shadow: 5px 0px 40px rgba(0,0,0, .5);
