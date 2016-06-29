@@ -55,6 +55,11 @@ th {
   color: white;
 }
 
+th.notice{
+	color: red;
+	/*background-color: yellow;*/
+}
+
 th .btn:hover{
 	background-color: white;
 }
@@ -89,6 +94,11 @@ th .btn:hover{
 .logo-small-red {
     color: red;
     font-size: 50px;
+}
+
+.logo-tiny-important {
+    color: red;
+    font-size: 20px;
 }
 
 .logo {

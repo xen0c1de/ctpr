@@ -2,25 +2,25 @@
 {{#if isInRole 'admin,manager,user'}}
 {{> ctprCompleteModal}}
 <div class="jumbotron text-left">
-  <h1><span class="glyphicon glyphicon-list-alt"></span> CTPR <small>Profilé sur mesure!</small></h1>
+  <h1><span class="glyphicon glyphicon-list-alt"></span> PRFL <small>Profilé sur mesure!</small></h1>
   <p class="text-block text-left">
-    Le CTPR est une application interactive de O-LED qui vous aide à selectionner les bonnes composantes pour créer des profilés sur mesure. Profilé, lentille, ruban, embout, braquette, transformateur, nous vous aiderons à choisir se dont vous avez de besoin pour le meilleur prix.
+    Le PRFL est une application interactive de O-LED qui vous aide à selectionner les bonnes composantes pour créer des profilés sur mesure. Profilé, lentille, ruban, embout, braquette, transformateur, nous vous aiderons à choisir se dont vous avez de besoin pour le meilleur prix.
   </p>
 </div>
-<div class="cart">
-  <button class="btn cart-hide">
+<div class="cart" style="width:130px;height:120px;">
+  <button class="btn cart-hide" style="display:none;">
     <span class="glyphicon glyphicon-menu-down logo-small" aria-hidden="true"></span>
   </button>
-  <button class="btn cart-show" style="display:none;">
+  <button class="btn cart-show">
     <span class="glyphicon glyphicon-menu-left logo-small" aria-hidden="true"></span>
   </button>
-  <div class="resume text-center">
+  <div class="resume text-center" style="display:none;">
     <h2><u>résumé</u></h2>
     <div class="text-left">
       <ul class="item-list"></ul>
     </div>
   </div>
-  <div class="footer">
+  <div class="footer" style="display:none;">
     <button class="reset btn">
       <span class="glyphicon glyphicon-remove-sign logo-small-red" aria-hidden="true"></span>
     </button>
@@ -45,8 +45,8 @@
         </div>
         <div class="panel-footer">
           <p>{{desc}}</p>
-          {{#each property in properties}}
-            <p>{{property}}</p>
+          {{#each attributes}}
+            <p>{{this}}</p>
           {{/each}}
         </div>
       </div>
@@ -67,8 +67,8 @@
         </div>
         <div class="panel-footer">
           <p>{{desc}}</p>
-          {{#each property in properties}}
-            <p>{{property}}</p>
+          {{#each attributes}}
+            <p>{{this}}</p>
           {{/each}}
         </div>
       </div>
@@ -89,8 +89,8 @@
         </div>
         <div class="panel-footer">
           <p>{{desc}}</p>
-          {{#each property in properties}}
-            <p>{{property}}</p>
+          {{#each attributes}}
+            <p>{{this}}</p>
           {{/each}}
         </div>
       </div>
@@ -111,8 +111,8 @@
         </div>
         <div class="panel-footer">
           <p>{{desc}}</p>
-          {{#each property in properties}}
-            <p>{{property}}</p>
+          {{#each attributes}}
+            <p>{{this}}</p>
           {{/each}}
         </div>
       </div>
@@ -132,19 +132,58 @@
           <table>
             <caption>Caractéristiques</caption>
             <tr>
-              <th>DEL AU MÈTRE</th>
               <th>TENSION D'ENTRÉE</th>
+              <th>TEMPÉRATURE</th>
+              <th>IP</th>
+              <th>DEL AU MÈTRE</th>
+              <th>FLUX LUMINEUX</th>
+              <th>WATT AU MÈTRE</th>
               <th>COUPE</th>
               <th>DIMENSION</th>
               <th>ANGLE DU FAISCEAU</th>
-              <th>TEMPÉRATURE</th>
-              <th>FLUX LUMINEUX</th>
-              <th>WATT AU MÈTRE</th>
-              <th>IP</th>
             </tr>
             <tr>
-              {{#each property in properties}}
-                <td>{{property}}</td>
+              <td>
+                <form>
+                  {{#if onePowerLevel pn}}
+                    {{#each powers}}
+                      <input class="{{../pn}}" type="radio" name="power" value="{{this}}" checked> {{this}}<br>
+                    {{/each}}
+                  {{else}}
+                    {{#each powers}}
+                      <input class="{{../pn}}" type="radio" name="power" value="{{this}}"> {{this}}<br>
+                    {{/each}}
+                  {{/if}}
+                </form>
+              </td>
+              <td>
+                <form>
+                  {{#if oneColor pn}}
+                    {{#each colors}}
+                      <input class="{{../pn}}" type="radio" name="color" value="{{this}}" checked> {{this}}<br>
+                    {{/each}}
+                  {{else}}
+                    {{#each colors}}
+                      <input class="{{../pn}}" type="radio" name="color" value="{{this}}"> {{this}}<br>
+                    {{/each}}
+                  {{/if}}
+                </form>
+              </td>
+              <td>
+                <form>
+                  {{#if oneIp pn}}
+                    {{#each ips}}
+                      <input class="{{../pn}}" type="radio" name="ip" value="{{this}}" checked> {{this}}<br>
+                    {{/each}}
+                  {{else}}
+                    {{#each ips}}
+                      <input class="{{../pn}}" type="radio" name="ip" value="{{this}}"> {{this}}<br>
+                    {{/each}}
+                  {{/if}}
+                </form>
+              </td>
+              {{#each attributes}}
+                <td>{{this}}</td>
               {{/each}}
             </tr>
           </table>

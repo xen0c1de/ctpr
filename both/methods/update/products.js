@@ -4,8 +4,7 @@ Meteor.methods({
       pn: String,
       desc: String,
       category: String,
-      price: Number,
-      properties: [Number]
+      price: Number
     });
 
     try {
