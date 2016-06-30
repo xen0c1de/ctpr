@@ -42,7 +42,7 @@ let products = [
   },
   //lenses
   {
-    pn: 'wo',
+    pn: 'WO',
     desc: 'Lentille blanche opaline',
     category: 'lens',
     price: 10,
@@ -52,7 +52,7 @@ let products = [
     ips: []
   },
   {
-    pn: 'tr',
+    pn: 'TR',
     desc: 'Lentille de diffusion',
     category: 'lens',
     price: 10,
@@ -62,7 +62,7 @@ let products = [
     ips: []
   },
   {
-    pn: 'wf',
+    pn: 'WF',
     desc: 'Lentille blanche givrée',
     category: 'lens',
     price: 10,
@@ -72,7 +72,7 @@ let products = [
     ips: []
   },
   {
-    pn: 'fo',
+    pn: 'FO',
     desc: 'Lentille de focus',
     category: 'lens',
     price: 10,
@@ -82,7 +82,7 @@ let products = [
     ips: []
   },
   {
-    pn: 'cl',
+    pn: 'CL',
     desc: 'Lentille claire',
     category: 'lens',
     price: 10,
@@ -92,7 +92,7 @@ let products = [
     ips: []
   },
   {
-    pn: 'wfr',
+    pn: 'WFR',
     desc: 'Lentille blanche givrée ronde',
     category: 'lens',
     price: 10,
@@ -102,7 +102,7 @@ let products = [
     ips: []
   },
   {
-    pn: 'wor',
+    pn: 'WOR',
     desc: 'Lentille blanche opaline ronde',
     category: 'lens',
     price: 10,
@@ -112,7 +112,7 @@ let products = [
     ips: []
   },
   {
-    pn: 'wfs',
+    pn: 'WFS',
     desc: 'Lentille blanche givrée carrée',
     category: 'lens',
     price: 10,
@@ -122,7 +122,7 @@ let products = [
     ips: []
   },
   {
-    pn: 'wos',
+    pn: 'WOS',
     desc: 'Lentille blanche opaline carrée',
     category: 'lens',
     price: 10,
@@ -132,7 +132,7 @@ let products = [
     ips: []
   },
   //endcaps
-  {
+  /*{
     pn: '0200',
     desc: 'Embout 0200',
     category: 'endcap',
@@ -191,7 +191,7 @@ let products = [
     powers: [],
     colors: [],
     ips: []
-  },
+  },*/
   //brackets
   {
     pn: '2025',
@@ -240,9 +240,9 @@ let products = [
     category: 'strip',
     price: 1,
     attributes: [ "60 DEL AU MÈTRE", "312 LM/M", "4.8 W/M", "CHAQUE 3 DEL", "8MM DE LARGEUR", "120 DEGRÉS" ],
-    powers: ["12V DC", "24V DC" ],
+    powers: ["12VDC", "24VDC" ],
     colors: [ "3000K", "3500K", "4000K" ],
-    ips: [ "22", "65", "68" ]
+    ips: [ "IP22", "IP65", "IP68" ]
   },
   {
     pn: '3528-120',
@@ -250,9 +250,9 @@ let products = [
     category: 'strip',
     price: 1,
     attributes: [ "120 DEL AU MÈTRE", "720 LM/M", "9.6 W/M", "CHAQUE 3 DEL", "9MM DE LARGEUR", "120 DEGRÉS" ],
-    powers: [ "12V DC" ],
+    powers: [ "12VDC" ],
     colors: [ "3000K", "3500K", "4000K" ],
-    ips: [ "22", "65", "68" ]
+    ips: [ "IP22", "IP65", "IP68" ]
   },
   {
     pn: '5050-60-RGB',
@@ -260,9 +260,9 @@ let products = [
     category: 'strip',
     price: 1,
     attributes: [ "60 DEL AU MÈTRE", "1250 LM/M", "14.4 W/M", "CHAQUE 3 DEL (12V) - CHAQUE 6 DEL (24V)", "10MM DE LARGEUR", "120 DEGRÉS" ],
-    powers: [ "12V DC", "24V DC" ],
-    colors: [ "RGB = Rouge, vert et bleu" ],
-    ips: [ "22", "65", "68" ]
+    powers: [ "12VDC", "24VDC" ],
+    colors: [ "RGB" ],
+    ips: [ "IP22", "IP65", "IP68" ]
   },
   {
     pn: '5050-72',
@@ -270,9 +270,9 @@ let products = [
     category: 'strip',
     price: 1,
     attributes: [ "72 DEL AU MÈTRE", "1602 LM/M", "17.8 W/M", "CHAQUE DEL", "10MM DE LARGEUR", "120 DEGRÉS" ],
-    powers: [ "12V DC" ],
+    powers: [ "12VDC" ],
     colors: [ "3000K", "3500K", "4000K" ],
-    ips: [ "22", "68" ]
+    ips: [ "IP22", "IP68" ]
   },
   {
     pn: '5630-60',
@@ -280,9 +280,9 @@ let products = [
     category: 'strip',
     price: 1,
     attributes: [ "60 DEL AU MÈTRE", "1750 LM/M", "21.7 W/M", "CHAQUE 6 DEL", "14MM DE LARGEUR", "120 DEGRÉS" ],
-    powers: [ "24V DC" ],
+    powers: [ "24VDC" ],
     colors: [ "3000K", "3500K", "4000K" ],
-    ips: [ "43", "67" ]
+    ips: [ "IP43", "IP67" ]
   }
 ];
 

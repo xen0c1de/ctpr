@@ -19,6 +19,10 @@
     <div class="text-left">
       <ul class="item-list"></ul>
     </div>
+    <div class="text-left">
+      <b>Produit selectionné:</b><br>
+      <span class="product-code">OLED-PRFL-</span><span class="profile-code"></span><span class="lens-code"></span><span class="endcap-code"></span><span class="bracket-code"></span><span class="strip-code"></span>
+    </div>
   </div>
   <div class="footer" style="display:none;">
     <button class="reset btn">
@@ -74,24 +78,34 @@
       </div>
     </div>
     {{/each}}
+    <div class="col-sm-2">
+      <div id="NOL" class="panel panel-default text-center lens">
+        <div class="panel-heading">
+          <h1>Sans lentille</h1>
+        </div>
+        <div class="panel-body thumbnail">
+          <img src="NOL.png" alt="NOL"/>
+        </div>
+        <div class="panel-footer">
+          <p></p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div id="endcap" class="container-fluid text-center">
 	<div class="row content">
-    {{#each endcaps}}
     <div class="col-sm-2">
-      <div id="{{pn}}" class="panel panel-default text-center endcap">
+      <div id="NOE" class="panel panel-default text-center endcap">
         <div class="panel-heading">
-          <h1>{{pn}}</h1>
+          <h1>Sans embout</h1>
         </div>
         <div class="panel-body thumbnail">
-          <img src="{{pn}}.jpg" alt="{{pn}}"/>
+          <img src="NOE.jpg" alt="NOE"/>
         </div>
         <div class="panel-footer">
-          <p>{{desc}}</p>
-          {{#each attributes}}
-            <p>{{this}}</p>
-          {{/each}}
+          <p>Si installation non-apparante</p>
+          <p>Si sans lentille</p>
         </div>
       </div>
     </div>
