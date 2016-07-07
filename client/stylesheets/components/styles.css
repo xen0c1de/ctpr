@@ -208,34 +208,10 @@ th .btn:hover{
 	box-shadow: 5px 0px 40px rgba(0,0,0, .5);
 }
 
-.greyout_p {
+.greyout {
     opacity: 0.3;
     filter: alpha(opacity=30); /* msie */
-    background-color: #000;
-}
-
-.greyout_s {
-    opacity: 0.3;
-    filter: alpha(opacity=30); /* msie */
-    background-color: #000;
-}
-
-.lens_grey {
-    opacity: 0.3;
-    filter: alpha(opacity=30); /* msie */
-    background-color: #000;
-}
-
-.endcap_grey {
-    opacity: 0.3;
-    filter: alpha(opacity=30); /* msie */
-    background-color: #000;
-}
-
-.bracket_grey {
-    opacity: 0.3;
-    filter: alpha(opacity=30); /* msie */
-    background-color: #000;
+    /*background-color: #white;*/
 }
 
 footer .glyphicon {

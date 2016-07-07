@@ -132,7 +132,7 @@ let products = [
     ips: []
   },
   //endcaps
-  /*{
+  {
     pn: '0200',
     desc: 'Embout 0200',
     category: 'endcap',
@@ -191,7 +191,7 @@ let products = [
     powers: [],
     colors: [],
     ips: []
-  },*/
+  },
   //brackets
   {
     pn: '2025',

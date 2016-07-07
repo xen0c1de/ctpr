@@ -40,7 +40,7 @@ ecmascript-runtime@0.2.11_1
 ejson@1.0.12
 email@1.0.14_1
 fortawesome:fontawesome@4.5.0
-fourseven:scss@3.8.0
+fourseven:scss@3.8.0_1
 geojson-utils@1.0.9
 hot-code-push@1.0.4
 html-tools@1.0.10
@@ -68,10 +68,10 @@ minifier-js@1.1.12_1
 minimongo@1.0.17
 modules@0.6.4
 modules-runtime@0.6.4_1
-momentjs:moment@2.13.1
+momentjs:moment@2.14.1
 mongo@1.1.9_1
 mongo-id@1.0.5
-npm-bcrypt@0.8.6_1
+npm-bcrypt@0.8.7
 npm-container@1.2.0
 npm-mongo@1.4.44_1
 observe-sequence@1.0.12
