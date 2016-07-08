@@ -174,11 +174,15 @@ th .btn:hover{
 	top: 8%;
 	right: 2%;
 	background-color: white;
-	width: 25%;
-	height: 50%;
 	z-index: 100;
 	padding: 25px;
 	box-shadow: 5px 0px 40px rgba(0,0,0, .5);
+	overflow: hidden;
+}
+
+.resume {
+	position: relative;
+	width: 75%;
 }
 
 .cart button {
@@ -188,7 +192,7 @@ th .btn:hover{
 
 .cart .footer{
 	border-top: 2px solid #8CC63E;
-	position:absolute;
+	position: absolute;
 	bottom: 0;
 	left: 0;
 	width: 100%;

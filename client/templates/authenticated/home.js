@@ -74,7 +74,7 @@ Template.home.helpers({
       return strips;
     }
   },
-  onePowerLevel: function( pn ) {
+  onePower: function( pn ) {
     let strip = Products.findOne({ pn: pn });
     return strip.powers.length == 1
   },
@@ -95,21 +95,28 @@ Template.home.events({
     $(".cart-hide").hide();
     $(".resume").fadeOut(300);
     $(".footer").fadeOut(300);
-    $(".cart").animate({'width':'130px','height':'120px'}, 300);
+    $(".cart").animate({'width':'130px','height':'120px','min-height':'0'}, 300);
   },
   //shows the cart on click
   'click .cart-show' (event) {
     $(".cart-hide").show();
     $(".cart-show").hide();
-    $(".cart").animate({'width':'25%','height':'50%'}, 300);
+    //TODO: NEED TO PUT HEIGHT TO AUTO AFTER SHOWING AND AT START
+    $(".cart").animate({'width':'25%','min-height':'50%','height':'auto'}, 300);
     $(".resume").fadeIn(300);
     $(".footer").fadeIn(300);
   },
   //clicking the reset button resets everything
   'click .reset' () {
+    //empty cart
     $(".item-list").empty();
+    //remove all selection
     $(".selected").removeClass("selected");
+    //ungreyout all items
     $(".greyout").removeClass("greyout");
+    //reset options checked on radios
+    $( "input[type=radio]:checked" ).prop('checked', false);
+    //empty complete code section
     $(".profile-code").empty();
     $(".lens-code").empty();
     $(".endcap-code").empty();
@@ -118,12 +125,17 @@ Template.home.events({
   },
   //clicking the continue button takes you to the next step
   'click .continue' (event) {
+    //get the selected strip id to check all options are selected
+    var strip_id = $(".strip.selected")[0].id;
     //check that all items have been selected
     if ( $(".profile").hasClass("selected") &&
           $(".lens").hasClass("selected") &&
           $(".endcap").hasClass("selected") &&
           $(".bracket").hasClass("selected") &&
-          $(".strip").hasClass("selected") ) {
+          $(".strip").hasClass("selected") &&
+          $("input[type=radio][name=power]."+strip_id+":checked") == 1 &&
+          $("input[type=radio][name=color]."+strip_id+":checked").length == 1 &&
+          $("input[type=radio][name=ip]."+strip_id+":checked").length == 1 ) {
       //grab all items from cart and copy them to modal window cart
       $( ".item-list li" ).each( function(){
         let item = $(this).text();
@@ -312,7 +324,16 @@ Template.home.events({
     if( !$("#"+strip_id).hasClass("selected") ) {
       //select the clicked strip_id
       select(strip_id);
-      //TODO:if strip has single radio options, select them.
+      //if strip has single radio options, select them.
+      if( $('input[type=radio][name="power"].'+strip_id ).length === 1 ) {
+        $( 'input[type=radio][name="power"].'+strip_id ).prop('checked', true).trigger("change");
+      }
+      if( $( 'input[type=radio][name="color"].'+strip_id ).length === 1 ) {
+        $( 'input[type=radio][name="color"].'+strip_id ).prop('checked', true).trigger("change");
+      }
+      if( $( 'input[type=radio][name="ip"].'+strip_id ).length === 1 ) {
+        $( 'input[type=radio][name="ip"].'+strip_id ).prop('checked', true).trigger("change");
+      }
     }
   },
   //when a radio change is triggered

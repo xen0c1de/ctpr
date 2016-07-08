@@ -255,8 +255,8 @@ let products = [
     ips: [ "IP22", "IP65", "IP68" ]
   },
   {
-    pn: '5050-60-RGB',
-    desc: 'RUBAN 5050-60-RGB',
+    pn: '5050-60',
+    desc: 'RUBAN 5050-60',
     category: 'strip',
     price: 1,
     attributes: [ "60 DEL AU MÈTRE", "1250 LM/M", "14.4 W/M", "CHAQUE 3 DEL (12V) - CHAQUE 6 DEL (24V)", "10MM DE LARGEUR", "120 DEGRÉS" ],
