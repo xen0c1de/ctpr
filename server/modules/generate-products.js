@@ -131,6 +131,16 @@ let products = [
     colors: [],
     ips: []
   },
+  {
+    pn: 'NOL',
+    desc: 'Sans lentille',
+    category: 'lens',
+    price: 0,
+    attributes: [ "Automatiquement sans embout" ],
+    powers: [],
+    colors: [],
+    ips: []
+  },
   //endcaps
   {
     pn: '0200',
@@ -188,6 +198,16 @@ let products = [
     category: 'endcap',
     price: 1,
     attributes: [ "Embout pour profilé série 2020", "Lentille ronde seulement" ],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: 'NOE',
+    desc: 'Sans embouts',
+    category: 'endcap',
+    price: 0,
+    attributes: [ "Si installation non visible" ],
     powers: [],
     colors: [],
     ips: []

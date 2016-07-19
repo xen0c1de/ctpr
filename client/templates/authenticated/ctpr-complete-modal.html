@@ -16,18 +16,17 @@
               <label for="phone">Votre Téléphone</label>
               <input type="text" class="form-control" name="phone">
             </div>
+            <ul id="item-list" style="display:none;">
+            </ul>
+            <span id="stripId" style="display:none;"></span>
             <div class="form-group">
-              <ul id="item-list" style="display:none;">
-              </ul>
-              <table id="profile-length">
-                <caption>Longueurs de profilé requise (ex: Pour 3 x 96" écrire 3 dans Qté et 96 dans longueur)</caption>
+              <table class="prfl-len">
+                <caption>Longueurs de profilé requise (ex: Pour 3 x 96" écrire 3 dans qté et 96 dans longueur)</caption>
                 <thead>
-                  <th>
-                    Quantité
-                  </th>
-                  <th>
-                    Longueur
-                  </th>
+                  <th>Groupe</th>
+                  <th>Quantité</th>
+                  <th>Longueur</th>
+                  <th>Gradable</th>
                   <th>
                     <button type="button" class="btn plus-sign">
                       <span class="glyphicon glyphicon-plus-sign logo-small" aria-hidden="true"></span>
@@ -35,9 +34,30 @@
                   </th>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><input type="text" class="form-control" name="qty0"></td>
-                    <td><input type="text" class="form-control" name="long0"></td>
+                  <tr id="0">
+                    <td>
+                      <select id="group0" name="group">
+                        <option value="ind" selected="selected">Individuel</option>
+                        <option value="a">A</option>
+                        <option value="b">B</option>
+                        <option value="c">C</option>
+                        <option value="d">D</option>
+                        <option value="e">E</option>
+                        <option value="f">F</option>
+                        <option value="g">G</option>
+                        <option value="h">H</option>
+                        <option value="i">I</option>
+                        <option value="j">J</option>
+                        <option value="k">K</option>
+                        <option value="l">L</option>
+                        <option value="m">M</option>
+                        <option value="n">N</option>
+                        <option value="o">O</option>
+                      </select>
+                    </td>
+                    <td><input id="qty0" type="text" class="form-control" name="qty"></td>
+                    <td><input id="long0" type="text" class="form-control" name="long"></td>
+                    <td><input id="dim0" type="checkbox" class="form-control" name="dim" value="dim"></td>
                     <td>
                       <button type="button" class="btn minus-sign">
                         <span class="glyphicon glyphicon-minus-sign logo-small-red" aria-hidden="true"></span>
@@ -46,6 +66,19 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-info calculate">
+                Calculer
+              </button>
+              <div class="drivers">
+                <p>Transformateurs requis : <span class="drivers-count">0</span></p>
+                <ul class="drivers-list">
+                </ul>
+              </div>
+              <div class="price">
+                <p>Prix budget : <span class="price-value"></span></p>
+              </div>
             </div>
           </div>
           <div class="modal-footer">

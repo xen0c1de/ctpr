@@ -1,11 +1,11 @@
-let select = function( pn ) {
-  //go fetch product in DB
-  var product = Products.find({ pn: pn }).fetch()[0];
-  var category = product.category;
+/*
+Unselects the selected product in passed category if there was one.
+Checks for special case in strip products
+*/
+let unselect = function( category ) {
   //if a product of same category was already selected
   if( $("."+category).hasClass("selected") ) {
     var old_pn = $("."+category+".selected")[0].id;
-    console.log(old_pn);
     //remove other selection
     $("."+category).removeClass("selected");
     //remove from sidebar
@@ -20,6 +20,19 @@ let select = function( pn ) {
       $( "input[type=radio]."+old_pn+":checked" ).prop('checked', false);
     }
   }
+}
+
+/*
+Selects a clicked product by highlighting it. In the case of profile and strips
+it also grey's out the other items.
+*/
+let select = function( pn ) {
+  //go fetch product in DB
+  var product = Products.find({ pn: pn }).fetch()[0];
+      category = product.category;
+
+  //unselect item selected in category
+  unselect(category);
   //select the clicked item
   $("#"+pn).addClass("selected");
   //special greyout of other products listed if profile or strip
@@ -89,20 +102,20 @@ Template.home.helpers({
 });
 
 Template.home.events({
-  //hides the "cart" to better see page when mouse leaves the cart area
+  //hides the "cart" to better see page
   'click .cart-hide' (event) {
     $(".cart-show:hidden").show();
     $(".cart-hide").hide();
     $(".resume").fadeOut(300);
     $(".footer").fadeOut(300);
-    $(".cart").animate({'width':'130px','height':'120px','min-height':'0'}, 300);
+    $(".cart").animate({'width':'130px','height':'120px'}, 300);
   },
   //shows the cart on click
   'click .cart-show' (event) {
     $(".cart-hide").show();
     $(".cart-show").hide();
-    //TODO: NEED TO PUT HEIGHT TO AUTO AFTER SHOWING AND AT START
-    $(".cart").animate({'width':'25%','min-height':'50%','height':'auto'}, 300);
+    $(".cart").css('width','25%');
+    $(".cart").css('height','auto');
     $(".resume").fadeIn(300);
     $(".footer").fadeIn(300);
   },
@@ -133,7 +146,7 @@ Template.home.events({
           $(".endcap").hasClass("selected") &&
           $(".bracket").hasClass("selected") &&
           $(".strip").hasClass("selected") &&
-          $("input[type=radio][name=power]."+strip_id+":checked") == 1 &&
+          $("input[type=radio][name=power]."+strip_id+":checked").length == 1 &&
           $("input[type=radio][name=color]."+strip_id+":checked").length == 1 &&
           $("input[type=radio][name=ip]."+strip_id+":checked").length == 1 ) {
       //grab all items from cart and copy them to modal window cart
@@ -141,6 +154,8 @@ Template.home.events({
         let item = $(this).text();
         $( "#item-list" ).append( "<li>"+item+"</li>" );
       });
+      //save strip id for math
+      $("#stripId").append(strip_id);
     }
     else {
       //else don't open modal window and show message
@@ -251,6 +266,10 @@ Template.home.events({
           select("NOE");
         }
         else {
+          //if NOE was selected unselect it
+          if( $("#NOE").hasClass("selected") ) {
+            unselect("endcap");
+          }
           //depending on which profile was selected
           switch (profile_id) {
             case "1011":

@@ -183,6 +183,7 @@ th .btn:hover{
 .resume {
 	position: relative;
 	width: 75%;
+	padding-bottom: 75px;
 }
 
 .cart button {
