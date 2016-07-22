@@ -235,10 +235,9 @@ Template.home.events({
           $("#FO").addClass("greyout");
           $("#CL").addClass("greyout");
           //greyout non-compatible brackets
-          $(".bracket").addClass("bracket_grey");
-          $(".bracket").removeClass("bracket");
-          $("#2175").removeClass("bracket_grey");
-          $("#2175").addClass("bracket");
+          $("#2025").addClass("greyout");
+          $("#2050").addClass("greyout");
+          $("#2075").addClass("greyout");
           break;
         default:
           break;

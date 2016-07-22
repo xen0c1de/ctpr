@@ -6,8 +6,8 @@ Template.ctprCompleteModal.events({
     var email = template.find( "[name='emailAddress']" ).value,
         name  = template.find( "[name='name']" ).value,
         phone = template.find( "[name='phone']" ).value,
-        ctpr,
-        qty_len,
+        ctpr = [],
+        qty_len = [],
         //count the number of row in the current table
         tableRowIds = $(".prfl-len tr").length;
 
@@ -77,44 +77,32 @@ Template.ctprCompleteModal.events({
       {driver:"100W dim", qty:0},
       {driver:"200W dim", qty:0}
       ],
-      //count the number of row in the current table
-      tableRowIds = $(".prfl-len tr").length;
+      pn = $("#stripId").text(),
+      counter = 0,
+      rowArray = [];
 
-    //loop through rows
-    for( let i=0;i<tableRowIds;i++ ) {
-      var len = $("#long"+i).val(),
-          qty = $("#qty"+i).val(),
-          pn = $("#stripId").text(),
-          dimmable = $("#dim"+i).prop("checked"),
-          indLenWattArray;
+    //loop over each table row to exctract information
+    $.each($(".prfl-len tr"), function() {
+      //get all properties from table
+      var rowId = $(this)[0].id,
+          len = $("#long"+rowId).val(),
+          qty = $("#qty"+rowId).val(),
+          dimmable = $("#dim"+rowId).prop("checked"),
+          group = $("#group"+rowId+" option:selected").val();
 
-      //check len and qty are numbers
+      //check that we have numbers or else exit loop
       if( $.isNumeric(len) && $.isNumeric(qty) ){
-        //if it's the individual groups
-        if( $("#group"+i+" option:selected").val() == "ind" ){
-          //call method to calculate power consumption of lenghts entered
-          Meteor.call( "CalculatePowerConsumption", { len: len, qty: qty, pn: pn }, ( error, response ) => {
-            if ( error ) {
-              Bert.alert({ message: error.reason, type: 'danger', style: 'growl-top-right' });
-            } else {
-              //grab the returned information
-              indLenWattArray = response;
-            }
-          });
-          //call method to calculate the drivers needed
-          Meteor.call( "CalculateDrivers", { powerArray: indLenWattArray, dimmable: dimmable, drivers: drivers }, ( error, response ) => {
-            if ( error ) {
-              Bert.alert({ message: error.reason, type: 'danger', style: 'growl-top-right' });
-            } else {
-              //grab the returned information
-              drivers = response;
-            }
-          });
-        }
-        //this means it's a grouped item
-        else {
-
-        }
+        //if we have numerics, cast them to numbers for math purposes
+        len = Number(len);
+        qty = Number(qty);
+        console.log(dimmable);
+        //add new entry in array with table values
+        rowArray.push({
+          len:len,
+          qty:qty,
+          dimmable:dimmable,
+          group:group
+        });
       }
       else {
         Bert.alert({
@@ -124,19 +112,33 @@ Template.ctprCompleteModal.events({
           style: 'growl-top-right'
         });
       }
-    }
-    //empty placeholder for drivers
-    $(".drivers-count").empty();
-    $(".drivers-list").empty();
-    var counter = 0;
-    //loop over drivers to list them if their qty is greater than 0
-    $.each(drivers, function() {
-      if( $(this).qty != 0 ){
-        $(".drivers-list").append('<li>driver : '+$(this).driver+' qté : '+$(this).qty+'</li>');
-        counter += $(this).qty;
+    });
+
+    //call method to calculate needed drivers
+    Meteor.call( 'calculateDrivers', {
+      rowArray:rowArray,
+      pn: pn,
+      drivers: drivers
+    }, ( error, response ) => {
+      if ( error ) {
+        Bert.alert({ message: error.reason, type: 'danger', style: 'growl-top-right' });
+      } else {
+        //grab the returned information
+        drivers = response;
+        //empty placeholder for drivers
+        $(".drivers-list").empty();
+        $(".drivers-count").empty();
+        //loop over drivers to list them if their qty is greater than 0
+        $.each(drivers, function() {
+          let qty = $(this)[0].qty;
+          if( qty != 0 && $.isNumeric(qty) ){
+            $(".drivers-list").append('<li>'+qty+' x '+$(this)[0].driver+'</li>');
+            counter += qty;
+          }
+        });
+        $(".drivers-count").append(counter);
       }
     });
-    $(".drivers-count").append(counter);
   },
   'change select[name=group]' (event) {
         //find which row we're working on
@@ -213,5 +215,9 @@ Template.ctprCompleteModal.events({
     $( ".prfl-len tbody" ).empty();
     //append the new line to it
     $( ".prfl-len tbody" ).append( newRowContent );
+    //empty placeholder for drivers
+    $(".drivers-list").empty();
+    $(".drivers-count").empty().append("0");
+
   }
 });
