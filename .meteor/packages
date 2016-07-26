@@ -3,14 +3,14 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-accounts-password
-accounts-base
-jquery
-check
-audit-argument-checks
+accounts-password@1.2.12
+accounts-base@1.2.9
+jquery@1.11.9
+check@1.2.3
+audit-argument-checks@1.0.7
 themeteorchef:jquery-validation
 twbs:bootstrap
-browser-policy
+browser-policy@1.0.9
 meteorhacks:npm
 
 
@@ -18,25 +18,25 @@ meteorhacks:ssr
 
 
 npm-container
-ecmascript
+ecmascript@0.5.7
 digilord:faker
 kadira:flow-router
 kadira:blaze-layout
 meteorhacks:fast-render
-meteor-base
-session
-templating
+meteor-base@1.0.4
+session@1.1.6
+templating@1.2.13
 fourseven:scss
-reactive-var
-reactive-dict
+reactive-var@1.0.10
+reactive-dict@1.1.8
 aldeed:collection2
-tracker
+tracker@1.1.0
 alanning:roles
-random
+random@1.0.10
 momentjs:moment
-email
-standard-minifier-css
-standard-minifier-js
+email@1.1.16
+standard-minifier-css@1.1.8
+standard-minifier-js@1.1.8
 stevezhu:lodash
 themeteorchef:bert
 dburles:google-maps

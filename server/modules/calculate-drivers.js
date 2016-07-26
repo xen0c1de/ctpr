@@ -3,9 +3,18 @@ _ = lodash;
 let calculateDrivers = ( options ) => {
   var totalConsumption = 0,
       totalLenght = 0,
-      drivers = options.drivers;
+      drivers = options.drivers,
+      rowArray = options.rowArray,
+      pn = options.pn;
 
-  var lenWattArray = _createPowerArray( options.rowArray, options.pn );
+  //TODO: refactor whole loop to include driver calculations
+  // for each rowArray -> createpowerarray -> if ind, calculate drivers immediatly
+  // if group, store until we've exctrated all of that group -> calculate drivers for entire group
+
+  //loop through array of rows
+  for( let j=0;j<rowArray.length;j++ ) {
+    var lenWattArray = _createPowerArray( rowArray[j].len, rowArray[j].qty, rowArray[j].dimmable, pn );
+  }
 
   //loop through array of powerConsumption
   for( let j=0;j<lenWattArray.length;j++ ) {
@@ -39,35 +48,25 @@ let calculateDrivers = ( options ) => {
 creates the power consumption array to fetch the right drivers
 for the qty and size in the input.
 */
-let _createPowerArray = ( rowArray, pn ) => {
+let _createPowerArray = ( len, qty, dimmable, pn ) => {
   //array for lenght and watt value for IND group
   var lenWattArray = [],
       //get the watt per meter from the database removing excess text
       wattMeter = Number(Products.findOne({pn:pn}).attributes[2].replace(/\D+$/g, ""));
 
-  //loop ever each row in array
-  for( let i=0;i<rowArray.length;i++ ){
-    let len = rowArray[i].len,
-        qty = rowArray[i].qty,
-        dimmable = rowArray[i].dimmable,
-        group = rowArray[i].group;
+  //split the lengths into max and/or possible cuts
+  lenWattArray = _splitLengths( len, qty, dimmable, wattMeter, lenWattArray );
 
-    if( group === "ind" ){
-      //split the lengths into max and/or possible cuts
-      lenWattArray = _splitLengthsForIndGroup( len, qty, dimmable, wattMeter, lenWattArray );
-    }
-    else {
-      //split the lengths into max and/or possible cuts
-      lenWattArray = _splitLengthsForOtherGroups( len, qty, dimmable, wattMeter, lenWattArray );
-    }
-  }
   //return the powerArray for all values for driver selection
   return lenWattArray;
 };
 
 /*
+Splits the lengths of the fixtures to manufacturing standards of 10' max
+and calculates the powerConsumption of each split length for use in finding the
+right driver.
 */
-let _splitLengthsForIndGroup = ( len, qty, dimmable, wattMeter, lenWattArray ) => {
+let _splitLengths = ( len, qty, dimmable, wattMeter, lenWattArray ) => {
   //while the len is greater than 20 feet (240in)
   while( len >= 240 ){
     //insert a new object with len of 10 feet (120in) and the watt per meter value for that lenght
@@ -93,13 +92,6 @@ let _splitLengthsForIndGroup = ( len, qty, dimmable, wattMeter, lenWattArray ) =
   //return array for this lenght
   return lenWattArray;
 };
-
-/*
-
-let _splitLengthsForOtherGroups = ( len, qty, dimmable, wattMeter, lenWattArray ) => ­{
-  //return array for this lenght
-  return lenWattArray;
-};*/
 
 /*
 Select the right driver based on the watt consumption provided
