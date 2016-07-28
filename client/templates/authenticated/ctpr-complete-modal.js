@@ -1,3 +1,36 @@
+Template.ctprCompleteModal.onRendered( function() {
+  $( "#ctpr-complete-form" ).validate({
+    rules: {
+      emailAddress: {
+        required: true,
+        email: true
+      },
+      qty: {
+        required: true
+      },
+      long: {
+        required: true,
+        min: 12
+      }
+    },
+    messages: {
+      emailAddress: {
+        required: "Le courriel est requis!"
+      },
+      qty: {
+        required: "Vous devez entrer une quantité!"
+      },
+      long: {
+        required: "Vous devez entrer une longueur!",
+        min: "Les fixtures doivent être au moins 12 pouces de longueur!"
+      }
+    },
+    errorPlacement: function(error, element) {
+      error.appendTo( $(".error-messages") );
+    }
+  });
+});
+
 Template.ctprCompleteModal.events({
   'submit form' ( event, template ) {
     event.preventDefault();
@@ -45,8 +78,9 @@ Template.ctprCompleteModal.events({
           $( "#send-invitation-modal" ).modal( 'hide' );
           //empty componants on modal list
           $( "#item-list" ).empty();
-          //reset qty len counter
-          tableRowIds=1;
+          //clean strip selected
+          $("#stripId").empty();
+          //send out message
           Bert.alert({
             message: "Demande envoyé!",
             type: 'success',
@@ -95,7 +129,6 @@ Template.ctprCompleteModal.events({
         //if we have numerics, cast them to numbers for math purposes
         len = Number(len);
         qty = Number(qty);
-        console.log(dimmable);
         //add new entry in array with table values
         rowArray.push({
           len:len,
@@ -218,6 +251,7 @@ Template.ctprCompleteModal.events({
     //empty placeholder for drivers
     $(".drivers-list").empty();
     $(".drivers-count").empty().append("0");
-
+    //empty strip id placeholder
+    $("#stripId").empty();
   }
 });
