@@ -4,12 +4,14 @@ _ = lodash;
 Calculates the drivers needed to power all the fixtures described in the
 rowArray by spliting the lengths to manufacturing standards and calculating
 their power consumption depending on the selected strip.
+Also calculates the budget price with the drivers calulation information.
 */
-let calculateDrivers = ( options ) => {
+let calculatePRFL = ( options ) => {
   var drivers = options.drivers,
       rowArray = options.rowArray,
       pn = options.pn,
-      groups = [];
+      groups = [],
+      individuals = [];
 
   //loop through array of rows
   for( let j=0;j<rowArray.length;j++ ) {
@@ -18,6 +20,8 @@ let calculateDrivers = ( options ) => {
 
     //if this is the individual group we calculate the drivers immediatly.
     if ( rowArray[j].group === "ind" ){
+      //store the individual split for email
+      individuals.push( {group: "ind", lenWattArray: lenWattArray} );
       //update the drivers array with the required drivers
       drivers = _updateDriversArray( lenWattArray, drivers );
     }
@@ -61,7 +65,7 @@ let calculateDrivers = ( options ) => {
   }
 
   //return complete updated driver list
-  return drivers;
+  return {drivers: drivers, groups: results, individuals: individuals};
 };
 
 /*
@@ -190,4 +194,4 @@ let _selectDriver = ( powerConsumption, dimmable ) => {
   }
 };
 
-Modules.server.calculateDrivers = calculateDrivers;
+Modules.server.calculatePRFL = calculatePRFL;

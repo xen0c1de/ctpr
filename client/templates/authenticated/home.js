@@ -156,6 +156,14 @@ Template.home.events({
       });
       //save strip id for math
       $("#stripId").append(strip_id);
+      //save the product code for the email
+      $("#codeId").append(
+        $(".profile-code").text() +
+        $(".lens-code").text() +
+        $(".endcap-code").text() +
+        $(".bracket-code").text() +
+        $(".strip-code").text()
+      );
     }
     else {
       //else don't open modal window and show message

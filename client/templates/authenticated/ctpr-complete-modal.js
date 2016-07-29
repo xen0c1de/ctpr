@@ -1,3 +1,8 @@
+Template.ctprCompleteModal.onCreated( function() {
+  //init a ReactiveDict to store data calculated but waiting for submission
+  this.state = new ReactiveDict();
+});
+
 Template.ctprCompleteModal.onRendered( function() {
   $( "#ctpr-complete-form" ).validate({
     rules: {
@@ -6,10 +11,12 @@ Template.ctprCompleteModal.onRendered( function() {
         email: true
       },
       qty: {
-        required: true
+        required: true,
+        number: true
       },
       long: {
         required: true,
+        number: true,
         min: 12
       }
     },
@@ -18,10 +25,12 @@ Template.ctprCompleteModal.onRendered( function() {
         required: "Le courriel est requis!"
       },
       qty: {
-        required: "Vous devez entrer une quantité!"
+        required: "Vous devez entrer une quantité!",
+        number: "Les quantités doivent être numériques!"
       },
       long: {
         required: "Vous devez entrer une longueur!",
+        number: "Les longueurs doivent être numériques!",
         min: "Les fixtures doivent être au moins 12 pouces de longueur!"
       }
     },
@@ -40,23 +49,16 @@ Template.ctprCompleteModal.events({
         name  = template.find( "[name='name']" ).value,
         phone = template.find( "[name='phone']" ).value,
         ctpr = [],
-        qty_len = [],
-        //count the number of row in the current table
-        tableRowIds = $(".prfl-len tr").length;
+        drivers = template.state.get('drivers'),
+        groups = template.state.get('groups'),
+        individuals = template.state.get('individuals'),
+        rowArray = template.state.get('rowArray');
 
     //grab each ctpr composite into an array
     $( "#item-list li" ).each( function(){
       var item = $(this).text();
       ctpr.push( item );
     });
-
-    //grab each define qty and length defined by user into array
-    for ( let j = 0; j < tableRowIds; j++ ) {
-      //check that this row was not deleted first
-      if( !(template.find( "[name='qty"+j+"']" ) === null) ){
-        qty_len.push( { qty:template.find( "[name='qty"+j+"']" ).value, len:template.find( "[name='long"+j+"']" ).value } );
-      }
-    }
 
     //prepare to send email and return errors if any occor to report to user
     if ( email && name && phone !== "" ) {
@@ -65,7 +67,11 @@ Template.ctprCompleteModal.events({
         name: name,
         phone: phone,
         ctpr: ctpr,
-        qty_len: qty_len
+        code: $("#codeId").text(),
+        drivers: drivers,
+        groups: groups,
+        individuals: individuals,
+        rowArray: rowArray
       }, ( error, response ) => {
         if ( error ) {
           Bert.alert({
@@ -80,6 +86,22 @@ Template.ctprCompleteModal.events({
           $( "#item-list" ).empty();
           //clean strip selected
           $("#stripId").empty();
+          //clean code emplacement
+          $("#codeId").empty();
+          //empty out ReactiveDicts
+          template.state.set('drivers', []);
+          template.state.set('groups', []);
+          template.state.set('individuals', []);
+          template.state.set('rowArray', []);
+          //just create the first row to remplace the current table with
+          let newRowContent = '<tr id="0"><td><select id="group0" name="group"><option value="ind" selected="selected">Individuel</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option><option value="i">I</option><option value="j">J</option><option value="k">K</option><option value="l">L</option><option value="m">M</option><option value="n">N</option><option value="o">O</option></select></td><td><input id="qty0" type="text" class="form-control" name="qty"></td><td><input id="long0" type="text" class="form-control" name="long"></td><td><input id="dim0" type="checkbox" class="form-control" name="dim" value="dim"></td><td><button type="button" class="btn minus-sign"><span class="glyphicon glyphicon-minus-sign logo-small-red" aria-hidden="true"></span></button></td></tr>';
+          //empty the current table
+          $( ".prfl-len tbody" ).empty();
+          //append the new line to it
+          $( ".prfl-len tbody" ).append( newRowContent );
+          //empty placeholder for drivers
+          $(".drivers-list").empty();
+          $(".drivers-count").empty().append("0");
           //send out message
           Bert.alert({
             message: "Demande envoyé!",
@@ -113,7 +135,9 @@ Template.ctprCompleteModal.events({
       ],
       pn = $("#stripId").text(),
       counter = 0,
-      rowArray = [];
+      rowArray = [],
+      groups = [],
+      individuals = [];
 
     //loop over each table row to exctract information
     $.each($(".prfl-len tr"), function() {
@@ -129,26 +153,41 @@ Template.ctprCompleteModal.events({
         //if we have numerics, cast them to numbers for math purposes
         len = Number(len);
         qty = Number(qty);
-        //add new entry in array with table values
-        rowArray.push({
-          len:len,
-          qty:qty,
-          dimmable:dimmable,
-          group:group
-        });
+
+        if(len >= 12) {
+          //add new entry in array with table values
+          rowArray.push({
+            len:len,
+            qty:qty,
+            dimmable:dimmable,
+            group:group
+          });
+        }
+        else {
+          Bert.alert({
+            hideDelay: 4000,
+            message: "Longueur doit être supérieur à 12 pouces.",
+            type: 'warning',
+            style: 'growl-top-right'
+          });
+        }
       }
       else {
         Bert.alert({
           hideDelay: 4000,
-          message: "Longueur et Quantité doivent être numérique",
+          message: "Longueur et Quantité doivent être numérique.",
           type: 'warning',
           style: 'growl-top-right'
         });
       }
     });
 
+    //save the input table for submission in case user changes table between
+    //calculations and submital
+    template.state.set('rowArray', rowArray);
+
     //call method to calculate needed drivers
-    Meteor.call( 'calculateDrivers', {
+    Meteor.call( 'calculatePRFL', {
       rowArray:rowArray,
       pn: pn,
       drivers: drivers
@@ -157,7 +196,9 @@ Template.ctprCompleteModal.events({
         Bert.alert({ message: error.reason, type: 'danger', style: 'growl-top-right' });
       } else {
         //grab the returned information
-        drivers = response;
+        drivers = response.drivers;
+        groups = response.groups;
+        individuals = response.individuals;
         //empty placeholder for drivers
         $(".drivers-list").empty();
         $(".drivers-count").empty();
@@ -169,7 +210,14 @@ Template.ctprCompleteModal.events({
             counter += qty;
           }
         });
+        //set the total number of drivers
         $(".drivers-count").append(counter);
+
+        //set our ReactiveDict with the groups, individuals and drivers
+        //to store them while we wait for the user to submit
+        template.state.set('drivers', drivers);
+        template.state.set('groups', groups);
+        template.state.set('individuals', individuals);
       }
     });
   },
@@ -253,5 +301,15 @@ Template.ctprCompleteModal.events({
     $(".drivers-count").empty().append("0");
     //empty strip id placeholder
     $("#stripId").empty();
+    $( "#item-list" ).empty();
+    //clean strip selected
+    $("#stripId").empty();
+    //clean code emplacement
+    $("#codeId").empty();
+    //empty out ReactiveDicts
+    template.state.set('drivers', []);
+    template.state.set('groups', []);
+    template.state.set('individuals', []);
+    template.state.set('rowArray', []);
   }
 });

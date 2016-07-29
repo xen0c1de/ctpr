@@ -1,5 +1,5 @@
 Meteor.methods({
-  calculateDrivers( products ) {
+  calculatePRFL( products ) {
     check( products, {
       rowArray: Array,
       pn: String,
@@ -7,7 +7,7 @@ Meteor.methods({
     });
 
     try {
-      var drivers = Modules.server.calculateDrivers(products);
+      var drivers = Modules.server.calculatePRFL(products);
       return drivers;
     } catch( exception ) {
       return exception;
