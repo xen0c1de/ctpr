@@ -9,14 +9,18 @@ Also calculates the budget price with the drivers calulation information.
 let calculatePRFL = ( options ) => {
   var drivers = options.drivers,
       rowArray = options.rowArray,
-      pn = options.pn,
+      stripId = options.stripId,
+      profileId = options.profileId,
+      lensId = options.lensId,
+      endcapId = options.endcapId,
+      bracketId = options.bracketId,
       groups = [],
       individuals = [];
 
   //loop through array of rows
   for( let j=0;j<rowArray.length;j++ ) {
     //create the powerArray to use in calculating the drivers for the current row
-    var lenWattArray = _createPowerArray( rowArray[j].len, rowArray[j].qty, rowArray[j].dimmable, pn );
+    var lenWattArray = _createPowerArray( rowArray[j].len, rowArray[j].qty, rowArray[j].dimmable, stripId );
 
     //if this is the individual group we calculate the drivers immediatly.
     if ( rowArray[j].group === "ind" ){
@@ -50,9 +54,11 @@ let calculatePRFL = ( options ) => {
      this[e.group].push(e);
     }, {});
 
-    //results contains the arrays of objects with matching groups.
+    //result contains the arrays of objects with matching groups.
     //for example 3 lines with groups a, a and b would form an array of 2 arrays
     //such as [[{group:"a", lenWattArray},{group:"a", lenWattArray}],[{group:"b", lenWattArray}]]
+
+    //update the drivers while looping over the previous result
     for(let i=0;i<result.length;i++){
       //this is the group fetched in the results
       var groupArray = result[i];
@@ -64,8 +70,12 @@ let calculatePRFL = ( options ) => {
     }
   }
 
-  //return complete updated driver list
-  return {drivers: drivers, groups: results, individuals: individuals};
+  //calulate the price for this PRFL from all fixtures and drivers.
+  //using the split lengths lets us calcutate the cuts and labor
+  let total = _calculatePrice( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId );
+
+  //return object with updated drivers array, grouped and individual fixtures
+  return {drivers: drivers, groups: result, individuals: individuals, total: total};
 };
 
 /*
@@ -193,5 +203,20 @@ let _selectDriver = ( powerConsumption, dimmable ) => {
     return nonDimDrivers[nonDimDrivers.length-1]+"W";
   }
 };
+
+/*
+Calculates the total price for the selected PRFL customized by the user.
+This is calculated with the manufaturer standards lengths so we can
+take into account the cuts and labor required for the quote.
+Prices are stored in the database and are per inch or per piece depending
+on the item. Cuts and labor are stored as special products.
+*/
+let _calculatePrice = ( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId ) => {
+  var total = 0;
+
+
+
+  return total;
+}
 
 Modules.server.calculatePRFL = calculatePRFL;

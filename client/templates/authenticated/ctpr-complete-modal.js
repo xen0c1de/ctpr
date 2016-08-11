@@ -52,7 +52,8 @@ Template.ctprCompleteModal.events({
         drivers = template.state.get('drivers'),
         groups = template.state.get('groups'),
         individuals = template.state.get('individuals'),
-        rowArray = template.state.get('rowArray');
+        rowArray = template.state.get('rowArray'),
+        total = template.state.get('total');
 
     //grab each ctpr composite into an array
     $( "#item-list li" ).each( function(){
@@ -93,6 +94,12 @@ Template.ctprCompleteModal.events({
           template.state.set('groups', []);
           template.state.set('individuals', []);
           template.state.set('rowArray', []);
+          template.state.set('total', 0);
+          session.set("strip_id","");
+          session.set("lens_id","");
+          session.set("profile_id","");
+          session.set("endcap_id","");
+          session.set("bracket_id","");
           //just create the first row to remplace the current table with
           let newRowContent = '<tr id="0"><td><select id="group0" name="group"><option value="ind" selected="selected">Individuel</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option><option value="i">I</option><option value="j">J</option><option value="k">K</option><option value="l">L</option><option value="m">M</option><option value="n">N</option><option value="o">O</option></select></td><td><input id="qty0" type="text" class="form-control" name="qty"></td><td><input id="long0" type="text" class="form-control" name="long"></td><td><input id="dim0" type="checkbox" class="form-control" name="dim" value="dim"></td><td><button type="button" class="btn minus-sign"><span class="glyphicon glyphicon-minus-sign logo-small-red" aria-hidden="true"></span></button></td></tr>';
           //empty the current table
@@ -119,25 +126,23 @@ Template.ctprCompleteModal.events({
       });
     }
   },
-  'click .calculate' (event) {
+  'click .calculate' (event, template) {
     //preset the drivers and qty array for output
     var drivers = [
-      {driver:"30W", qty:0},
-      {driver:"60W", qty:0},
-      {driver:"100W", qty:0},
-      {driver:"200W", qty:0},
-      {driver:"30W dim", qty:0},
-      {driver:"45W dim", qty:0},
-      {driver:"60W dim", qty:0},
-      {driver:"80W dim", qty:0},
-      {driver:"100W dim", qty:0},
-      {driver:"200W dim", qty:0}
-      ],
-      pn = $("#stripId").text(),
-      counter = 0,
-      rowArray = [],
-      groups = [],
-      individuals = [];
+          {driver:"30W", qty:0},
+          {driver:"60W", qty:0},
+          {driver:"100W", qty:0},
+          {driver:"200W", qty:0},
+          {driver:"30W dim", qty:0},
+          {driver:"45W dim", qty:0},
+          {driver:"60W dim", qty:0},
+          {driver:"80W dim", qty:0},
+          {driver:"100W dim", qty:0},
+          {driver:"200W dim", qty:0} ];
+    var counter = 0,
+        rowArray = [],
+        groups = [],
+        individuals = [];
 
     //loop over each table row to exctract information
     $.each($(".prfl-len tr"), function() {
@@ -189,7 +194,11 @@ Template.ctprCompleteModal.events({
     //call method to calculate needed drivers
     Meteor.call( 'calculatePRFL', {
       rowArray:rowArray,
-      pn: pn,
+      stripId: session.get("strip_id"),
+      profileId: session.get("profile_id"),
+      lensId: session.get("lens_id"),
+      endcapId: session.get("endcap_id"),
+      bracketId: session.get("bracket_id"),
       drivers: drivers
     }, ( error, response ) => {
       if ( error ) {
@@ -199,6 +208,13 @@ Template.ctprCompleteModal.events({
         drivers = response.drivers;
         groups = response.groups;
         individuals = response.individuals;
+        let total = response.total;
+        //set our ReactiveDict with the groups, individuals and drivers
+        //to store them while we wait for the user to submit
+        template.state.set('drivers', drivers);
+        template.state.set('groups', groups);
+        template.state.set('individuals', individuals);
+        template.state.set('total', total);
         //empty placeholder for drivers
         $(".drivers-list").empty();
         $(".drivers-count").empty();
@@ -212,12 +228,6 @@ Template.ctprCompleteModal.events({
         });
         //set the total number of drivers
         $(".drivers-count").append(counter);
-
-        //set our ReactiveDict with the groups, individuals and drivers
-        //to store them while we wait for the user to submit
-        template.state.set('drivers', drivers);
-        template.state.set('groups', groups);
-        template.state.set('individuals', individuals);
       }
     });
   },
@@ -311,5 +321,6 @@ Template.ctprCompleteModal.events({
     template.state.set('groups', []);
     template.state.set('individuals', []);
     template.state.set('rowArray', []);
+    template.state.set('total', 0);
   }
 });

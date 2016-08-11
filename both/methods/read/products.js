@@ -2,13 +2,17 @@ Meteor.methods({
   calculatePRFL( products ) {
     check( products, {
       rowArray: Array,
-      pn: String,
+      stripId: String,
+      profileId: String,
+      lensId: String,
+      endcapId: String,
+      bracketId: String,
       drivers: Array
     });
 
     try {
-      var drivers = Modules.server.calculatePRFL(products);
-      return drivers;
+      var result = Modules.server.calculatePRFL(products);
+      return result;
     } catch( exception ) {
       return exception;
     }

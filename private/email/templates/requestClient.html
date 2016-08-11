@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-<title>Demande de soumission CTPR</title>
+<title>Demande de soumission O-LED</title>
 <!--
 
     An email present from your friends at Litmus (@litmusapp)
@@ -121,21 +121,64 @@
                       </td>
                     </tr>
                     <tr>
-                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Demande de soumission pour:</td>
-                    </tr>
-                    <tr>
-                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Vous avez été invité à joindre le CTPR Interactif de O-LED. Pour accepter l'invitation, appuyer sur le lien qui suit.</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Demande de soumission pour: {{name}}</td>
                     </tr>
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                        <a style="color: #7DA200;" href="{{url}}">Aller au CTPR.</a>
+                        <ul>
+                          {{#each ctpr}}
+                            <li>{{this}}</li>
+                          {{/each}}
+                        </ul>
                       </td>
                     </tr>
                     <tr>
-                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Si le lien ne fonctionne pas, copier ceci dans votre navigateur : {{url}}</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <thead>
+                            <th>
+                              GROUPE
+                            </th>
+                            <th>
+                              QTÉ
+                            </th>
+                            <th>
+                              LONGUEUR
+                            </th>
+                            <th>
+                              GRADABLE
+                            </th>
+                          </thead>
+                          <tbody>
+                            {{#each rowArray}}
+                            <tr>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{rowArray.group}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{rowArray.qty}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{rowArray.len}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{#if rowArray.dimmable}}
+                                  Gradable
+                                {{else}}
+                                  Non-gradable
+                                {{/if}}
+                              </td>
+                            </tr>
+                            {{/each}}
+                          </tbody>
+                        </table>
+                      </td>
                     </tr>
                     <tr>
-                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Bienvenue.</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Votre prix budget : {{total}}</td>
+                    </tr>
+                    <tr>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Merci.</td>
                     </tr>
                   </table>
                 </td>

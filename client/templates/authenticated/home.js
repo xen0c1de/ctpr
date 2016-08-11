@@ -138,8 +138,18 @@ Template.home.events({
   },
   //clicking the continue button takes you to the next step
   'click .continue' (event) {
-    //get the selected strip id to check all options are selected
+    //get the selected ids
     var strip_id = $(".strip.selected")[0].id;
+    var profile_id = $(".profile.selected")[0].id;
+    var lens_id = $(".lens.selected")[0].id;
+    var endcap_id = $(".endcap.selected")[0].id;
+    var bracket_id = $(".bracket.selected")[0].id;
+    //save ids to session
+    session.set("strip_id",strip_id);
+    session.set("profile_id",profile_id);
+    session.set("endcap_id",endcap_id);
+    session.set("lens_id",lens_id);
+    session.set("bracket_id",bracket_id);
     //check that all items have been selected
     if ( $(".profile").hasClass("selected") &&
           $(".lens").hasClass("selected") &&
@@ -154,8 +164,6 @@ Template.home.events({
         let item = $(this).text();
         $( "#item-list" ).append( "<li>"+item+"</li>" );
       });
-      //save strip id for math
-      $("#stripId").append(strip_id);
       //save the product code for the email
       $("#codeId").append(
         $(".profile-code").text() +
