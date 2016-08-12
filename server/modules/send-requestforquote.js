@@ -17,6 +17,10 @@ let request = ( options ) => {
   _sendRequest( Meteor.settings.private.quoteEmail, oledEmail );
 };
 
+/*
+prepare the email for the user
+needing the name, PRFL he selected which each row entered, the actual code and the total price.
+*/
 let _prepareClientEmail = ( name, ctpr, rowArray, total, code ) => {
   let domain = Meteor.settings.private.domain;
 
@@ -26,6 +30,10 @@ let _prepareClientEmail = ( name, ctpr, rowArray, total, code ) => {
   return html;
 };
 
+/*
+Prepare the email for OLED. we include every piece of info to simplify
+the work of the user receiving the request for quote.
+*/
 let _prepareOledEmail = ( options ) => {
   let domain = Meteor.settings.private.domain;
 
@@ -35,6 +43,7 @@ let _prepareOledEmail = ( options ) => {
                                         phone: options.phone,
                                         ctpr: options.ctpr,
                                         code: options.code,
+                                        total: options.total,
                                         drivers: options.drivers,
                                         groups: options.groups,
                                         individuals: options.individuals,
@@ -43,6 +52,9 @@ let _prepareOledEmail = ( options ) => {
   return html;
 };
 
+/*
+send the actual email
+*/
 let _sendRequest = ( email, content ) => {
   Email.send({
     to: email,

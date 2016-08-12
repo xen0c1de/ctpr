@@ -192,6 +192,8 @@ let _selectDriver = ( powerConsumption, dimmable ) => {
   }
   else {
     //no point in starting at 200w because we'll never reach it
+    //max is 21.8w/M and we dont go over 20 feet.
+    //20ft is 5.93M | 5.93M*21.8W/M=129.38W | 129.38W/.80(20% more)=161.72W (which is well below 200W)
     for( let k=1;k<nonDimDrivers.length;k++ ){
       //if the power is greater than the current driver in the list
       if( powerConsumption > nonDimDrivers[k] ){
@@ -214,7 +216,14 @@ on the item. Cuts and labor are stored as special products.
 let _calculatePrice = ( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId ) => {
   var total = 0;
 
-
+  //TODO: calculate price for each driver needed
+  // + price for each bracket needed
+  // + price for each endcap needed
+  // + price for lens per inch
+  // + price for profile per inch
+  // + price for strip per inch
+  // + price per cuts
+  // + total labor
 
   return total;
 }

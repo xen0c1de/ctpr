@@ -121,20 +121,25 @@
                       </td>
                     </tr>
                     <tr>
-                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Demande de soumission pour: {{name}}</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Demande de soumission pour : {{name}}</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">phone : {{phone}}</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">email : {{email}}</td>
                     </tr>
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                        PRFL selectionné:
                         <ul>
                           {{#each ctpr}}
                             <li>{{this}}</li>
                           {{/each}}
                         </ul>
+                        Code de produit : {{code}}
                       </td>
                     </tr>
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <caption>Info entré par le client</caption>
                           <thead>
                             <th>
                               GROUPE
@@ -175,7 +180,106 @@
                       </td>
                     </tr>
                     <tr>
-                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Votre prix budget : {{total}}</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <caption>Liste des fixtures requisent</caption>
+                          <thead>
+                            <th>
+                              GROUPE
+                            </th>
+                            <th>
+                              QTÉ
+                            </th>
+                            <th>
+                              LONGUEUR
+                            </th>
+                            <th>
+                              CONSOMMATION
+                            </th>
+                            <th>
+                              GRADABLE
+                            </th>
+                          </thead>
+                          <tbody>
+                            {{#each individuals}}
+                            <tr>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{group}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{lenWattArray.qty}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{lenWattArray.len}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{lenWattArray.watt}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{#if lenWattArray.dimmable}}
+                                  Gradable
+                                {{else}}
+                                  Non-gradable
+                                {{/if}}
+                              </td>
+                            </tr>
+                            {{/each}}
+                            {{#each groups}}
+                            <tr>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{group}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{lenWattArray.qty}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{lenWattArray.len}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{lenWattArray.watt}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{#if lenWattArray.dimmable}}
+                                  Gradable
+                                {{else}}
+                                  Non-gradable
+                                {{/if}}
+                              </td>
+                            </tr>
+                            {{/each}}
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <caption>Liste des drivers requient</caption>
+                          <thead>
+                            <th>
+                              DRIVER
+                            </th>
+                            <th>
+                              QTÉ
+                            </th>
+                          </thead>
+                          <tbody>
+                            {{#each drivers}}
+                            <tr>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{driver}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{qty}}
+                              </td>
+                            </tr>
+                            {{/each}}
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Prix budget donner : {{total}}</td>
                     </tr>
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Merci.</td>
@@ -202,7 +306,7 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left" style="padding: 20px 0 0 0; font-size: 12px; line-height: 16px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                    <span class="appleFooter" style="color:#666666;">293 Industriel, St-Eustache, QC, J7R 6B7, Canada</span>
+                    <span class="appleFooter" style="color:#666666;"></span>
                 </td>
               </tr>
             </table>
