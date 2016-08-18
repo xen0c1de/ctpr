@@ -9,29 +9,12 @@ Template.ctprCompleteModal.onRendered( function() {
       emailAddress: {
         required: true,
         email: true
-      },
-      qty: {
-        required: true,
-        number: true
-      },
-      long: {
-        required: true,
-        number: true,
-        min: 12
       }
     },
     messages: {
       emailAddress: {
-        required: "Le courriel est requis!"
-      },
-      qty: {
-        required: "Vous devez entrer une quantité!",
-        number: "Les quantités doivent être numériques!"
-      },
-      long: {
-        required: "Vous devez entrer une longueur!",
-        number: "Les longueurs doivent être numériques!",
-        min: "Les fixtures doivent être au moins 12 pouces de longueur!"
+        required: "Le courriel est requis!",
+        email: "L'adresse courriel n'est pas bien formée"
       }
     },
     errorPlacement: function(error, element) {
@@ -95,11 +78,11 @@ Template.ctprCompleteModal.events({
           template.state.set('individuals', []);
           template.state.set('rowArray', []);
           template.state.set('total', 0);
-          session.set("strip_id","");
-          session.set("lens_id","");
-          session.set("profile_id","");
-          session.set("endcap_id","");
-          session.set("bracket_id","");
+          Session.set("strip_id","");
+          Session.set("lens_id","");
+          Session.set("profile_id","");
+          Session.set("endcap_id","");
+          Session.set("bracket_id","");
           //just create the first row to remplace the current table with
           let newRowContent = '<tr id="0"><td><select id="group0" name="group"><option value="ind" selected="selected">Individuel</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option><option value="i">I</option><option value="j">J</option><option value="k">K</option><option value="l">L</option><option value="m">M</option><option value="n">N</option><option value="o">O</option></select></td><td><input id="qty0" type="text" class="form-control" name="qty"></td><td><input id="long0" type="text" class="form-control" name="long"></td><td><input id="dim0" type="checkbox" class="form-control" name="dim" value="dim"></td><td><button type="button" class="btn minus-sign"><span class="glyphicon glyphicon-minus-sign logo-small-red" aria-hidden="true"></span></button></td></tr>';
           //empty the current table
@@ -142,7 +125,8 @@ Template.ctprCompleteModal.events({
     var counter = 0,
         rowArray = [],
         groups = [],
-        individuals = [];
+        individuals = [],
+        breakvalue = false;
 
     //loop over each table row to exctract information
     $.each($(".prfl-len tr"), function() {
@@ -158,7 +142,7 @@ Template.ctprCompleteModal.events({
         //if we have numerics, cast them to numbers for math purposes
         len = Number(len);
         qty = Number(qty);
-
+        //check we have a lenght bigger than a foot
         if(len >= 12) {
           //add new entry in array with table values
           rowArray.push({
@@ -175,6 +159,8 @@ Template.ctprCompleteModal.events({
             type: 'warning',
             style: 'growl-top-right'
           });
+          breakvalue = true;
+          return false;
         }
       }
       else {
@@ -184,8 +170,14 @@ Template.ctprCompleteModal.events({
           type: 'warning',
           style: 'growl-top-right'
         });
+        breakvalue = true;
+        return false;
       }
     });
+
+    if(breakvalue){
+      return;
+    }
 
     //save the input table for submission in case user changes table between
     //calculations and submital
@@ -194,12 +186,13 @@ Template.ctprCompleteModal.events({
     //call method to calculate needed drivers
     Meteor.call( 'calculatePRFL', {
       rowArray:rowArray,
-      stripId: session.get("strip_id"),
-      profileId: session.get("profile_id"),
-      lensId: session.get("lens_id"),
-      endcapId: session.get("endcap_id"),
-      bracketId: session.get("bracket_id"),
-      drivers: drivers
+      stripId: Session.get("strip_id"),
+      profileId: Session.get("profile_id"),
+      lensId: Session.get("lens_id"),
+      endcapId: Session.get("endcap_id"),
+      bracketId: Session.get("bracket_id"),
+      drivers: drivers,
+      user: Meteor.userId()
     }, ( error, response ) => {
       if ( error ) {
         Bert.alert({ message: error.reason, type: 'danger', style: 'growl-top-right' });
@@ -215,9 +208,10 @@ Template.ctprCompleteModal.events({
         template.state.set('groups', groups);
         template.state.set('individuals', individuals);
         template.state.set('total', total);
-        //empty placeholder for drivers
+        //empty placeholder for drivers and total
         $(".drivers-list").empty();
         $(".drivers-count").empty();
+        $(".price-value").empty();
         //loop over drivers to list them if their qty is greater than 0
         $.each(drivers, function() {
           let qty = $(this)[0].qty;
@@ -228,6 +222,8 @@ Template.ctprCompleteModal.events({
         });
         //set the total number of drivers
         $(".drivers-count").append(counter);
+        //set total price
+        $(".price-value").append(total+"$");
       }
     });
   },
@@ -322,5 +318,7 @@ Template.ctprCompleteModal.events({
     template.state.set('individuals', []);
     template.state.set('rowArray', []);
     template.state.set('total', 0);
+    //clear error message
+    $(".error-messages").empty();
   }
 });

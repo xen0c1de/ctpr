@@ -14,6 +14,7 @@ let calculatePRFL = ( options ) => {
       lensId = options.lensId,
       endcapId = options.endcapId,
       bracketId = options.bracketId,
+      userId = options.userId,
       groups = [],
       individuals = [];
 
@@ -61,18 +62,26 @@ let calculatePRFL = ( options ) => {
     //update the drivers while looping over the previous result
     for(let i=0;i<result.length;i++){
       //this is the group fetched in the results
-      var groupArray = result[i];
+      var groupArray = result[i],
+          groupLenWattArray = [];
       //loop over each group updating needed drivers for each row
       for(let j=0;j<groupArray.length;j++){
-        //update the drivers array with the required drivers
-        drivers = _updateDriversArray( groupArray[j].lenWattArray, drivers );
+        //loop over each lenght and watt array to create a single lenWattArray for this group
+        for(let k=0;k<groupArray[j].lenWattArray.length;k++){
+          groupLenWattArray.push({qty:groupArray[j].lenWattArray[k].qty,
+                                  len:groupArray[j].lenWattArray[k].len,
+                                  watt:groupArray[j].lenWattArray[k].watt,
+                                  dimmable: groupArray[j].lenWattArray[k].dimmable});
+        }
       }
+      //update the drivers array with the required drivers
+      drivers = _updateDriversArray( groupLenWattArray, drivers );
     }
   }
 
   //calulate the price for this PRFL from all fixtures and drivers.
   //using the split lengths lets us calcutate the cuts and labor
-  let total = _calculatePrice( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId );
+  let total = _calculatePrice( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId );
 
   //return object with updated drivers array, grouped and individual fixtures
   return {drivers: drivers, groups: result, individuals: individuals, total: total};
@@ -213,8 +222,10 @@ take into account the cuts and labor required for the quote.
 Prices are stored in the database and are per inch or per piece depending
 on the item. Cuts and labor are stored as special products.
 */
-let _calculatePrice = ( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId ) => {
+let _calculatePrice = ( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId ) => {
   var total = 0;
+
+  //TODO: check userId for role and calculate price for this role (OLED,NRG,LUMEN,USER)
 
   //TODO: calculate price for each driver needed
   // + price for each bracket needed

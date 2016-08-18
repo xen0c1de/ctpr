@@ -3,8 +3,7 @@ Meteor.methods({
     check( product, {
       pn: String,
       desc: String,
-      category: String,
-      price: Number
+      category: String
     });
 
     try {

@@ -135,6 +135,12 @@ Template.home.events({
     $(".endcap-code").empty();
     $(".bracket-code").empty();
     $(".strip-code").empty();
+    //save ids to session
+    Session.set("strip_id","");
+    Session.set("profile_id","");
+    Session.set("endcap_id","");
+    Session.set("lens_id","");
+    Session.set("bracket_id","");
   },
   //clicking the continue button takes you to the next step
   'click .continue' (event) {
@@ -145,11 +151,11 @@ Template.home.events({
     var endcap_id = $(".endcap.selected")[0].id;
     var bracket_id = $(".bracket.selected")[0].id;
     //save ids to session
-    session.set("strip_id",strip_id);
-    session.set("profile_id",profile_id);
-    session.set("endcap_id",endcap_id);
-    session.set("lens_id",lens_id);
-    session.set("bracket_id",bracket_id);
+    Session.set("strip_id",strip_id);
+    Session.set("profile_id",profile_id);
+    Session.set("endcap_id",endcap_id);
+    Session.set("lens_id",lens_id);
+    Session.set("bracket_id",bracket_id);
     //check that all items have been selected
     if ( $(".profile").hasClass("selected") &&
           $(".lens").hasClass("selected") &&

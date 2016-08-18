@@ -24,7 +24,10 @@
                 <select {{disableIfAdmin _id}} name="userRole" class="form-control">
                   <option selected="{{selected roles.[0] 'admin'}}" value="admin">Administrateur</option>
                   <option selected="{{selected roles.[0] 'manager'}}" value="manager">Gestionnaire de contenu</option>
-                  <option selected="{{selected roles.[0] 'user'}}" value="user">Utilisateur</option>
+                  <option selected="{{selected roles.[0] 'oled'}}" value="oled">Employé O-LED</option>
+                  <option selected="{{selected roles.[0] 'nrg'}}" value="nrg">Employé NRG</option>
+                  <option selected="{{selected roles.[0] 'lumen'}}" value="lumen">Employé Lumen</option>
+                  <option selected="{{selected roles.[0] 'user'}}" value="user">Autre utilisateur</option>
                 </select>
               </td>
               <td class="text-center">
