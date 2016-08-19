@@ -12,30 +12,6 @@ Products.deny({
   remove: () => true
 });
 
-let PricesSchema = new SimpleSchema({
-  costoled: {
-    type: Number,
-    label: "Coût OLED",
-    decimal: true
-  },
-  costnrg: {
-    type: Number,
-    label: "Coût NRG",
-    decimal: true
-  },
-  costlumen: {
-    type: Number,
-    label: "Coût Lumen",
-    decimal: true
-  },
-  costuser: {
-    type: Number,
-    label: "Coût autre",
-    decimal: true
-  }
-});
-
-
 let ProductsSchema = new SimpleSchema({
   pn: {
     type: String,
@@ -51,8 +27,10 @@ let ProductsSchema = new SimpleSchema({
     label: "Catégorie du produit",
     max: 100
   },
-  price: {
-    type: PricesSchema
+  cost: {
+    type: Number,
+    label: "Cost",
+    decimal: true
   },
   attributes: {
     type: [String]

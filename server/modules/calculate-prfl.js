@@ -16,7 +16,8 @@ let calculatePRFL = ( options ) => {
       bracketId = options.bracketId,
       userId = options.userId,
       groups = [],
-      individuals = [];
+      individuals = [],
+      sortedGroups = [];
 
   //loop through array of rows
   for( let j=0;j<rowArray.length;j++ ) {
@@ -40,8 +41,7 @@ let calculatePRFL = ( options ) => {
   if( groups.length != 0 ){
     //grab the value to be checked by mapping them into an array
     //this value is the group selected by the user
-    var check = groups.map(e => {return e.group}),
-        result = [];
+    var check = groups.map(e => {return e.group});
     //loop over all the groups
     groups.forEach(function(e) {
       //Check if an array for this group was created already
@@ -49,19 +49,19 @@ let calculatePRFL = ( options ) => {
         //if it wasn't, create it now
         this[e.group] = [];
         //put it in the results
-        result.push(this[e.group]);
-     }
-     //put the object in the grouping array
-     this[e.group].push(e);
+        sortedGroups.push(this[e.group]);
+      }
+      //put the object in the grouping array
+      this[e.group].push(e);
     }, {});
 
-    //result contains the arrays of objects with matching groups.
+    //sortedGroups contains the arrays of objects with matching groups.
     //for example 3 lines with groups a, a and b would form an array of 2 arrays
     //such as [[{group:"a", lenWattArray},{group:"a", lenWattArray}],[{group:"b", lenWattArray}]]
 
-    //update the drivers while looping over the previous result
-    for(let i=0;i<result.length;i++){
-      //this is the group fetched in the results
+    //update the drivers while looping over the previous sortedGroups
+    for(let i=0;i<sortedGroups.length;i++){
+      //this is the group fetched in the sortedGroups
       var groupArray = result[i],
           groupLenWattArray = [];
       //loop over each group updating needed drivers for each row
@@ -81,10 +81,10 @@ let calculatePRFL = ( options ) => {
 
   //calulate the price for this PRFL from all fixtures and drivers.
   //using the split lengths lets us calcutate the cuts and labor
-  let total = _calculatePrice( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId );
+  let total = _calculatePrice( sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId );
 
   //return object with updated drivers array, grouped and individual fixtures
-  return {drivers: drivers, groups: result, individuals: individuals, total: total};
+  return {drivers: drivers, groups: sortedGroups, individuals: individuals, total: total};
 };
 
 /*
@@ -222,19 +222,44 @@ take into account the cuts and labor required for the quote.
 Prices are stored in the database and are per inch or per piece depending
 on the item. Cuts and labor are stored as special products.
 */
-let _calculatePrice = ( result, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId ) => {
+let _calculatePrice = ( sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId ) => {
   var total = 0;
 
-  //TODO: check userId for role and calculate price for this role (OLED,NRG,LUMEN,USER)
+  //calculate price for each driver needed
+  //also calculate the price for starter wires. always will be one per driver.
+  _.forEach( drivers, function() ) {
+    var qty = this.qty;
+    //check that we have some of these drivers, no point in calculating prices to multiply by zero afterwards
+    if( qty != 0 ){
+      //grab this driver from the database
+      let driver = Products.find({pn:this.driver, category: "drivers"});
+      //grab the starts which we calculate at the same time
+      let start = Products.find({pn:"start", category: "other"});
+      //increase total by cost of driver and start times value (which is qty)
+      total += (driver.cost + start.cost) * qty;
+    }
+  }
 
-  //TODO: calculate price for each driver needed
+  _.forEach( individuals, function() ){
+    var lenWattArray = this.lenWattArray;
+    
+  }
   // + price for each bracket needed
+
   // + price for each endcap needed
+
   // + price for lens per inch
   // + price for profile per inch
   // + price for strip per inch
+
   // + price per cuts
+
   // + total labor
+
+  //TODO: check userId for role and calculate price for this role (OLED,NRG,LUMEN,USER)
+  if( Role.userIsInRole( userId, 'nrg' ) ) {
+
+  }
 
   return total;
 }

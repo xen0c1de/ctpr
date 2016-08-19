@@ -4,5 +4,8 @@
   "description": "App pour profilé et rubans custom O-LED",
   "scripts": {
     "start": "meteor --settings settings-development.json"
+  },
+  "dependencies": {
+    "bcrypt": "^0.8.7"
   }
 }

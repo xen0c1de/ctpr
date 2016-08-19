@@ -1,15 +1,111 @@
 let products = [
+  //drivers
+  {
+    pn: '30W',
+    desc: 'Driver 30W',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '60W',
+    desc: 'Driver 60W',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '100W',
+    desc: 'Driver 100W',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '200W',
+    desc: 'Driver 200W',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '30W dim',
+    desc: 'Driver 30W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '45W dim',
+    desc: 'Driver 45W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '60W dim',
+    desc: 'Driver 60W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '80W dim',
+    desc: 'Driver 80W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '100W dim',
+    desc: 'Driver 100W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '200W dim',
+    desc: 'Driver 200W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
   //other
   {
     pn: 'labor',
     desc: 'Main d\'oeuvre',
     category: 'other',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -19,12 +115,27 @@ let products = [
     pn: 'cut',
     desc: 'Coupe de profilé et lentilles',
     category: 'other',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: 'starter',
+    desc: 'Fil de départ',
+    category: 'other',
+    cost: 10,
+    attributes: [],
+    powers: [],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: 'union',
+    desc: 'Fil d\'union',
+    category: 'other',
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -35,12 +146,7 @@ let products = [
     pn: '1011',
     desc: 'Profilé aluminium 1011',
     category: 'profile',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Largeur: Xmm", "Hauteur: Xmm" ],
     powers: [],
     colors: [],
@@ -50,12 +156,7 @@ let products = [
     pn: '1012',
     desc: 'Profilé aluminium 1012',
     category: 'profile',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Largeur: Xmm", "Hauteur: Xmm" ],
     powers: [],
     colors: [],
@@ -65,12 +166,7 @@ let products = [
     pn: '1013',
     desc: 'Profilé aluminium 1013',
     category: 'profile',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Largeur: Xmm", "Hauteur: Xmm" ],
     powers: [],
     colors: [],
@@ -80,12 +176,7 @@ let products = [
     pn: '2020',
     desc: 'Profilé aluminium 2020',
     category: 'profile',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Largeur: Xmm", "Hauteur: Xmm" ],
     powers: [],
     colors: [],
@@ -96,12 +187,7 @@ let products = [
     pn: 'WO',
     desc: 'Lentille blanche opaline',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -111,12 +197,7 @@ let products = [
     pn: 'TR',
     desc: 'Lentille de diffusion',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -126,12 +207,7 @@ let products = [
     pn: 'WF',
     desc: 'Lentille blanche givrée',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -141,12 +217,7 @@ let products = [
     pn: 'FO',
     desc: 'Lentille de focus',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -156,12 +227,7 @@ let products = [
     pn: 'CL',
     desc: 'Lentille claire',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -171,12 +237,7 @@ let products = [
     pn: 'WFR',
     desc: 'Lentille blanche givrée ronde',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -186,12 +247,7 @@ let products = [
     pn: 'WOR',
     desc: 'Lentille blanche opaline ronde',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -201,12 +257,7 @@ let products = [
     pn: 'WFS',
     desc: 'Lentille blanche givrée carrée',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -216,12 +267,7 @@ let products = [
     pn: 'WOS',
     desc: 'Lentille blanche opaline carrée',
     category: 'lens',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -231,12 +277,7 @@ let products = [
     pn: 'NOL',
     desc: 'Sans lentille',
     category: 'lens',
-    price: {
-      costoled: 0,
-      costnrg: 0,
-      costlumen: 0,
-      costuser: 0
-    },
+    cost: 0,
     attributes: [ "Automatiquement sans embout" ],
     powers: [],
     colors: [],
@@ -247,12 +288,7 @@ let products = [
     pn: '0200',
     desc: 'Embout 0200',
     category: 'endcap',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [],
     powers: [],
     colors: [],
@@ -262,12 +298,7 @@ let products = [
     pn: '0025',
     desc: 'Embout 0025',
     category: 'endcap',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Embout pour profilé série 1012" ],
     powers: [],
     colors: [],
@@ -277,12 +308,7 @@ let products = [
     pn: '0050',
     desc: 'Embout 0050',
     category: 'endcap',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Embout pour profilé série 1012", "Lentille focus seulement" ],
     powers: [],
     colors: [],
@@ -292,12 +318,7 @@ let products = [
     pn: '0075',
     desc: 'Embout 0075',
     category: 'endcap',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Embout pour profilé série 1013" ],
     powers: [],
     colors: [],
@@ -307,12 +328,7 @@ let products = [
     pn: '0175',
     desc: 'Embout 0175',
     category: 'endcap',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Embout pour profilé série 2020", "Lentille carrée seulement" ],
     powers: [],
     colors: [],
@@ -322,12 +338,7 @@ let products = [
     pn: '0150',
     desc: 'Embout 0150',
     category: 'endcap',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Embout pour profilé série 2020", "Lentille ronde seulement" ],
     powers: [],
     colors: [],
@@ -337,12 +348,7 @@ let products = [
     pn: 'NOE',
     desc: 'Sans embouts',
     category: 'endcap',
-    price: {
-      costoled: 0,
-      costnrg: 0,
-      costlumen: 0,
-      costuser: 0
-    },
+    cost: 0,
     attributes: [ "Si installation non visible" ],
     powers: [],
     colors: [],
@@ -353,12 +359,7 @@ let products = [
     pn: '2025',
     desc: 'Braquette 2025',
     category: 'bracket',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Braquette pour profilé série 1011 1012 1013" ],
     powers: [],
     colors: [],
@@ -368,12 +369,7 @@ let products = [
     pn: '2050',
     desc: 'Braquette 2050',
     category: 'bracket',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Braquette pour profilé série 1011 1012 1013" ],
     powers: [],
     colors: [],
@@ -383,12 +379,7 @@ let products = [
     pn: '2075',
     desc: 'Braquette 2075',
     category: 'bracket',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Braquette pour profilé série 1011 1012 1013" ],
     powers: [],
     colors: [],
@@ -398,12 +389,7 @@ let products = [
     pn: '2175',
     desc: 'Braquette 2175',
     category: 'bracket',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "Braquette pour profilé série 2020" ],
     powers: [],
     colors: [],
@@ -414,12 +400,7 @@ let products = [
     pn: '3528-60',
     desc: 'RUBAN 3528-60',
     category: 'strip',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "60 DEL AU MÈTRE", "312 LM/M", "4.8 W/M", "CHAQUE 3 DEL", "8MM DE LARGEUR", "120 DEGRÉS" ],
     powers: ["12VDC", "24VDC" ],
     colors: [ "3000K", "3500K", "4000K" ],
@@ -429,12 +410,7 @@ let products = [
     pn: '3528-120',
     desc: 'RUBAN 3528-120',
     category: 'strip',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "120 DEL AU MÈTRE", "720 LM/M", "9.6 W/M", "CHAQUE 3 DEL", "9MM DE LARGEUR", "120 DEGRÉS" ],
     powers: [ "12VDC" ],
     colors: [ "3000K", "3500K", "4000K" ],
@@ -444,12 +420,7 @@ let products = [
     pn: '5050-60',
     desc: 'RUBAN 5050-60',
     category: 'strip',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "60 DEL AU MÈTRE", "1250 LM/M", "14.4 W/M", "CHAQUE 3 DEL (12V) - CHAQUE 6 DEL (24V)", "10MM DE LARGEUR", "120 DEGRÉS" ],
     powers: [ "12VDC", "24VDC" ],
     colors: [ "RGB" ],
@@ -459,12 +430,7 @@ let products = [
     pn: '5050-72',
     desc: 'RUBAN 5050-72',
     category: 'strip',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "72 DEL AU MÈTRE", "1602 LM/M", "17.8 W/M", "CHAQUE DEL", "10MM DE LARGEUR", "120 DEGRÉS" ],
     powers: [ "12VDC" ],
     colors: [ "3000K", "3500K", "4000K" ],
@@ -474,16 +440,20 @@ let products = [
     pn: '5630-60',
     desc: 'RUBAN 5630-60',
     category: 'strip',
-    price: {
-      costoled: 10,
-      costnrg: 10,
-      costlumen: 10,
-      costuser: 10
-    },
+    cost: 10,
     attributes: [ "60 DEL AU MÈTRE", "1750 LM/M", "21.7 W/M", "CHAQUE 6 DEL", "14MM DE LARGEUR", "120 DEGRÉS" ],
     powers: [ "24VDC" ],
     colors: [ "3000K", "3500K", "4000K" ],
     ips: [ "IP43", "IP67" ]
+  }
+];
+
+let prices = [
+  {
+    multiplierNRG: 0.7,
+    multiplierLumen: 0.8,
+    multiplierOthers: 0.75,
+    multiplierClient: 0.8
   }
 ];
 
@@ -494,6 +464,7 @@ let generateProducts = () => {
       _createProduct( products[ i ] );
     }
   }
+  _createPrices( prices[0] );
 };
 
 let _checkIfProductExist = ( product ) => {
@@ -502,6 +473,10 @@ let _checkIfProductExist = ( product ) => {
 
 let _createProduct = ( product ) => {
   Products.insert( product );
+};
+
+let _createPrices = ( prices ) => {
+  Prices.insert( prices );
 };
 
 Modules.server.generateProducts = generateProducts;

@@ -1,3 +1,0 @@
-Template.clients.events({
-
-});

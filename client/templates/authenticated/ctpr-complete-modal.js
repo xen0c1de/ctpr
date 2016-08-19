@@ -1,4 +1,5 @@
 Template.ctprCompleteModal.onCreated( function() {
+  Template.instance().subscribe( 'products' );
   //init a ReactiveDict to store data calculated but waiting for submission
   this.state = new ReactiveDict();
 });
@@ -111,25 +112,19 @@ Template.ctprCompleteModal.events({
   },
   'click .calculate' (event, template) {
     //preset the drivers and qty array for output
-    var drivers = [
-          {driver:"30W", qty:0},
-          {driver:"60W", qty:0},
-          {driver:"100W", qty:0},
-          {driver:"200W", qty:0},
-          {driver:"30W dim", qty:0},
-          {driver:"45W dim", qty:0},
-          {driver:"60W dim", qty:0},
-          {driver:"80W dim", qty:0},
-          {driver:"100W dim", qty:0},
-          {driver:"200W dim", qty:0} ];
-    var counter = 0,
+    var drivers = [],
+        counter = 0,
         rowArray = [],
         groups = [],
         individuals = [],
         breakvalue = false;
 
+    $.each( Products.find({ category: "drivers" }), function(){
+      drivers.push( {driver:this.pn, qty:0} );
+    });
+
     //loop over each table row to exctract information
-    $.each($(".prfl-len tr"), function() {
+    $.each( $(".prfl-len tr"), function() {
       //get all properties from table
       var rowId = $(this)[0].id,
           len = $("#long"+rowId).val(),

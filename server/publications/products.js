@@ -1,3 +1,7 @@
 Meteor.publish( 'products', function() {
-  return Products.find({}, {fields: {price: 0}});
+  if (Roles.userIsInRole(this.userId, ['admin','managers'])){
+    return Products.find();
+  }else{
+    return Products.find({}, {fields: {price: 0}});
+  }
 });
