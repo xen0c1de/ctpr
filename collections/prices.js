@@ -25,7 +25,7 @@ let PricesSchema = new SimpleSchema({
   },
   multiplierOthers: {
     type: Number,
-    label: "Facteur -> cost Autres",
+    label: "Facteur -> cost Autres Distributeur",
     decimal: true
   },
   multiplierClient: {

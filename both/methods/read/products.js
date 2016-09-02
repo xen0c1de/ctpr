@@ -7,7 +7,8 @@ Meteor.methods({
       lensId: String,
       endcapId: String,
       bracketId: String,
-      drivers: Array
+      drivers: Array,
+      userId:String
     });
 
     try {

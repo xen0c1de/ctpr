@@ -81,7 +81,7 @@ let calculatePRFL = ( options ) => {
 
   //calulate the price for this PRFL from all fixtures and drivers.
   //using the split lengths lets us calcutate the cuts and labor
-  let total = _calculatePrice( sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId );
+  let total = _calculatePrice( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId );
 
   //return object with updated drivers array, grouped and individual fixtures
   return {drivers: drivers, groups: sortedGroups, individuals: individuals, total: total};
@@ -170,6 +170,7 @@ let _updateDriversArray = ( lenWattArray, drivers ) => {
   }
   //When we exit loop, we calculate driver for the remaining totalConsumption
   let driver = _selectDriver(totalConsumption, lenWattArray[lenWattArray.length-1].dimmable);
+
   //add that driver to the drivers list.
   _.find(drivers, ['driver',driver]).qty += lenWattArray[lenWattArray.length-1].qty;
 
@@ -222,44 +223,111 @@ take into account the cuts and labor required for the quote.
 Prices are stored in the database and are per inch or per piece depending
 on the item. Cuts and labor are stored as special products.
 */
-let _calculatePrice = ( sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId ) => {
+let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId ) => {
   var total = 0;
+
+  //grab the starts cost
+  var startcost = Products.findOne({pn:"starter", category: "other"}).cost,
+      cutcost = Products.findOne({pn:"cut", category: "other"}).cost,
+      laborcost = Products.findOne({pn:"labor", category: "other"}).cost,
+      unioncost = Products.findOne({pn:"union", category: "other"}).cost,
+      profilecost = Products.findOne({pn:profileId, category: "profile"}).cost,
+      stripcost = Products.findOne({pn:stripId, category: "strip"}).cost,
+      lenscost = Products.findOne({pn:lensId, category: "lens"}).cost,
+      endcapcost = Products.findOne({pn:endcapId, category: "endcap"}).cost,
+      bracketcost = Products.findOne({pn:bracketId, category: "bracket"}).cost;
 
   //calculate price for each driver needed
   //also calculate the price for starter wires. always will be one per driver.
-  _.forEach( drivers, function() ) {
-    var qty = this.qty;
+  for(let i=0;i<drivers.length;i++) {
+    var qty = drivers[i].qty;
     //check that we have some of these drivers, no point in calculating prices to multiply by zero afterwards
     if( qty != 0 ){
       //grab this driver from the database
-      let driver = Products.find({pn:this.driver, category: "drivers"});
-      //grab the starts which we calculate at the same time
-      let start = Products.find({pn:"start", category: "other"});
+      let driver = Products.findOne({pn:drivers[i].driver, category: "drivers"});
       //increase total by cost of driver and start times value (which is qty)
-      total += (driver.cost + start.cost) * qty;
+      total += (driver.cost + startcost) * qty;
     }
   }
 
-  _.forEach( individuals, function() ){
-    var lenWattArray = this.lenWattArray;
-    
+  //check if we have any individuals in the entries
+  if( individuals.length != 0 ){
+    //calcutate price for the individuals
+    for(let i=0;i<individuals.length;i++) {
+      //this is what a lenWattArray looks like {qty:Number, len:Number, watt:Number, dimmable:boolean}
+      //this is split to 10 feet max lengths
+      var lenWattArray = individuals[i].lenWattArray[0];
+      //price for cuts
+      total += lenWattArray.qty * cutcost;
+      //price for labor
+      total += lenWattArray.qty * laborcost;
+      //price for profile
+      total += lenWattArray.qty * lenWattArray.len * profilecost
+      //price for lens
+      total += lenWattArray.qty * lenWattArray.len * lenscost
+      //price for strip
+      total += lenWattArray.qty * lenWattArray.len * stripcost
+      //price for bracket
+      total += lenWattArray.qty * (Math.floor(lenWattArray.len/12)) * bracketcost
+    }
   }
-  // + price for each bracket needed
 
-  // + price for each endcap needed
-
-  // + price for lens per inch
-  // + price for profile per inch
-  // + price for strip per inch
-
-  // + price per cuts
-
-  // + total labor
-
-  //TODO: check userId for role and calculate price for this role (OLED,NRG,LUMEN,USER)
-  if( Role.userIsInRole( userId, 'nrg' ) ) {
-
+  //check if we have any groups in the entries
+  if( sortedGroups.length != 0 ) {
+    //calcutate price for sorted groups
+    for(let i=0;i<sortedGroups.length;i++) {
+      //each sorted group is also an array with {group, lenWattArray} objects
+      let group = sortedGroups[i];
+      for(let j=0;j<group.length;j++) {
+        //this is what a lenWattArray looks like {qty:Number, len:Number, watt:Number, dimmable:boolean}
+        //this is split to 10 feet max lengths
+        var lenWattArray = group[j].lenWattArray;
+        //price for cuts
+        total += lenWattArray.qty * cutcost;
+        //price for labor
+        total += lenWattArray.qty * laborcost;
+        //price for profile
+        total += lenWattArray.qty * lenWattArray.len * profilecost;
+        //price for lens
+        total += lenWattArray.qty * lenWattArray.len * lenscost;
+        //price for strip
+        total += lenWattArray.qty * lenWattArray.len * stripcost;
+        //price for bracket
+        total += lenWattArray.qty * (Math.floor(lenWattArray.len/12)) * bracketcost;
+      }
+      //we calculate the unions needed for these groups, two cables per union
+      total += (group.length - 1) * 2 * unioncost;
+    }
   }
+
+  //this is rowArray {len,qty,dimmable,group}
+  for(let i=0;i<rowArray.length;i++) {
+    let qty = rowArray[i].qty,
+        len = rowArray[i].len;
+    //price for endcaps
+    total += qty * 2 * endcapcost;
+    //calculate the rest of the possibly needed unions if some individuals
+    //or groups have longer than 10 feet fixtures
+    //floor(len/120)= # of unions needed (237in / 120 = 1.975 floor-> 1)
+    //that's a 19 ish feet fixture which will have to be split in two (1 union)
+    total += Math.floor(len/120) * 2 * qty * unioncost
+  }
+
+  //cost is directly the calculated total from the database
+  let oled_total = total,
+      nrg_total = oled_total / Prices.findOne().multiplierNRG,
+      lumen_total = nrg_total / Prices.findOne().multiplierLumen,
+      others_total = nrg_total / Prices.findOne().multiplierOthers;
+
+  //check if users need to have lumen factor or other factor applied to client price
+  if( Roles.userIsInRole( userId, ['admin','manager','oled','nrg','lumen'] ) ) {
+    var client_total = lumen_total / Prices.findOne().multiplierClient;
+  }
+  else if( Roles.userIsInRole( userId, ['user'] ) ) {
+    var client_total = others_total / Prices.findOne().multiplierClient;
+  }
+
+  //TODO: Hash all prices which user has no privilege for so that we can't send this to email creation with security
 
   return total;
 }

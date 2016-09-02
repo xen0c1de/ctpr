@@ -117,10 +117,13 @@ Template.ctprCompleteModal.events({
         rowArray = [],
         groups = [],
         individuals = [],
-        breakvalue = false;
+        breakvalue = false,
+        //get the list of drivers from the database
+        drivers_list = Products.find({ category: "drivers" }).fetch();
 
-    $.each( Products.find({ category: "drivers" }), function(){
-      drivers.push( {driver:this.pn, qty:0} );
+    //grab each driver in database and set up array
+    $.each( drivers_list, function(){
+      drivers.push( {driver:$(this)[0].pn, qty:0} );
     });
 
     //loop over each table row to exctract information
@@ -187,7 +190,7 @@ Template.ctprCompleteModal.events({
       endcapId: Session.get("endcap_id"),
       bracketId: Session.get("bracket_id"),
       drivers: drivers,
-      user: Meteor.userId()
+      userId: Meteor.userId()
     }, ( error, response ) => {
       if ( error ) {
         Bert.alert({ message: error.reason, type: 'danger', style: 'growl-top-right' });
@@ -196,7 +199,7 @@ Template.ctprCompleteModal.events({
         drivers = response.drivers;
         groups = response.groups;
         individuals = response.individuals;
-        let total = response.total;
+        var total = response.total;
         //set our ReactiveDict with the groups, individuals and drivers
         //to store them while we wait for the user to submit
         template.state.set('drivers', drivers);
