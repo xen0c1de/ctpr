@@ -42,3 +42,4 @@ themeteorchef:bert
 dburles:google-maps
 npm-bcrypt@0.9.1
 shell-server@0.2.1
+jparker:crypto-aes

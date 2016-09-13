@@ -25,6 +25,12 @@ Template.ctprCompleteModal.onRendered( function() {
 });
 
 Template.ctprCompleteModal.events({
+  /*
+  Submit the form to send request
+  this will grab all the saved information from the ReactiveDict
+  and submit it to the server to send 3 mails.
+  one to oled, one to the logged user, one to the email in the submit field
+  */
   'submit form' ( event, template ) {
     event.preventDefault();
 
@@ -56,7 +62,9 @@ Template.ctprCompleteModal.events({
         drivers: drivers,
         groups: groups,
         individuals: individuals,
-        rowArray: rowArray
+        rowArray: rowArray,
+        total: total,
+        userId: Meteor.userId()
       }, ( error, response ) => {
         if ( error ) {
           Bert.alert({
@@ -78,7 +86,7 @@ Template.ctprCompleteModal.events({
           template.state.set('groups', []);
           template.state.set('individuals', []);
           template.state.set('rowArray', []);
-          template.state.set('total', 0);
+          template.state.set('total', {});
           Session.set("strip_id","");
           Session.set("lens_id","");
           Session.set("profile_id","");
@@ -93,6 +101,7 @@ Template.ctprCompleteModal.events({
           //empty placeholder for drivers
           $(".drivers-list").empty();
           $(".drivers-count").empty().append("0");
+          $(".price-value").empty().append("0$");
           //send out message
           Bert.alert({
             message: "Demande envoyé!",
@@ -110,6 +119,10 @@ Template.ctprCompleteModal.events({
       });
     }
   },
+  /*
+  this event calculates the drivers needed and prices.
+  It grabs all the needed information and sends it to the server.
+  */
   'click .calculate' (event, template) {
     //preset the drivers and qty array for output
     var drivers = [],
@@ -173,11 +186,13 @@ Template.ctprCompleteModal.events({
       }
     });
 
+    //we break the call to the server if we're missing some info
+    //no point in using resources for a missing form field.
     if(breakvalue){
       return;
     }
 
-    //save the input table for submission in case user changes table between
+    //save the input rows for submission in case user changes them between
     //calculations and submital
     template.state.set('rowArray', rowArray);
 
@@ -221,10 +236,13 @@ Template.ctprCompleteModal.events({
         //set the total number of drivers
         $(".drivers-count").append(counter);
         //set total price
-        $(".price-value").append(total+"$");
+        $(".price-value").append(total.client_total+"$");
       }
     });
   },
+  /*
+  When we change from individuals to groups or vice-versa
+  */
   'change select[name=group]' (event) {
         //find which row we're working on
     var rowId = $(event.currentTarget).closest('tr').prop("id"),
@@ -254,6 +272,9 @@ Template.ctprCompleteModal.events({
       }
     }
   },
+  /*
+  when we set a row to dimmable or not. This affects all in the same groups.
+  */
   'change input[type=checkbox][name=dim]' (event) {
         //find which row we're working on
     var rowId = $(event.currentTarget).closest('tr').prop("id"),
@@ -303,6 +324,7 @@ Template.ctprCompleteModal.events({
     //empty placeholder for drivers
     $(".drivers-list").empty();
     $(".drivers-count").empty().append("0");
+    $(".price-value").empty().append("0$");
     //empty strip id placeholder
     $("#stripId").empty();
     $( "#item-list" ).empty();
@@ -315,7 +337,7 @@ Template.ctprCompleteModal.events({
     template.state.set('groups', []);
     template.state.set('individuals', []);
     template.state.set('rowArray', []);
-    template.state.set('total', 0);
+    template.state.set('total', {});
     //clear error message
     $(".error-messages").empty();
   }

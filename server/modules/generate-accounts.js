@@ -6,13 +6,29 @@ let administrators = [
   }
 ];
 
+let nrg = [
+  {
+    name: { first: 'Francois', last: 'Lizotte' },
+    email: 'francois@nrgqc.com',
+    password: 'password'
+  }
+];
+
+let lumen = [
+  {
+    name: { first: 'Francois', last: 'Lizotte' },
+    email: 'info@nrgqc.com',
+    password: 'password'
+  }
+];
+
 let generateAccounts = () => {
-  let fakeUserCount = 5,
-      usersExist    = _checkIfAccountsExist( administrators.length + fakeUserCount );
+  let usersExist = _checkIfAccountsExist( administrators.length + nrg.length + lumen.length );
 
   if ( !usersExist ) {
     _createUsers( administrators );
-    _createUsers( _generateFakeUsers( fakeUserCount ) );
+    _createUsers( nrg );
+    _createUsers( lumen );
   }
 };
 
@@ -28,12 +44,15 @@ let _createUsers = ( users ) => {
 
     if ( !userExists ) {
       let userId  = _createUser( user ),
-          isAdmin = _checkIfAdmin( user.email );
+          isAdmin = _checkIfAdmin( user.email ),
+          isNrg = _checkIfNrg( user.email );
 
       if ( isAdmin ) {
         Roles.setUserRoles( userId, 'admin' );
+      } else if ( isNrg ) {
+        Roles.setUserRoles( userId, 'nrg' );
       } else {
-        Roles.setUserRoles( userId, 'user' );
+        Roles.setUserRoles( userId, 'lumen' );
       }
     }
   }
@@ -61,18 +80,10 @@ let _checkIfAdmin = ( email ) => {
   });
 };
 
-let _generateFakeUsers = ( count ) => {
-  let users = [];
-
-  for ( let i = 0; i < count; i++ ) {
-    users.push({
-      name: { first: faker.name.firstName(), last: faker.name.lastName() },
-      email: faker.internet.email(),
-      password: 'password'
-    });
-  }
-
-  return users;
+let _checkIfNrg = ( email ) => {
+  return _.find( nrg, ( nrg ) => {
+    return nrg.email === email;
+  });
 };
 
 Modules.server.generateAccounts = generateAccounts;

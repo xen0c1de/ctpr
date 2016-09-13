@@ -1,4 +1,5 @@
 _ = lodash;
+feetToMeter =  3.28084;
 
 /*
 Calculates the drivers needed to power all the fixtures described in the
@@ -23,7 +24,6 @@ let calculatePRFL = ( options ) => {
   for( let j=0;j<rowArray.length;j++ ) {
     //create the powerArray to use in calculating the drivers for the current row
     var lenWattArray = _createPowerArray( rowArray[j].len, rowArray[j].qty, rowArray[j].dimmable, stripId );
-
     //if this is the individual group we calculate the drivers immediatly.
     if ( rowArray[j].group === "ind" ){
       //store the individual split for email
@@ -58,11 +58,10 @@ let calculatePRFL = ( options ) => {
     //sortedGroups contains the arrays of objects with matching groups.
     //for example 3 lines with groups a, a and b would form an array of 2 arrays
     //such as [[{group:"a", lenWattArray},{group:"a", lenWattArray}],[{group:"b", lenWattArray}]]
-
     //update the drivers while looping over the previous sortedGroups
     for(let i=0;i<sortedGroups.length;i++){
       //this is the group fetched in the sortedGroups
-      var groupArray = result[i],
+      var groupArray = sortedGroups[i],
           groupLenWattArray = [];
       //loop over each group updating needed drivers for each row
       for(let j=0;j<groupArray.length;j++){
@@ -113,24 +112,24 @@ let _splitLengths = ( len, qty, dimmable, wattMeter, lenWattArray ) => {
   //while the len is greater than 20 feet (240in)
   while( len >= 240 ){
     //insert a new object with len of 10 feet (120in) and the watt per meter value for that lenght
-    //3.71 = 120/12/3.37/0.8 (120in/12 -> feet /3.37 -> meters /0.8 -> 80% factor for drivers consumption)
-    lenWattArray.push({qty:qty, len:120, watt:3.71*wattMeter, dimmable: dimmable});
+    //(120in/12 -> feet /3.28084 -> meters /0.8 -> 80% factor for drivers consumption)
+    lenWattArray.push({qty:qty, len:120, watt:(10/feetToMeter*wattMeter/0.8).toFixed(2), dimmable: dimmable});
     //reduce the len by 10 feet
     len -= 120;
   }
   if( len < 240 && len > 120 ){
     let half = len/2,
         //div by 12(feet)/3.37(to meters)/0.8(80% power consumption)
-        powerConsumption = half/12/3.37*wattMeter/0.8;
+        powerConsumption = half/12/feetToMeter*wattMeter/0.8;
     //push both halves into array
-    lenWattArray.push({qty:qty, len:half, watt:powerConsumption, dimmable: dimmable});
-    lenWattArray.push({qty:qty, len:half, watt:powerConsumption, dimmable: dimmable});
+    lenWattArray.push({qty:qty, len:half, watt:powerConsumption.toFixed(2), dimmable: dimmable});
+    lenWattArray.push({qty:qty, len:half, watt:powerConsumption.toFixed(2), dimmable: dimmable});
   }
   else {
     //when the len falls under 10 feet, push it directly
     //div by 12(feet)/3.37(to meters)/0.8(80% power consumption)
-    let powerConsumption = len/12/3.37*wattMeter/0.8;
-    lenWattArray.push({qty:qty, len:len, watt:powerConsumption, dimmable: dimmable});
+    let powerConsumption = len/12/feetToMeter*wattMeter/0.8;
+    lenWattArray.push({qty:qty, len:len, watt:powerConsumption.toFixed(2), dimmable: dimmable});
   }
   //return array for this lenght
   return lenWattArray;
@@ -185,6 +184,7 @@ and 30 45 60 80 100 200 watts dimmable
 */
 let _selectDriver = ( powerConsumption, dimmable ) => {
   //driver lists
+  //TODO: populate with database drivers instead of hardcoded
   var dimDrivers = [200, 100, 80, 60, 45, 30],
       nonDimDrivers = [200, 100, 60, 30];
 
@@ -267,8 +267,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       total += lenWattArray.qty * lenWattArray.len * lenscost
       //price for strip
       total += lenWattArray.qty * lenWattArray.len * stripcost
-      //price for bracket
-      total += lenWattArray.qty * (Math.floor(lenWattArray.len/12)) * bracketcost
+      //price for bracket (1 every 3 feet)
+      total += lenWattArray.qty * (Math.ceil(lenWattArray.len/36)) * bracketcost
     }
   }
 
@@ -278,10 +278,12 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
     for(let i=0;i<sortedGroups.length;i++) {
       //each sorted group is also an array with {group, lenWattArray} objects
       let group = sortedGroups[i];
+
       for(let j=0;j<group.length;j++) {
         //this is what a lenWattArray looks like {qty:Number, len:Number, watt:Number, dimmable:boolean}
         //this is split to 10 feet max lengths
-        var lenWattArray = group[j].lenWattArray;
+        var lenWattArray = group[j].lenWattArray[0];
+
         //price for cuts
         total += lenWattArray.qty * cutcost;
         //price for labor
@@ -292,8 +294,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
         total += lenWattArray.qty * lenWattArray.len * lenscost;
         //price for strip
         total += lenWattArray.qty * lenWattArray.len * stripcost;
-        //price for bracket
-        total += lenWattArray.qty * (Math.floor(lenWattArray.len/12)) * bracketcost;
+        //price for bracket (1 every 3 feet)
+        total += lenWattArray.qty * (Math.ceil(lenWattArray.len/36)) * bracketcost;
       }
       //we calculate the unions needed for these groups, two cables per union
       total += (group.length - 1) * 2 * unioncost;
@@ -314,22 +316,49 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
   }
 
   //cost is directly the calculated total from the database
-  let oled_total = total,
-      nrg_total = oled_total / Prices.findOne().multiplierNRG,
-      lumen_total = nrg_total / Prices.findOne().multiplierLumen,
-      others_total = nrg_total / Prices.findOne().multiplierOthers;
+  let oled_total = total.toFixed(2),
+      nrg_total = (oled_total / Prices.findOne().multiplierNRG).toFixed(2),
+      lumen_total = (nrg_total / Prices.findOne().multiplierLumen).toFixed(2),
+      others_total = (nrg_total / Prices.findOne().multiplierOthers).toFixed(2);
 
   //check if users need to have lumen factor or other factor applied to client price
   if( Roles.userIsInRole( userId, ['admin','manager','oled','nrg','lumen'] ) ) {
-    var client_total = lumen_total / Prices.findOne().multiplierClient;
+    var client_total = (lumen_total / Prices.findOne().multiplierClient).toFixed(2);
   }
   else if( Roles.userIsInRole( userId, ['user'] ) ) {
-    var client_total = others_total / Prices.findOne().multiplierClient;
+    var client_total = (others_total / Prices.findOne().multiplierClient).toFixed(2);
   }
 
-  //TODO: Hash all prices which user has no privilege for so that we can't send this to email creation with security
-
-  return total;
+  //encrypt totals which logged in user has no access to
+  //in case of admins or oled employees
+  if( Roles.userIsInRole( userId, ['admin','manager','oled'] ) ) {
+    //return all values in clear
+    return {oled_total: oled_total, nrg_total: nrg_total, lumen_total: lumen_total, others_total: others_total, client_total: client_total};
+  }
+  //in case of nrg employee
+  else if( Roles.userIsInRole( userId, ['nrg'] ) ) {
+    //encrypt oled cost
+    oled_total = CryptoJS.AES.encrypt(oled_total, Meteor.settings.private.secretPassphrase).toString();
+    return {oled_total: oled_total, nrg_total: nrg_total, lumen_total: lumen_total, others_total: others_total, client_total: client_total};
+  }
+  //in case of lumen employee
+  else if( Roles.userIsInRole( userId, ['lumen'] ) ) {
+    //encrypt oled, nrg costs and dont include others prices since they are the competition
+    oled_total = CryptoJS.AES.encrypt(oled_total, Meteor.settings.private.secretPassphrase).toString();
+    nrg_total = CryptoJS.AES.encrypt(nrg_total, Meteor.settings.private.secretPassphrase).toString();
+    return {oled_total: oled_total, nrg_total: nrg_total, lumen_total: lumen_total, client_total: client_total};
+  }
+  //in case of user which is others (refactor maybe?)
+  else if( Roles.userIsInRole( userId, ['user'] ) ) {
+    //we encrypt oled and nrg costs and dont include lumen price
+    oled_total = CryptoJS.AES.encrypt(oled_total, Meteor.settings.private.secretPassphrase).toString();
+    nrg_total = CryptoJS.AES.encrypt(nrg_total, Meteor.settings.private.secretPassphrase).toString();
+    return {oled_total: oled_total, nrg_total: nrg_total, others_total: others_total, client_total: client_total};
+  }
+  else {
+    //should the user be any other ROLES (impossible unless some strange bug/hack) we return only the client price for safety
+    return {oled_total: 0, nrg_total: 0, lumen_total: 0, others_total: 0, client_total: client_total};
+  }
 }
 
 Modules.server.calculatePRFL = calculatePRFL;

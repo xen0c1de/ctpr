@@ -107,7 +107,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td bgcolor="#ffffff" align="center" style="padding: 15px;" class="section-padding">
-      <table border="0" cellpadding="0" cellspacing="0" width="500" class="responsive-table">
+      <table border="0" cellpadding="0" cellspacing="0" width="700" class="responsive-table">
         <tr>
           <td>
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -117,37 +117,37 @@
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                        <img style="width: 100%; max-width: 270px;" src="http://www.o-led.ca/wp-content/uploads/2014/10/O-LED-WHI.png" alt="O-LED.ca">
+                        <img style="width: 100%; max-width: 270px;" src="http://www.o-led.ca/wp-content/uploads/2014/10/O-LED-e1414173718415.png" alt="O-LED.ca">
                       </td>
                     </tr>
                     <tr>
-                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Demande de soumission pour : {{name}}</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy"><b>Demande de soumission pour :</b> {{name}}</td>
                     </tr>
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                        Voici le PRFL selectionné :
+                        <b>Voici le PRFL selectionné :</b>
                         <ul>
                           {{#each ctpr}}
                             <li>{{this}}</li>
                           {{/each}}
                         </ul>
-                        Ayant le code de produit suivant : {{code}}
+                        <b>Ayant le code de produit suivant :</b> {{code}}
                       </td>
                     </tr>
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                           <thead>
-                            <th>
+                            <th align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
                               GROUPE
                             </th>
-                            <th>
+                            <th align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
                               QTÉ
                             </th>
-                            <th>
+                            <th align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
                               LONGUEUR
                             </th>
-                            <th>
+                            <th align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
                               GRADABLE
                             </th>
                           </thead>
@@ -155,16 +155,16 @@
                             {{#each rowArray}}
                             <tr>
                               <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                                {{rowArray.group}}
+                                {{group}}
                               </td>
                               <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                                {{rowArray.qty}}
+                                {{qty}}
                               </td>
                               <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                                {{rowArray.len}}
+                                {{len}}
                               </td>
                               <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                                {{#if rowArray.dimmable}}
+                                {{#if dimmable}}
                                   Gradable
                                 {{else}}
                                   Non-gradable
@@ -177,7 +177,33 @@
                       </td>
                     </tr>
                     <tr>
-                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Votre prix budget : {{total}}</td>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <thead>
+                            <th align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                              DRIVER
+                            </th>
+                            <th align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                              QTÉ
+                            </th>
+                          </thead>
+                          <tbody>
+                            {{#each drivers}}
+                            <tr>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{driver}}
+                              </td>
+                              <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                                {{qty}}
+                              </td>
+                            </tr>
+                            {{/each}}
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy"><b>Votre prix budget :</b> {{total.client_total}}$</td>
                     </tr>
                     <tr>
                       <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">Nous vous remercions et serons en contact avec vous dans les plus brefs délais.</td>
@@ -204,8 +230,8 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td align="left" style="padding: 20px 0 0 0; font-size: 12px; line-height: 16px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
+                    <span class="appleFooter" style="color:#666666;"><a href="http://www.o-led.ca">O-LED.CA</a></span>
                     <span class="appleFooter" style="color:#666666;">293 Industriel, St-Eustache, QC, J7R 6B7, Canada</span>
-                    <span class="appleFooter" style="color:#666666;"><a href="http://www.o-led.ca"></a></span>
                 </td>
               </tr>
             </table>
