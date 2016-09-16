@@ -1,12 +1,32 @@
 let products = [
   //drivers
   {
+    pn: '15W',
+    desc: 'Driver 15W',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: ["15"],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '20W',
+    desc: 'Driver 20W',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: ["20"],
+    colors: [],
+    ips: []
+  },
+  {
     pn: '30W',
     desc: 'Driver 30W',
     category: 'drivers',
     cost: 10,
     attributes: [],
-    powers: [],
+    powers: ["30"],
     colors: [],
     ips: []
   },
@@ -16,7 +36,7 @@ let products = [
     category: 'drivers',
     cost: 10,
     attributes: [],
-    powers: [],
+    powers: ["60"],
     colors: [],
     ips: []
   },
@@ -26,7 +46,17 @@ let products = [
     category: 'drivers',
     cost: 10,
     attributes: [],
-    powers: [],
+    powers: ["100"],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '150W',
+    desc: 'Driver 150W',
+    category: 'drivers',
+    cost: 10,
+    attributes: [],
+    powers: ["150"],
     colors: [],
     ips: []
   },
@@ -36,7 +66,27 @@ let products = [
     category: 'drivers',
     cost: 10,
     attributes: [],
-    powers: [],
+    powers: ["200"],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '12W dim',
+    desc: 'Driver 12W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: ["dimmable"],
+    powers: ["12"],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '20W dim',
+    desc: 'Driver 20W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: ["dimmable"],
+    powers: ["20"],
     colors: [],
     ips: []
   },
@@ -45,8 +95,8 @@ let products = [
     desc: 'Driver 30W gradable',
     category: 'drivers',
     cost: 10,
-    attributes: [],
-    powers: [],
+    attributes: ["dimmable"],
+    powers: ["30"],
     colors: [],
     ips: []
   },
@@ -55,8 +105,8 @@ let products = [
     desc: 'Driver 45W gradable',
     category: 'drivers',
     cost: 10,
-    attributes: [],
-    powers: [],
+    attributes: ["dimmable"],
+    powers: ["45"],
     colors: [],
     ips: []
   },
@@ -65,8 +115,8 @@ let products = [
     desc: 'Driver 60W gradable',
     category: 'drivers',
     cost: 10,
-    attributes: [],
-    powers: [],
+    attributes: ["dimmable"],
+    powers: ["60"],
     colors: [],
     ips: []
   },
@@ -75,8 +125,8 @@ let products = [
     desc: 'Driver 80W gradable',
     category: 'drivers',
     cost: 10,
-    attributes: [],
-    powers: [],
+    attributes: ["dimmable"],
+    powers: ["80"],
     colors: [],
     ips: []
   },
@@ -85,8 +135,18 @@ let products = [
     desc: 'Driver 100W gradable',
     category: 'drivers',
     cost: 10,
-    attributes: [],
-    powers: [],
+    attributes: ["dimmable"],
+    powers: ["100"],
+    colors: [],
+    ips: []
+  },
+  {
+    pn: '150W dim',
+    desc: 'Driver 150W gradable',
+    category: 'drivers',
+    cost: 10,
+    attributes: ["dimmable"],
+    powers: ["150"],
     colors: [],
     ips: []
   },
@@ -95,8 +155,8 @@ let products = [
     desc: 'Driver 200W gradable',
     category: 'drivers',
     cost: 10,
-    attributes: [],
-    powers: [],
+    attributes: ["dimmable"],
+    powers: ["200"],
     colors: [],
     ips: []
   },

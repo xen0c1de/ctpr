@@ -11,12 +11,15 @@ groups: list of groups with their fixtures (broken down into manufacturering sta
 individuals: list of individuals fixtures (broken down into manufacturering standards),
 rowArray: array of rows as entered by user
 total: totals (oled, nrg, lumen, others, client) for this PRFL
+userId: id of logged user
 date: date of sending
 */
 let request = ( options ) => {
-  var clientEmail = _prepareClientEmail( options.name, options.ctpr, options.rowArray, options.drivers, options.total, options.code, options.date );
-      oledEmail = _prepareOledEmail( options );
+  var clientEmail = _prepareClientEmail( options.name, options.ctpr, options.rowArray, options.drivers, options.total, options.code, options.date ),
+      oledEmail = _prepareOledEmail( options ),
+      loggedUserEmail = _prepareLoggedUserEmail( options.name, options.phone, options.email, options.ctpr, options.rowArray, options.drivers, options.total, options.code, options.date, options.userId );
   _sendRequest( options.email, clientEmail );
+  _sendRequest( Meteor.users.findOne( options.userId ).emails[0].address, loggedUserEmail );
   _sendRequest( Meteor.settings.private.quoteEmail, oledEmail );
 };
 
@@ -30,8 +33,35 @@ let _prepareClientEmail = ( name, ctpr, rowArray, drivers, total, code, date ) =
   //find all drivers with qty not 0
   let newDrivers = _.filter(drivers, function(o){ return o.qty != 0 });
 
-  SSR.compileTemplate( 'invitation', Assets.getText( 'email/templates/requestClient.html' ) );
-  let html = SSR.render( 'invitation', { name: name, ctpr: ctpr, rowArray: rowArray, drivers: newDrivers, total: total, code: code, date: date } );
+  SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestClient.html' ) );
+  let html = SSR.render( 'request', { name: name, ctpr: ctpr, rowArray: rowArray, drivers: newDrivers, total: total, code: code, date: date } );
+
+  return html;
+};
+
+/*
+prepare the email for the logged user
+needing the name, PRFL he selected which each row entered, the actual code, created date and the total price.
+*/
+let _prepareLoggedUserEmail = ( name, phone, email, ctpr, rowArray, drivers, total, code, date, userId ) => {
+  let domain = Meteor.settings.private.domain;
+
+  //check the user role so we know which price to send
+  if( Roles.userIsInRole( userId, ['nrg'] ) ) {
+    //compile email for nrg
+    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserNrg.html' ) );
+  } else if ( Roles.userIsInRole( userId, ['lumen'] ) ) {
+    //compile email for lumen
+    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserLumen.html' ) );
+  } else if ( Roles.userIsInRole( userId, ['user'] ) ) {
+    //compile email for others
+    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserOthers.html' ) );
+  }
+
+  //find all drivers with qty not 0
+  let newDrivers = _.filter(drivers, function(o){ return o.qty != 0 });
+
+  let html = SSR.render( 'request', { name: name, phone: phone, email: email, ctpr: ctpr, rowArray: rowArray, drivers: newDrivers, total: total, code: code, date: date } );
 
   return html;
 };
@@ -52,7 +82,7 @@ let _prepareOledEmail = ( options ) => {
     //set the decrypted price in place
     options.total.oled_total = oled_total;
   //else if it's lumen or others we'll need to decrypt oled and nrg
-  } else if ( Roles.userIsInRole( userId, ['lumen'] ) ) {
+  } else if ( Roles.userIsInRole( userId, ['lumen', 'user'] ) ) {
     let oled_total = options.total.oled_total,
         nrg_total = options.total.nrg_total;
     //decrypt the oled and nrg cost
@@ -67,8 +97,8 @@ let _prepareOledEmail = ( options ) => {
   //find all drivers with qty not 0
   options.drivers = _.filter(drivers, function(o){ return o.qty != 0 });
 
-  SSR.compileTemplate( 'invitation', Assets.getText( 'email/templates/requestOLED.html' ) );
-  let html = SSR.render( 'invitation', { email: options.email,
+  SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestOLED.html' ) );
+  let html = SSR.render( 'request', { email: options.email,
                                         name: options.name,
                                         phone: options.phone,
                                         ctpr: options.ctpr,

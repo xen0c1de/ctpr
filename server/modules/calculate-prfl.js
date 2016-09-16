@@ -57,20 +57,33 @@ let calculatePRFL = ( options ) => {
 
     //sortedGroups contains the arrays of objects with matching groups.
     //for example 3 lines with groups a, a and b would form an array of 2 arrays
-    //such as [[{group:"a", lenWattArray},{group:"a", lenWattArray}],[{group:"b", lenWattArray}]]
+    //such as [[{group:"a", lenWattArray},{group:"a", lenWattArray}],
+    //         [{group:"b", lenWattArray},{group:"b", lenWattArray},etc...],etc...]
     //update the drivers while looping over the previous sortedGroups
     for(let i=0;i<sortedGroups.length;i++){
-      //this is the group fetched in the sortedGroups
+      //this is the group fetched in the sortedGroups (ex: group a above ->
+      //  [{group:"a", lenWattArray},{group:"a", lenWattArray}])
       var groupArray = sortedGroups[i],
           groupLenWattArray = [];
-      //loop over each group updating needed drivers for each row
+      //loop over each element in that group (ex: so first {group:"a", lenWattArray} then the next )
       for(let j=0;j<groupArray.length;j++){
-        //loop over each lenght and watt array to create a single lenWattArray for this group
-        for(let k=0;k<groupArray[j].lenWattArray.length;k++){
-          groupLenWattArray.push({qty:groupArray[j].lenWattArray[k].qty,
-                                  len:groupArray[j].lenWattArray[k].len,
-                                  watt:groupArray[j].lenWattArray[k].watt,
-                                  dimmable: groupArray[j].lenWattArray[k].dimmable});
+        var lenWattArray = groupArray[j].lenWattArray;
+        //loop over each lenght and watt array (meaning in case we have some
+        //lengths that have been split because they were longer than 10 feet)
+        //(ex: a 13feet would be a 10ft + a 3ft, making a length 2 array)
+        for(let k=0;k<lenWattArray.length;k++){
+          //we want to split the groups up so we have single fixtures per lenWattArray
+          //we'll loop over the qty to get there. so in this exemple we'll take the following
+          //group a has 2 x 45in and 3 x 36in -> would make 5 entries.
+          for(let l=0;l<lenWattArray[k].qty;l++){
+            //the point is that for grouped fixtures, we can't calculate driver requirements
+            //as the individuals. (ie. 2x45in does not mean they both need a driver, they'll be put together
+            //and so may be powered by the same driver depending on powerConsumption)
+            groupLenWattArray.push({qty:1,
+                                    len:lenWattArray[k].len,
+                                    watt:lenWattArray[k].watt,
+                                    dimmable: lenWattArray[k].dimmable});
+          }
         }
       }
       //update the drivers array with the required drivers
@@ -145,26 +158,30 @@ by the same driver. (to max of 200W and 20')
 */
 let _updateDriversArray = ( lenWattArray, drivers ) => {
   var totalConsumption = 0,
-      totalLenght = 0;
+      totalLength = 0;
 
   //loop through array of powerConsumption
   for( let j=0;j<lenWattArray.length;j++ ) {
+    let watt = Number(lenWattArray[j].watt),
+        len = Number(lenWattArray[j].len),
+        qty = Number(lenWattArray[j].qty),
+        dimmable = lenWattArray[j].dimmable;
     //check if we'd be over 200W (max for drivers) or that the length i greater that 20 feet (max before power loss)
-    if( totalConsumption + lenWattArray[j].watt > 200 || totalLenght + lenWattArray[j].len > 240 ){
+    if( totalConsumption + watt > 200 || totalLength + len > 240 ){
       //select the right driver for the current totalConsumption
-      let driver = _selectDriver(totalConsumption, lenWattArray[j].dimmable);
+      let driver = _selectDriver(totalConsumption, dimmable);
       //add to that driver's qty of value in array.
-      _.find(drivers, ['driver',driver]).qty += lenWattArray[j].qty;
+      _.find(drivers, ['driver',driver]).qty += qty;
       //reset totalConsumption and add current powerConsumption j
-      totalConsumption = lenWattArray[j].watt;
+      totalConsumption = watt;
       //reset totalLenght and add current length
-      totalLenght = lenWattArray[j].len;
+      totalLength = len;
     }
     else {
       //increase total consumption
-      totalConsumption += lenWattArray[j].watt;
+      totalConsumption += watt;
       //increase total length
-      totalLenght += lenWattArray[j].len;
+      totalLength += len;
     }
   }
   //When we exit loop, we calculate driver for the remaining totalConsumption
@@ -184,9 +201,23 @@ and 30 45 60 80 100 200 watts dimmable
 */
 let _selectDriver = ( powerConsumption, dimmable ) => {
   //driver lists
-  //TODO: populate with database drivers instead of hardcoded
-  var dimDrivers = [200, 100, 80, 60, 45, 30],
-      nonDimDrivers = [200, 100, 60, 30];
+  let dimDrivers = [];
+  let nonDimDrivers = [];
+
+  //get all the dimmable drivers (only the powers field, we don't need the rest)
+  let drivers = Products.find({category: "drivers"}, {fields: {powers: 1, attributes: 1}});
+  //loop over them and push the power value in number format into the array.
+  drivers.forEach(function(driver){
+    //push them into proper array based on dimmable attribute
+    if( driver.attributes[0] === "dimmable" ){
+      dimDrivers.push(Number(driver.powers[0]));
+    } else {
+      nonDimDrivers.push(Number(driver.powers[0]));
+    }
+  });
+  //sort descending order
+  dimDrivers.sort(function(a, b){return b-a});
+  nonDimDrivers.sort(function(a, b){return b-a});
 
   if( dimmable ) {
     //no point in starting at 200w because we'll never reach it
@@ -254,21 +285,25 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
   if( individuals.length != 0 ){
     //calcutate price for the individuals
     for(let i=0;i<individuals.length;i++) {
+      var lenWattArray = individuals[i].lenWattArray;
       //this is what a lenWattArray looks like {qty:Number, len:Number, watt:Number, dimmable:boolean}
-      //this is split to 10 feet max lengths
-      var lenWattArray = individuals[i].lenWattArray[0];
-      //price for cuts
-      total += lenWattArray.qty * cutcost;
-      //price for labor
-      total += lenWattArray.qty * laborcost;
-      //price for profile
-      total += lenWattArray.qty * lenWattArray.len * profilecost
-      //price for lens
-      total += lenWattArray.qty * lenWattArray.len * lenscost
-      //price for strip
-      total += lenWattArray.qty * lenWattArray.len * stripcost
-      //price for bracket (1 every 3 feet)
-      total += lenWattArray.qty * (Math.ceil(lenWattArray.len/36)) * bracketcost
+      //this is split to 10 feet max lengths (which is why we need to loop over it in case we have a split)
+      for(let k=0;k<lenWattArray.length;k++) {
+        let qty = Number(lenWattArray[k].qty),
+            len = Number(lenWattArray[k].len);
+        //price for cuts
+        total += qty * cutcost;
+        //price for labor
+        total += qty * laborcost;
+        //price for profile
+        total += qty * len * profilecost
+        //price for lens
+        total += qty * len * lenscost
+        //price for strip
+        total += qty * len * stripcost
+        //price for bracket (1 every 3 feet)
+        total += qty * (Math.ceil(len/36)) * bracketcost
+      }
     }
   }
 
@@ -280,22 +315,25 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       let group = sortedGroups[i];
 
       for(let j=0;j<group.length;j++) {
+        var lenWattArray = group[j].lenWattArray;
         //this is what a lenWattArray looks like {qty:Number, len:Number, watt:Number, dimmable:boolean}
-        //this is split to 10 feet max lengths
-        var lenWattArray = group[j].lenWattArray[0];
-
-        //price for cuts
-        total += lenWattArray.qty * cutcost;
-        //price for labor
-        total += lenWattArray.qty * laborcost;
-        //price for profile
-        total += lenWattArray.qty * lenWattArray.len * profilecost;
-        //price for lens
-        total += lenWattArray.qty * lenWattArray.len * lenscost;
-        //price for strip
-        total += lenWattArray.qty * lenWattArray.len * stripcost;
-        //price for bracket (1 every 3 feet)
-        total += lenWattArray.qty * (Math.ceil(lenWattArray.len/36)) * bracketcost;
+        //this is split to 10 feet max lengths (which is why we need to loop over it in case we have a split)
+        for(let k=0;k<lenWattArray.length;k++) {
+          let qty = Number(lenWattArray[k].qty),
+              len = Number(lenWattArray[k].len);
+          //price for cuts
+          total += qty * cutcost;
+          //price for labor
+          total += qty * laborcost;
+          //price for profile
+          total += qty * len * profilecost;
+          //price for lens
+          total += qty * len * lenscost;
+          //price for strip
+          total += qty * len * stripcost;
+          //price for bracket (1 every 3 feet)
+          total += qty * (Math.ceil(len/36)) * bracketcost;
+        }
       }
       //we calculate the unions needed for these groups, two cables per union
       total += (group.length - 1) * 2 * unioncost;

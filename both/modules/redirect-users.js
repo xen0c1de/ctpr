@@ -12,6 +12,8 @@ let _sendUserToDefault = ( redirect ) => {
   if ( roles[0] === 'manager' )  {
     _redirectUser( 'managers', redirect );
   }
+
+  _redirectUser( 'home', redirect );
 };
 
 let _getCurrentUserRoles = () => {
