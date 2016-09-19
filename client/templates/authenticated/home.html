@@ -8,10 +8,10 @@
   </p>
 </div>
 <div class="cart" style="width:130px;height:120px;">
-  <button class="btn cart-hide" style="display:none;">
+  <button title="Fermer" class="btn cart-hide" style="display:none;">
     <span class="glyphicon glyphicon-menu-down logo-small" aria-hidden="true"></span>
   </button>
-  <button class="btn cart-show">
+  <button title="Ouvrir" class="btn cart-show">
     <span class="glyphicon glyphicon-menu-left logo-small" aria-hidden="true"></span>
   </button>
   <div class="resume text-center" style="display:none;">
@@ -25,17 +25,20 @@
     </div>
   </div>
   <div class="footer" style="display:none;">
-    <button class="reset btn">
+    <button title="Réinitialiser" class="reset btn">
       <span class="glyphicon glyphicon-remove-sign logo-small-red" aria-hidden="true"></span>
     </button>
-    <button class="continue btn" data-toggle="modal" data-backdrop="false" data-target="#ctpr-complete-modal">
+    <button title="Continuer" class="continue btn" data-toggle="modal" data-backdrop="false" data-target="#ctpr-complete-modal">
       <span class="glyphicon glyphicon-ok-sign logo-small" aria-hidden="true"></span>
     </button>
   </div>
 </div>
+<div>
+  <h3><b>Prennez note que vos sélections seront rapportées dans la zone flotante de droite que vous pouvez afficher et cacher en utilisant les flèches vertes.</b></h3>
+</div>
 <div id="profile" class="container-fluid text-center">
   <div class="row content text-left">
-    <h2>Ceci est du text expliquant l'application en étape avec du bla bla</h2>
+    <h3>Commencez par selectionner un type de profilé.</h3>
   </div>
   <div class="row content">
     {{#each profiles}}
@@ -59,6 +62,9 @@
   </div>
 </div>
 <div id="lens" class="container-fluid text-center">
+  <div class="row content text-left">
+    <h3>Maintenant faite un choix de lentille selon celles disponibles pour le profilé selectionné.</h3>
+  </div>
 	<div class="row content">
     {{#each lenses}}
     <div id="{{pn}}" class="col-sm-2 lens">
@@ -81,6 +87,9 @@
   </div>
 </div>
 <div id="endcap" class="container-fluid text-center">
+  <div class="row content text-left">
+    <h3>Ensuite, choisissez si votre PRFL aura des embouts ou non.</h3>
+  </div>
 	<div class="row content">
     {{#each endcaps}}
       <div id="{{pn}}" class="col-sm-2 endcap" style="display:none;">
@@ -103,6 +112,9 @@
   </div>
 </div>
 <div id="bracket" class="container-fluid text-center">
+  <div class="row content text-left">
+    <h3>Selectionnez le type de braquette désiré.</h3>
+  </div>
 	<div class="row content">
     {{#each brackets}}
     <div id="{{pn}}" class="col-sm-2 bracket">
@@ -125,6 +137,9 @@
   </div>
 </div>
 <div id="strip" class="container-fluid text-center">
+  <div class="row content text-left">
+    <h3>Finalement, faite un choix de ruban. (Voir les caractéristiques ci-dessous)<br>Vous devez faire un choix de TENSION D'ENTRÉE, de TEMPÉRATURE et d'IP.</h3>
+  </div>
   {{#each strips}}
   <div class="row content">
 		<div id="{{pn}}" class="col-sm-12 strip">
@@ -205,7 +220,7 @@
   <a href="#" title="To Top">
     <span class="glyphicon glyphicon-chevron-up"></span>
   </a>
-  <p>O-LED CTPR APP</p>
+  <p>O-LED PRFL APP</p>
 </footer>
 {{/if}}
 </template>

@@ -129,6 +129,8 @@ Template.home.events({
     $(".greyout").removeClass("greyout");
     //reset options checked on radios
     $( "input[type=radio]:checked" ).prop('checked', false);
+    //hide all endcaps
+    $(".endcap").hide();
     //empty complete code section
     $(".profile-code").empty();
     $(".lens-code").empty();
@@ -144,27 +146,39 @@ Template.home.events({
   },
   //clicking the continue button takes you to the next step
   'click .continue' (event) {
-    //get the selected ids
-    var strip_id = $(".strip.selected")[0].id;
-    var profile_id = $(".profile.selected")[0].id;
-    var lens_id = $(".lens.selected")[0].id;
-    var endcap_id = $(".endcap.selected")[0].id;
-    var bracket_id = $(".bracket.selected")[0].id;
-    //save ids to session
-    Session.set("strip_id",strip_id);
-    Session.set("profile_id",profile_id);
-    Session.set("endcap_id",endcap_id);
-    Session.set("lens_id",lens_id);
-    Session.set("bracket_id",bracket_id);
-    //check that all items have been selected
-    if ( $(".profile").hasClass("selected") &&
-          $(".lens").hasClass("selected") &&
-          $(".endcap").hasClass("selected") &&
-          $(".bracket").hasClass("selected") &&
-          $(".strip").hasClass("selected") &&
-          $("input[type=radio][name=power]."+strip_id+":checked").length == 1 &&
-          $("input[type=radio][name=color]."+strip_id+":checked").length == 1 &&
-          $("input[type=radio][name=ip]."+strip_id+":checked").length == 1 ) {
+    //check items have been selected
+    if ( $(".profile").hasClass("selected") && $(".lens").hasClass("selected") &&
+         $(".endcap").hasClass("selected") && $(".bracket").hasClass("selected") &&
+         $(".strip").hasClass("selected") ) {
+
+      //get the selected ids
+      var strip_id = $(".strip.selected")[0].id;
+      var profile_id = $(".profile.selected")[0].id;
+      var lens_id = $(".lens.selected")[0].id;
+      var endcap_id = $(".endcap.selected")[0].id;
+      var bracket_id = $(".bracket.selected")[0].id;
+    } else {
+      //else don't open modal window and show message
+      event.stopPropagation();
+      Bert.alert({
+        hideDelay: 4000,
+        message: 'Vous devez faire un choix dans chaque catégorie avant de continuer.',
+        type: 'warning',
+        style: 'growl-top-right'
+      });
+    }
+    //check that all inputs have been selected
+    if ( $("input[type=radio][name=power]."+strip_id+":checked").length == 1 &&
+         $("input[type=radio][name=color]."+strip_id+":checked").length == 1 &&
+         $("input[type=radio][name=ip]."+strip_id+":checked").length == 1 ) {
+
+      //save ids to session
+      Session.set("strip_id",strip_id);
+      Session.set("profile_id",profile_id);
+      Session.set("endcap_id",endcap_id);
+      Session.set("lens_id",lens_id);
+      Session.set("bracket_id",bracket_id);
+
       //grab all items from cart and copy them to modal window cart
       $( ".item-list li" ).each( function(){
         let item = $(this).text();
@@ -181,7 +195,7 @@ Template.home.events({
     }
     else {
       //else don't open modal window and show message
-      event.stopPropagation()
+      event.stopPropagation();
       Bert.alert({
         hideDelay: 4000,
         message: 'Vous devez faire un choix dans chaque catégorie avant de continuer.',
