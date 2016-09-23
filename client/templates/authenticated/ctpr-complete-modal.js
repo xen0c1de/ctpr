@@ -1,5 +1,6 @@
 Template.ctprCompleteModal.onCreated( function() {
   Template.instance().subscribe( 'products' );
+  Template.instance().subscribe( 'users' );
   //init a ReactiveDict to store data calculated but waiting for submission
   this.state = new ReactiveDict();
 });
@@ -10,18 +11,43 @@ Template.ctprCompleteModal.onRendered( function() {
       emailAddress: {
         required: true,
         email: true
+      },
+      emailDist: {
+        required: true,
+        email: true
       }
     },
     messages: {
       emailAddress: {
-        required: "Le courriel est requis!",
-        email: "L'adresse courriel n'est pas bien formée"
+        required: "Le courriel client est requis!",
+        email: "L'adresse courriel du client n'est pas bien formée"
+      },
+      emailDist: {
+        required: "Votre courriel est requis!",
+        email: "Votre adresse courriel n'est pas bien formée"
       }
     },
     errorPlacement: function(error, element) {
       error.appendTo( $(".error-messages") );
     }
   });
+});
+
+Template.ctprCompleteModal.helpers({
+  loggedUserName: function() {
+    var user = Meteor.user();
+
+    if ( user ) {
+      return user.profile.name.first + " " + user.profile.name.last;
+    }
+  },
+  loggedUserEmail: function() {
+    var user = Meteor.user();
+
+    if ( user ) {
+      return user.emails[0].address;
+    }
+  }
 });
 
 Template.ctprCompleteModal.events({
@@ -38,6 +64,11 @@ Template.ctprCompleteModal.events({
     var email = template.find( "[name='emailAddress']" ).value,
         name  = template.find( "[name='name']" ).value,
         phone = template.find( "[name='phone']" ).value,
+        emailDist = template.find( "[name='emailDist']" ).value,
+        phoneDist = template.find( "[name='phoneDist']" ).value,
+        nameDist = template.find( "[name='nameDist']" ).value,
+        company = template.find( "[name='company']" ).value,
+        project = template.find( "[name='project']" ).value,
         ctpr = [],
         drivers = template.state.get('drivers'),
         groups = template.state.get('groups'),
@@ -113,7 +144,7 @@ Template.ctprCompleteModal.events({
     } else {
       Bert.alert({
         hideDelay: 4000,
-        message: "S'il vous plaît saisir un courriel, nom et # de téléphone.",
+        message: "S'il vous plaît saisir un courriel, nom et # de téléphone pour vous et le client.",
         type: 'warning',
         style: 'growl-top-right'
       });
@@ -237,6 +268,8 @@ Template.ctprCompleteModal.events({
         $(".drivers-count").append(counter);
         //set total price
         $(".price-value").append(total.client_total+"$");
+        //enable send button
+        $("#submit").prop('disabled', false);
       }
     });
   },
@@ -326,10 +359,7 @@ Template.ctprCompleteModal.events({
     $(".drivers-count").empty().append("0");
     $(".price-value").empty().append("0$");
     //empty strip id placeholder
-    $("#stripId").empty();
     $( "#item-list" ).empty();
-    //clean strip selected
-    $("#stripId").empty();
     //clean code emplacement
     $("#codeId").empty();
     //empty out ReactiveDicts

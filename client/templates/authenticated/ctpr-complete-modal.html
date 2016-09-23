@@ -1,6 +1,6 @@
 <template name="ctprCompleteModal">
   <div class="modal fade" id="ctpr-complete-modal" tabindex="-1" role="dialog" aria-labelledby="ctpr-complete-modal" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -9,20 +9,56 @@
         <form id="ctpr-complete-form">
           <div class="modal-body">
             <div class="form-group">
-              <label for="emailAddress">Adresse courriel du client</label>
-              <input type="email" class="form-control" name="emailAddress">
-              <label for="name">Nom du client</label>
-              <input type="text" class="form-control" name="name">
-              <label for="phone">Téléphone du client</label>
-              <input type="text" class="form-control" name="phone">
+              <table class="clean">
+                <tr class="clean">
+                  <td class="clean">
+                    <label for="emailAddress">Courriel client</label>
+                    <input type="email" class="form-control" name="emailAddress">
+                  </td>
+                  <td class="clean">
+                    <label for="emailAddress">Votre courriel</label>
+                    <input type="email" class="form-control" name="emailDist" value="{{loggedUserEmail}}">
+                  </td>
+                </tr>
+                <tr class="clean">
+                  <td class="clean">
+                    <label for="name">Nom client</label>
+                    <input type="text" class="form-control" name="name">
+                  </td>
+                  <td class="clean">
+                    <label for="name">Votre nom</label>
+                    <input type="text" class="form-control" name="nameDist" value="{{loggedUserName}}">
+                  </td>
+                </tr>
+                <tr class="clean">
+                  <td class="clean">
+                    <label for="phone">Téléphone client</label>
+                    <input type="tel" class="form-control" name="phone">
+                  </td>
+                  <td class="clean">
+                    <label for="phone">Votre téléphone</label>
+                    <input type="tel" class="form-control" name="phoneDist">
+                  </td>
+                </tr>
+                <tr class="clean">
+                  <td class="clean">
+                    <label for="company">Compagnie client</label>
+                    <input type="text" class="form-control" name="company">
+                  </td>
+                  <td class="clean"></td>
+                </tr>
+              </table>
+            </div>
+            <div class="form-group">
+              <label for="projet">Nom du projet</label>
+              <input type="text" class="form-control" name="project">
             </div>
             <ul id="item-list" style="display:none;">
             </ul>
-            <span id="stripId" style="display:none;"></span>
             <span id="codeId" style="display:none;"></span>
             <div class="form-group">
               <table class="prfl-len">
-                <caption>Longueurs des PRFL requises (ex: Pour 3 x 96" écrire 3 dans qté et 96 dans longueur)</caption>
+                <caption>Longueurs des PRFL requises <br>(ex: Pour 3 x 96" écrire 3 dans qté et 96 dans longueur)</caption>
                 <thead>
                   <th>Groupe</th>
                   <th>Quantité</th>
@@ -83,7 +119,7 @@
           </div>
           <div class="modal-footer">
             <button id="close" type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-            <button type="submit" class="btn btn-success">Envoyer la demande</button>
+            <button id="submit" type="submit" class="btn btn-success" disabled>Envoyer la demande</button>
           </div>
         </form>
       </div>

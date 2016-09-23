@@ -25,8 +25,17 @@ table {
 }
 
 table, th, td {
-  border: 1px solid #bbb	;
+  border: 1px solid #bbb;
   border-collapse: collapse;
+}
+
+table.clean, th.clean, td.clean {
+	border: none;
+  border-collapse: collapse;
+}
+
+tr.clean:nth-child(odd) {
+  background-color: #fff;
 }
 
 caption {
@@ -57,7 +66,6 @@ th {
 
 th.notice{
 	color: red;
-	/*background-color: yellow;*/
 }
 
 th .btn:hover{
@@ -223,6 +231,13 @@ footer .glyphicon {
 	font-size: 20px;
 	margin-bottom: 20px;
 	color: #8CC63E;
+}
+
+@media (min-width: 992px) {
+	.modal-lg {
+    width: 900px;
+    height: 900px; /* control height here */
+	}
 }
 
 @media screen and (max-width: 768px) {
