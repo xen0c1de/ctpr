@@ -4,6 +4,11 @@ Meteor.methods({
       email: String,
       name: String,
       phone: String,
+      company: String,
+      project: String,
+      emailDist: String,
+      phoneDist: String,
+      nameDist: String,
       ctpr: Array,
       code: String,
       drivers: Array,
@@ -19,6 +24,11 @@ Meteor.methods({
         email: request.email,
         name: request.name,
         phone: request.phone,
+        company: request.company,
+        project: request.project,
+        emailDist: request.emailDist,
+        phoneDist: request.phoneDist,
+        nameDist: request.nameDist,
         ctpr: request.ctpr,
         code: request.code,
         drivers: request.drivers,
@@ -27,7 +37,7 @@ Meteor.methods({
         rowArray: request.rowArray,
         total: request.total,
         userId: request.userId,
-        date: ( new Date() ).toISOString()
+        date: ( new Date() ).toDateString()
       });
     } catch( exception ) {
       return exception;

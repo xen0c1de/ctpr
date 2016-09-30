@@ -3,21 +3,17 @@ let route = ( options ) => {
 };
 
 let _sendUserToDefault = ( redirect ) => {
-  let roles = _getCurrentUserRoles();
+  let userId = Meteor.userId();
 
-  if ( roles[0] === 'admin' )    {
+  if ( Roles.userIsInRole( userId, 'admin' ) )    {
     _redirectUser( 'users', redirect );
   }
 
-  if ( roles[0] === 'manager' )  {
+  if ( Roles.userIsInRole( userId, 'manager' ) )  {
     _redirectUser( 'managers', redirect );
   }
 
   _redirectUser( 'home', redirect );
-};
-
-let _getCurrentUserRoles = () => {
-  return Roles.getRolesForUser( Meteor.userId() );
 };
 
 let _redirectUser = ( path, redirect ) => {

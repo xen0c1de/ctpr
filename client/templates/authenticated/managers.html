@@ -21,7 +21,7 @@
                 <th>Catégorie</th>
                 <th>Cost</th>
                 <th>Attributes</th>
-                <th><button class="table-add glyphicon glyphicon-plus"></button></th>
+                <th><button title="Sauvegarder" class="profile-save glyphicon glyphicon-floppy-disk"></button></th>
               </thead>
               <tbody>
                 {{#each profiles}}
@@ -30,23 +30,20 @@
                   <td contenteditable="true">{{desc}}</td>
                   <td contenteditable="true">{{category}}</td>
                   <td contenteditable="true">{{cost}}</td>
-                  <td>{{#each attribute in attributes}}|{{attribute}}|{{/each}}</td>
+                  <td>
+                    <table class="clean">
+                      {{#each attribute in attributes}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
                   <td>
                     <button class="table-remove glyphicon glyphicon-remove"></button>
                   </td>
                 </tr>
                 {{/each}}
-                <!-- This is our clonable table line -->
-                <tr class="hide">
-                  <td contenteditable="true">undefined</td>
-                  <td contenteditable="true">undefined</td>
-                  <td contenteditable="true">undefined</td>
-                  <td contenteditable="true">0</td>
-                  <td contenteditable="true"></td>
-                  <td>
-                    <span class="table-remove glyphicon glyphicon-remove"></span>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>

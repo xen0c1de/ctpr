@@ -15,7 +15,6 @@ Template.header.events({
           type: 'warning',
           style: 'growl-top-right'
         });
-        Bert.alert( error.reason, 'warning' );
       } else {
         Bert.alert({
           message: 'Déconnexion!',

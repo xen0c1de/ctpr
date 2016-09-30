@@ -40,3 +40,12 @@ Template.managers.helpers({
     }
   }
 });
+
+Template.home.events({
+/* TODO: TABLE REMOVE
+  $('.table-remove').click(function () {
+    $(this).parents('tr').detach();
+  });
+
+  TODO: SAVE BY SECTION!!*/
+});

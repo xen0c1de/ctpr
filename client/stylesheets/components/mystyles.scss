@@ -72,6 +72,33 @@ th .btn:hover{
 	background-color: white;
 }
 
+.table-editable {
+  position: relative;
+
+  .glyphicon {
+    font-size: 20px;
+  }
+}
+
+.table-remove {
+  color: #700;
+  cursor: pointer;
+
+  &:hover {
+    color: #f00;
+  }
+}
+
+.profile-save {
+	color: darkblue;
+  cursor: pointer;
+	padding: 10px 5px;
+
+  &:hover {
+    color: blue;
+  }
+}
+
 .jumbotron {
   background-color: #8CC63E;
   color: #ffffff;

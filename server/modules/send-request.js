@@ -4,6 +4,11 @@ _ = lodash;
 email: email,
 name: name,
 phone: phone,
+company: company,
+project: project,
+emailDist: Distributor email,
+phoneDist: Distributor phone,
+nameDist: Distributor name,
 ctpr: string array of ctpr components,
 code: ctpr full product code,
 drivers: list of drivers needed,
@@ -15,9 +20,9 @@ userId: id of logged user
 date: date of sending
 */
 let request = ( options ) => {
-  var clientEmail = _prepareClientEmail( options.name, options.ctpr, options.rowArray, options.drivers, options.total, options.code, options.date ),
+  var clientEmail = _prepareClientEmail( options.name, options.project, options.nameDist, options.phoneDist, options.emailDist, options.ctpr, options.rowArray, options.drivers, options.total, options.code, options.date ),
       oledEmail = _prepareOledEmail( options ),
-      loggedUserEmail = _prepareLoggedUserEmail( options.name, options.phone, options.email, options.ctpr, options.rowArray, options.drivers, options.total, options.code, options.date, options.userId );
+      loggedUserEmail = _prepareLoggedUserEmail( options );
   _sendRequest( options.email, clientEmail );
   _sendRequest( Meteor.users.findOne( options.userId ).emails[0].address, loggedUserEmail );
   _sendRequest( Meteor.settings.private.quoteEmail, oledEmail );
@@ -27,14 +32,24 @@ let request = ( options ) => {
 prepare the email for the user
 needing the name, PRFL he selected which each row entered, the actual code and the total price.
 */
-let _prepareClientEmail = ( name, ctpr, rowArray, drivers, total, code, date ) => {
+let _prepareClientEmail = ( name, project, nameDist, phoneDist, emailDist, ctpr, rowArray, drivers, total, code, date ) => {
   let domain = Meteor.settings.private.domain;
 
   //find all drivers with qty not 0
   let newDrivers = _.filter(drivers, function(o){ return o.qty != 0 });
 
   SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestClient.html' ) );
-  let html = SSR.render( 'request', { name: name, ctpr: ctpr, rowArray: rowArray, drivers: newDrivers, total: total, code: code, date: date } );
+  let html = SSR.render( 'request', { name: name,
+                                      project: project,
+                                      nameDist: nameDist,
+                                      phoneDist: phoneDist,
+                                      emailDist: emailDist,
+                                      ctpr: ctpr,
+                                      rowArray: rowArray,
+                                      drivers: newDrivers,
+                                      total: total,
+                                      code: code,
+                                      date: date } );
 
   return html;
 };
@@ -43,9 +58,9 @@ let _prepareClientEmail = ( name, ctpr, rowArray, drivers, total, code, date ) =
 prepare the email for the logged user
 needing the name, PRFL he selected which each row entered, the actual code, created date and the total price.
 */
-let _prepareLoggedUserEmail = ( name, phone, email, ctpr, rowArray, drivers, total, code, date, userId ) => {
-  let domain = Meteor.settings.private.domain;
-
+let _prepareLoggedUserEmail = ( options ) => {
+  let domain = Meteor.settings.private.domain,
+      userId = options.userId;
   //check the user role so we know which price to send
   if( Roles.userIsInRole( userId, ['nrg'] ) ) {
     //compile email for nrg
@@ -56,12 +71,30 @@ let _prepareLoggedUserEmail = ( name, phone, email, ctpr, rowArray, drivers, tot
   } else if ( Roles.userIsInRole( userId, ['user'] ) ) {
     //compile email for others
     SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserOthers.html' ) );
+  } else if ( Roles.userIsInRole( userId, ['oled'] ) ) {
+    //compile email for others
+    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestOLED.html' ) );
   }
 
   //find all drivers with qty not 0
-  let newDrivers = _.filter(drivers, function(o){ return o.qty != 0 });
+  let newDrivers = _.filter(options.drivers, function(o){ return o.qty != 0 });
 
-  let html = SSR.render( 'request', { name: name, phone: phone, email: email, ctpr: ctpr, rowArray: rowArray, drivers: newDrivers, total: total, code: code, date: date } );
+  let html = SSR.render( 'request', { email: options.email,
+                                        name: options.name,
+                                        phone: options.phone,
+                                        company: options.company,
+                                        project: options.project,
+                                        emailDist: options.emailDist,
+                                        phoneDist: options.phoneDist,
+                                        nameDist: options.nameDist,
+                                        ctpr: options.ctpr,
+                                        code: options.code,
+                                        total: options.total,
+                                        drivers: options.drivers,
+                                        groups: options.groups,
+                                        individuals: options.individuals,
+                                        rowArray: options.rowArray,
+                                        date: options.date } );
 
   return html;
 };
@@ -101,6 +134,11 @@ let _prepareOledEmail = ( options ) => {
   let html = SSR.render( 'request', { email: options.email,
                                         name: options.name,
                                         phone: options.phone,
+                                        company: options.company,
+                                        project: options.project,
+                                        emailDist: options.emailDist,
+                                        phoneDist: options.phoneDist,
+                                        nameDist: options.nameDist,
                                         ctpr: options.ctpr,
                                         code: options.code,
                                         total: options.total,
