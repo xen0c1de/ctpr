@@ -110,7 +110,7 @@ Template.ctprCompleteModal.events({
           });
         } else {
           //hide modal
-          $( "#send-invitation-modal" ).modal( 'hide' );
+          $( "#ctpr-complete-modal" ).modal( 'hide' );
           //empty componants on modal list
           $( "#item-list" ).empty();
           //clean strip selected

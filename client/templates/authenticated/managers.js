@@ -38,14 +38,56 @@ Template.managers.helpers({
     if ( strips ) {
       return strips;
     }
+  },
+  drivers: function() {
+    var drivers = Products.find({ category: "drivers" });
+
+    if ( drivers ) {
+      return drivers;
+    }
+  },
+  others: function() {
+    var others = Products.find({ category: "other" });
+
+    if ( others ) {
+      return others;
+    }
+  },
+  prices: function() {
+    var prices = Prices.find();
+
+    if ( prices ) {
+      return prices;
+    }
   }
 });
 
-Template.home.events({
-/* TODO: TABLE REMOVE
-  $('.table-remove').click(function () {
-    $(this).parents('tr').detach();
-  });
+Template.managers.events({
+  //Remove table row with delete button
+  'click .table-remove' (event) {
+    //call method to remove product
+    Meteor.call( "removeProduct", this.pn, ( error, response ) => {
+      if ( error ) {
+        Bert.alert({
+          message: error.reason,
+          type: 'warning',
+          style: 'growl-top-right'
+        });
+      } else {
+        //remove item in interface
+        $(event.currentTarget).parents('tr').remove();
+        //send out message
+        Bert.alert({
+          message: "Produit supprimé!",
+          type: 'success',
+          style: 'growl-top-right'
+        });
+      }
+    });
+  },
 
-  TODO: SAVE BY SECTION!!*/
+  //SAVE BY SECTION!!
+  'click .profiles-save' (event) {
+
+  }
 });

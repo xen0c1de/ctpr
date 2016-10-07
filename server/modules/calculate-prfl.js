@@ -356,42 +356,51 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
   //cost is directly the calculated total from the database
   let oled_total = total.toFixed(2),
       nrg_total = (oled_total / Prices.findOne().multiplierNRG).toFixed(2),
-      lumen_total = (nrg_total / Prices.findOne().multiplierLumen).toFixed(2),
-      others_total = (nrg_total / Prices.findOne().multiplierOthers).toFixed(2);
+      master_total = (nrg_total / Prices.findOne().multiplierMaster).toFixed(2),
+      provincial_total = (nrg_total / Prices.findOne().multiplierProvincial).toFixed(2);
+      regional_total = (nrg_total / Prices.findOne().multiplierRegional).toFixed(2);
 
-  //check if users need to have lumen factor or other factor applied to client price
-  if( Roles.userIsInRole( userId, ['admin','manager','oled','nrg','lumen'] ) ) {
-    var client_total = (lumen_total / Prices.findOne().multiplierClient).toFixed(2);
-  }
-  else if( Roles.userIsInRole( userId, ['user'] ) ) {
-    var client_total = (others_total / Prices.findOne().multiplierClient).toFixed(2);
+  //check which factor we need to apply to the nrg price to get client pricing
+  if( Roles.userIsInRole( userId, ['admin','manager','oled','nrg','master'] ) ) {
+    var client_total = (master_total / Prices.findOne().multiplierClient).toFixed(2);
+  } else if( Roles.userIsInRole( userId, ['provincial'] ) ) {
+    var client_total = (provincial_total / Prices.findOne().multiplierClient).toFixed(2);
+  } else if( Roles.userIsInRole( userId, ['regional'] ) ) {
+    var client_total = (regional_total / Prices.findOne().multiplierClient).toFixed(2);
   }
 
   //encrypt totals which logged in user has no access to
   //in case of admins or oled employees
   if( Roles.userIsInRole( userId, ['admin','manager','oled'] ) ) {
     //return all values in clear
-    return {oled_total: oled_total, nrg_total: nrg_total, lumen_total: lumen_total, others_total: others_total, client_total: client_total};
+    return {oled_total: oled_total, nrg_total: nrg_total, master_total: master_total, provincial_total: provincial_total, regional_total: regional_total, client_total: client_total};
   }
   //in case of nrg employee
   else if( Roles.userIsInRole( userId, ['nrg'] ) ) {
     //encrypt oled cost
     oled_total = CryptoJS.AES.encrypt(oled_total, Meteor.settings.private.secretPassphrase).toString();
-    return {oled_total: oled_total, nrg_total: nrg_total, lumen_total: lumen_total, others_total: others_total, client_total: client_total};
+    return {oled_total: oled_total, nrg_total: nrg_total, master_total: master_total, provincial_total: provincial_total, regional_total: regional_total, client_total: client_total};
   }
   //in case of lumen employee
-  else if( Roles.userIsInRole( userId, ['lumen'] ) ) {
-    //encrypt oled, nrg costs and dont include others prices since they are the competition
+  else if( Roles.userIsInRole( userId, ['master'] ) ) {
+    //encrypt oled, nrg costs and dont include other prices since they are the competition
     oled_total = CryptoJS.AES.encrypt(oled_total, Meteor.settings.private.secretPassphrase).toString();
     nrg_total = CryptoJS.AES.encrypt(nrg_total, Meteor.settings.private.secretPassphrase).toString();
-    return {oled_total: oled_total, nrg_total: nrg_total, lumen_total: lumen_total, client_total: client_total};
+    return {oled_total: oled_total, nrg_total: nrg_total, master_total: master_total, client_total: client_total};
   }
-  //in case of user which is others (refactor maybe?)
-  else if( Roles.userIsInRole( userId, ['user'] ) ) {
-    //we encrypt oled and nrg costs and dont include lumen price
+  //in case of user which is provincial
+  else if( Roles.userIsInRole( userId, ['provincial'] ) ) {
+    //we encrypt oled and nrg costs and dont include master or regional prices
     oled_total = CryptoJS.AES.encrypt(oled_total, Meteor.settings.private.secretPassphrase).toString();
     nrg_total = CryptoJS.AES.encrypt(nrg_total, Meteor.settings.private.secretPassphrase).toString();
-    return {oled_total: oled_total, nrg_total: nrg_total, others_total: others_total, client_total: client_total};
+    return {oled_total: oled_total, nrg_total: nrg_total, provincial_total: provincial_total, client_total: client_total};
+  }
+  //in case of user which is regional
+  else if( Roles.userIsInRole( userId, ['regional'] ) ) {
+    //we encrypt oled and nrg costs and dont include master or provincial prices
+    oled_total = CryptoJS.AES.encrypt(oled_total, Meteor.settings.private.secretPassphrase).toString();
+    nrg_total = CryptoJS.AES.encrypt(nrg_total, Meteor.settings.private.secretPassphrase).toString();
+    return {oled_total: oled_total, nrg_total: nrg_total, regional_total: regional_total, client_total: client_total};
   }
   else {
     //should the user be any other ROLES (impossible unless some strange bug/hack) we return only the client price for safety

@@ -1,14 +1,14 @@
 <template name="managers">
   {{#if isInRole 'admin,manager'}}
     <div class="jumbotron">
-      <h2 class="page-header"><span class="glyphicon glyphicon-list-alt"></span> Gestion du CTPR <small>Ajouter/Retirer/Mettre à jour</small></h2>
+      <h2 class="page-header"><span class="glyphicon glyphicon-list-alt"></span> Gestion du PRFL <small>Ajouter/Retirer/Mettre à jour</small></h2>
     </div>
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
       <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingProfile">
           <h2 class="panel-title">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseProfile" aria-expanded="false" aria-controls="collapseProfile">
-              Profilés
+              PROFILÉS
             </a>
           </h2>
         </div>
@@ -21,10 +21,55 @@
                 <th>Catégorie</th>
                 <th>Cost</th>
                 <th>Attributes</th>
-                <th><button title="Sauvegarder" class="profile-save glyphicon glyphicon-floppy-disk"></button></th>
+                <th><button title="Sauvegarder" class="profiles-save glyphicon glyphicon-floppy-disk"></button></th>
               </thead>
               <tbody>
                 {{#each profiles}}
+                <tr class="profile">
+                  <td class="id" contenteditable="true">{{pn}}</td>
+                  <td class="description" contenteditable="true">{{desc}}</td>
+                  <td class="category" contenteditable="true">{{category}}</td>
+                  <td class="cost" contenteditable="true">{{cost}}</td>
+                  <td>
+                    <table class="clean">
+                      {{#each attribute in attributes}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="attribute clean">{{attribute}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <button class="table-remove glyphicon glyphicon-remove"></button>
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingLens">
+          <h2 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLens" aria-expanded="false" aria-controls="collapseLens">
+              LENTILLES
+            </a>
+          </h2>
+        </div>
+        <div id="collapseLens" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLens">
+          <div id="table" class="table-editable">
+            <table class="table">
+              <thead>
+                <th>Produits</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Cost</th>
+                <th>Attributes</th>
+                <th><button title="Sauvegarder" class="lens-save glyphicon glyphicon-floppy-disk"></button></th>
+              </thead>
+              <tbody>
+                {{#each lenses}}
                 <tr>
                   <td contenteditable="true">{{pn}}</td>
                   <td contenteditable="true">{{desc}}</td>
@@ -50,33 +95,271 @@
         </div>
       </div>
       <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingTwo">
+        <div class="panel-heading" role="tab" id="headingEndcap">
           <h2 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              Collapsible Group Item #2
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEndcap" aria-expanded="false" aria-controls="collapseEndcap">
+              EMBOUTS
             </a>
           </h2>
         </div>
-        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        <div id="collapseEndcap" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEndcap">
+          <div id="table" class="table-editable">
+            <table class="table">
+              <thead>
+                <th>Produits</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Cost</th>
+                <th>Attributes</th>
+                <th><button title="Sauvegarder" class="endcaps-save glyphicon glyphicon-floppy-disk"></button></th>
+              </thead>
+              <tbody>
+                {{#each endcaps}}
+                <tr>
+                  <td contenteditable="true">{{pn}}</td>
+                  <td contenteditable="true">{{desc}}</td>
+                  <td contenteditable="true">{{category}}</td>
+                  <td contenteditable="true">{{cost}}</td>
+                  <td>
+                    <table class="clean">
+                      {{#each attribute in attributes}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <button class="table-remove glyphicon glyphicon-remove"></button>
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
       <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingThree">
+        <div class="panel-heading" role="tab" id="headingBracket">
           <h2 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-              Collapsible Group Item #3
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBracket" aria-expanded="false" aria-controls="collapseBracket">
+              BRAQUETTES
             </a>
           </h2>
         </div>
-        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        <div id="collapseBracket" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBracket">
+          <div id="table" class="table-editable">
+            <table class="table">
+              <thead>
+                <th>Produits</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Cost</th>
+                <th>Attributes</th>
+                <th><button title="Sauvegarder" class="brackets-save glyphicon glyphicon-floppy-disk"></button></th>
+              </thead>
+              <tbody>
+                {{#each brackets}}
+                <tr>
+                  <td contenteditable="true">{{pn}}</td>
+                  <td contenteditable="true">{{desc}}</td>
+                  <td contenteditable="true">{{category}}</td>
+                  <td contenteditable="true">{{cost}}</td>
+                  <td>
+                    <table class="clean">
+                      {{#each attribute in attributes}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <button class="table-remove glyphicon glyphicon-remove"></button>
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingStrip">
+          <h2 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseStrip" aria-expanded="false" aria-controls="collapseStrip">
+              RUBANS
+            </a>
+          </h2>
+        </div>
+        <div id="collapseStrip" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingStrip">
+          <div id="table" class="table-editable">
+            <table class="table">
+              <thead>
+                <th>Produits</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Cost</th>
+                <th>Attributes</th>
+                <th><button title="Sauvegarder" class="strips-save glyphicon glyphicon-floppy-disk"></button></th>
+              </thead>
+              <tbody>
+                {{#each strips}}
+                <tr>
+                  <td contenteditable="true">{{pn}}</td>
+                  <td contenteditable="true">{{desc}}</td>
+                  <td contenteditable="true">{{category}}</td>
+                  <td contenteditable="true">{{cost}}</td>
+                  <td>
+                    <table class="clean">
+                      {{#each attribute in attributes}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <button class="table-remove glyphicon glyphicon-remove"></button>
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingDriver">
+          <h2 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDriver" aria-expanded="false" aria-controls="collapseDriver">
+              TRANSFORMATEURS
+            </a>
+          </h2>
+        </div>
+        <div id="collapseDriver" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDriver">
+          <div id="table" class="table-editable">
+            <table class="table">
+              <thead>
+                <th>Produits</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Cost</th>
+                <th>Attributes</th>
+                <th>Wattage</th>
+                <th><button title="Sauvegarder" class="drivers-save glyphicon glyphicon-floppy-disk"></button></th>
+              </thead>
+              <tbody>
+                {{#each drivers}}
+                <tr>
+                  <td contenteditable="true">{{pn}}</td>
+                  <td contenteditable="true">{{desc}}</td>
+                  <td contenteditable="true">{{category}}</td>
+                  <td contenteditable="true">{{cost}}</td>
+                  <td>
+                    <table class="clean">
+                      {{#each attribute in attributes}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <table class="clean">
+                      {{#each power in powers}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="clean">{{power}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <button class="table-remove glyphicon glyphicon-remove"></button>
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOther">
+          <h2 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOther" aria-expanded="false" aria-controls="collapseOther">
+              AUTRES
+            </a>
+          </h2>
+        </div>
+        <div id="collapseOther" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOther">
+          <div id="table" class="table-editable">
+            <table class="table">
+              <thead>
+                <th>Produits</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Cost</th>
+                <th><button title="Sauvegarder" class="others-save glyphicon glyphicon-floppy-disk"></button></th>
+              </thead>
+              <tbody>
+                {{#each others}}
+                <tr>
+                  <td contenteditable="true">{{pn}}</td>
+                  <td contenteditable="true">{{desc}}</td>
+                  <td contenteditable="true">{{category}}</td>
+                  <td contenteditable="true">{{cost}}</td>
+                  <td>
+                    <button class="table-remove glyphicon glyphicon-remove"></button>
+                  </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingPrices">
+          <h2 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrices" aria-expanded="false" aria-controls="collapsePrices">
+              PRICES
+            </a>
+          </h2>
+        </div>
+        <div id="collapsePrices" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPrices">
+          <div id="table" class="table-editable">
+            <table class="table">
+              <thead>
+                <th>Multiplicateur NRG</th>
+                <th>Multiplicateur Master</th>
+                <th>Multiplicateur Provincial</th>
+                <th>Multiplicateur Regional</th>
+                <th>Multiplicateur Client</th>
+                <th><button title="Sauvegarder" class="prices-save glyphicon glyphicon-floppy-disk"></button></th>
+              </thead>
+              <tbody>
+                {{#each prices}}
+                <tr>
+                  <td contenteditable="true">{{multiplierNRG}}</td>
+                  <td contenteditable="true">{{multiplierMaster}}</td>
+                  <td contenteditable="true">{{multiplierProvincial}}</td>
+                  <td contenteditable="true">{{multiplierRegional}}</td>
+                  <td contenteditable="true">{{multiplierClient}}</td>
+                  <td></td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
+    <footer class="container-fluid text-center bg-grey">
+      <a href="#" title="To Top">
+        <span class="glyphicon glyphicon-chevron-up"></span>
+      </a>
+      <p><a href="http://www.o-led.ca">O-LED.CA</a></p>
+    </footer>
   {{/if}}
 </template>

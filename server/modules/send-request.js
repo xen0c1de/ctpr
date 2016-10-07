@@ -15,7 +15,7 @@ drivers: list of drivers needed,
 groups: list of groups with their fixtures (broken down into manufacturering standards),
 individuals: list of individuals fixtures (broken down into manufacturering standards),
 rowArray: array of rows as entered by user
-total: totals (oled, nrg, lumen, others, client) for this PRFL
+total: totals (oled, nrg, master, provincial, regional, client) for this PRFL
 userId: id of logged user
 date: date of sending
 */
@@ -65,13 +65,16 @@ let _prepareLoggedUserEmail = ( options ) => {
   if( Roles.userIsInRole( userId, ['nrg'] ) ) {
     //compile email for nrg
     SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserNrg.html' ) );
-  } else if ( Roles.userIsInRole( userId, ['lumen'] ) ) {
-    //compile email for lumen
-    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserLumen.html' ) );
-  } else if ( Roles.userIsInRole( userId, ['user'] ) ) {
-    //compile email for others
-    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserOthers.html' ) );
-  } else if ( Roles.userIsInRole( userId, ['oled'] ) ) {
+  } else if ( Roles.userIsInRole( userId, ['master'] ) ) {
+    //compile email for master price
+    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserMaster.html' ) );
+  } else if ( Roles.userIsInRole( userId, ['provincial'] ) ) {
+    //compile email for provincial price
+    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserProvincial.html' ) );
+  } else if ( Roles.userIsInRole( userId, ['regional'] ) ) {
+    //compile email for regional price
+    SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestLoggedUserRegional.html' ) );
+  } else if ( Roles.userIsInRole( userId, ['oled', 'manager', 'admin'] ) ) {
     //compile email for others
     SSR.compileTemplate( 'request', Assets.getText( 'email/templates/requestOLED.html' ) );
   }
@@ -115,7 +118,7 @@ let _prepareOledEmail = ( options ) => {
     //set the decrypted price in place
     options.total.oled_total = oled_total;
   //else if it's lumen or others we'll need to decrypt oled and nrg
-  } else if ( Roles.userIsInRole( userId, ['lumen', 'user'] ) ) {
+} else if ( Roles.userIsInRole( userId, ['master', 'provincial', 'regional'] ) ) {
     let oled_total = options.total.oled_total,
         nrg_total = options.total.nrg_total;
     //decrypt the oled and nrg cost

@@ -3,7 +3,12 @@ Meteor.methods({
     check( product, {
       pn: String,
       desc: String,
-      category: String
+      category: String,
+      cost: Number,
+      attributes: Array,
+      powers: Array,
+      colors: Array,
+      ips: Array
     });
 
     try {
@@ -11,8 +16,11 @@ Meteor.methods({
         pn: product.pn,
         desc: product.desc,
         category: product.category,
-        price: product.price,
-        properties: product.properties
+        cost: product.cost,
+        attributes: product.attributes,
+        powers: product.powers,
+        colors: product.colors,
+        ips: product.ips
       });
     } catch( exception ) {
       return exception;

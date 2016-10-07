@@ -21,6 +21,7 @@ Template.header.events({
           type: 'success',
           style: 'growl-top-right'
         });
+        FlowRouter.go( 'login' );
       }
     });
   }

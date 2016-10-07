@@ -18,14 +18,14 @@ meteorhacks:ssr
 
 
 npm-container
-ecmascript@0.5.8
+ecmascript@0.5.8_1
 digilord:faker
 kadira:flow-router
 kadira:blaze-layout
 meteorhacks:fast-render
 meteor-base@1.0.4
 session@1.1.6
-templating@1.2.14
+templating@1.2.14_1
 fourseven:scss
 reactive-var@1.0.10
 reactive-dict@1.1.8
@@ -34,12 +34,12 @@ tracker@1.1.0
 alanning:roles
 random@1.0.10
 momentjs:moment
-email@1.1.17
-standard-minifier-css@1.2.0
-standard-minifier-js@1.2.0
+email@1.1.17_1
+standard-minifier-css@1.2.0_1
+standard-minifier-js@1.2.0_1
 stevezhu:lodash
 themeteorchef:bert
 dburles:google-maps
-npm-bcrypt@0.9.1
+npm-bcrypt@0.9.1_1
 shell-server@0.2.1
 jparker:crypto-aes

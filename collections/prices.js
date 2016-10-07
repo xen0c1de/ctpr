@@ -18,14 +18,19 @@ let PricesSchema = new SimpleSchema({
     label: "Facteur -> cost NRG",
     decimal: true
   },
-  multiplierLumen: {
+  multiplierMaster: {
     type: Number,
-    label: "Facteur -> cost Lumen",
+    label: "Facteur -> cost Master",
     decimal: true
   },
-  multiplierOthers: {
+  multiplierProvincial: {
     type: Number,
-    label: "Facteur -> cost Autres Distributeur",
+    label: "Facteur -> cost Provincial",
+    decimal: true
+  },
+  multiplierRegional: {
+    type: Number,
+    label: "Facteur -> cost Regional",
     decimal: true
   },
   multiplierClient: {

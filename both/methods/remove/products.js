@@ -3,7 +3,7 @@ Meteor.methods({
     check( pn, String );
 
     try {
-      Products.remove( pn );
+      Products.remove( { pn: pn } );
     } catch( exception ) {
       return exception;
     }

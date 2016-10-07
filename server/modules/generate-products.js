@@ -207,7 +207,7 @@ let products = [
     desc: 'Profilé aluminium 1011',
     category: 'profile',
     cost: 10,
-    attributes: [ "Largeur: Xmm", "Hauteur: Xmm" ],
+    attributes: [ "Largeur: 18.69 mm", "Hauteur: 6.2 mm" ],
     powers: [],
     colors: [],
     ips: []
@@ -217,7 +217,7 @@ let products = [
     desc: 'Profilé aluminium 1012',
     category: 'profile',
     cost: 10,
-    attributes: [ "Largeur: Xmm", "Hauteur: Xmm" ],
+    attributes: [ "Largeur: 18.69 mm", "Hauteur: 11.7 mm" ],
     powers: [],
     colors: [],
     ips: []
@@ -227,7 +227,7 @@ let products = [
     desc: 'Profilé aluminium 1013',
     category: 'profile',
     cost: 10,
-    attributes: [ "Largeur: Xmm", "Hauteur: Xmm" ],
+    attributes: [ "Largeur: 18.69 mm", "Hauteur: 11.45 mm" ],
     powers: [],
     colors: [],
     ips: []
@@ -237,7 +237,7 @@ let products = [
     desc: 'Profilé aluminium 2020',
     category: 'profile',
     cost: 10,
-    attributes: [ "Largeur: Xmm", "Hauteur: Xmm" ],
+    attributes: [ "Largeur: 20 mm", "Hauteur: 20 mm" ],
     powers: [],
     colors: [],
     ips: []
@@ -511,8 +511,9 @@ let products = [
 let prices = [
   {
     multiplierNRG: 0.7,
-    multiplierLumen: 0.8,
-    multiplierOthers: 0.75,
+    multiplierMaster: 0.8,
+    multiplierProvincial: 0.75,
+    multiplierRegional: 0.7,
     multiplierClient: 0.8
   }
 ];
@@ -524,7 +525,9 @@ let generateProducts = () => {
       _createProduct( products[ i ] );
     }
   }
-  _createPrices( prices[0] );
+  if( !Prices.findOne() ){
+    _createPrices( prices[0] );
+  }
 };
 
 let _checkIfProductExist = ( product ) => {
