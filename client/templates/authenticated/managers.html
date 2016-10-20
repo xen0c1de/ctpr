@@ -70,16 +70,16 @@
               </thead>
               <tbody>
                 {{#each lenses}}
-                <tr>
-                  <td contenteditable="true">{{pn}}</td>
-                  <td contenteditable="true">{{desc}}</td>
-                  <td contenteditable="true">{{category}}</td>
-                  <td contenteditable="true">{{cost}}</td>
+                <tr class="lens">
+                  <td class="id" contenteditable="true">{{pn}}</td>
+                  <td class="description" contenteditable="true">{{desc}}</td>
+                  <td class="category" contenteditable="true">{{category}}</td>
+                  <td class="cost" contenteditable="true">{{cost}}</td>
                   <td>
                     <table class="clean">
                       {{#each attribute in attributes}}
                       <tr class="clean">
-                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                        <td contenteditable="true" class="attribute clean">{{attribute}}</td>
                       </tr>
                       {{/each}}
                     </table>
@@ -115,16 +115,16 @@
               </thead>
               <tbody>
                 {{#each endcaps}}
-                <tr>
-                  <td contenteditable="true">{{pn}}</td>
-                  <td contenteditable="true">{{desc}}</td>
-                  <td contenteditable="true">{{category}}</td>
-                  <td contenteditable="true">{{cost}}</td>
+                <tr class="endcaps">
+                  <td class="id" contenteditable="true">{{pn}}</td>
+                  <td class="description" contenteditable="true">{{desc}}</td>
+                  <td class="category" contenteditable="true">{{category}}</td>
+                  <td class="cost" contenteditable="true">{{cost}}</td>
                   <td>
                     <table class="clean">
                       {{#each attribute in attributes}}
                       <tr class="clean">
-                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                        <td contenteditable="true" class="attribute clean">{{attribute}}</td>
                       </tr>
                       {{/each}}
                     </table>
@@ -160,16 +160,16 @@
               </thead>
               <tbody>
                 {{#each brackets}}
-                <tr>
-                  <td contenteditable="true">{{pn}}</td>
-                  <td contenteditable="true">{{desc}}</td>
-                  <td contenteditable="true">{{category}}</td>
-                  <td contenteditable="true">{{cost}}</td>
+                <tr class="brackets">
+                  <td class="id" contenteditable="true">{{pn}}</td>
+                  <td class="description" contenteditable="true">{{desc}}</td>
+                  <td class="category" contenteditable="true">{{category}}</td>
+                  <td class="cost" contenteditable="true">{{cost}}</td>
                   <td>
                     <table class="clean">
                       {{#each attribute in attributes}}
                       <tr class="clean">
-                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                        <td contenteditable="true" class="attribute clean">{{attribute}}</td>
                       </tr>
                       {{/each}}
                     </table>
@@ -201,20 +201,50 @@
                 <th>Catégorie</th>
                 <th>Cost</th>
                 <th>Attributes</th>
+                <th>Voltages</th>
+                <th>Couleurs</th>
+                <th>IP</th>
                 <th><button title="Sauvegarder" class="strips-save glyphicon glyphicon-floppy-disk"></button></th>
               </thead>
               <tbody>
                 {{#each strips}}
-                <tr>
-                  <td contenteditable="true">{{pn}}</td>
-                  <td contenteditable="true">{{desc}}</td>
-                  <td contenteditable="true">{{category}}</td>
-                  <td contenteditable="true">{{cost}}</td>
+                <tr class="strips">
+                  <td class="id" contenteditable="true">{{pn}}</td>
+                  <td class="description" contenteditable="true">{{desc}}</td>
+                  <td class="category" contenteditable="true">{{category}}</td>
+                  <td class="cost" contenteditable="true">{{cost}}</td>
                   <td>
                     <table class="clean">
                       {{#each attribute in attributes}}
                       <tr class="clean">
-                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                        <td contenteditable="true" class="attribute clean">{{attribute}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <table class="clean">
+                      {{#each power in powers}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="power clean">{{power}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <table class="clean">
+                      {{#each color in colors}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="color clean">{{color}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <table class="clean">
+                      {{#each ip in ips}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="ip clean">{{ip}}</td>
                       </tr>
                       {{/each}}
                     </table>
@@ -251,16 +281,16 @@
               </thead>
               <tbody>
                 {{#each drivers}}
-                <tr>
-                  <td contenteditable="true">{{pn}}</td>
-                  <td contenteditable="true">{{desc}}</td>
-                  <td contenteditable="true">{{category}}</td>
-                  <td contenteditable="true">{{cost}}</td>
+                <tr class="drivers">
+                  <td class="id" contenteditable="true">{{pn}}</td>
+                  <td class="description" contenteditable="true">{{desc}}</td>
+                  <td class="category" contenteditable="true">{{category}}</td>
+                  <td class="cost" contenteditable="true">{{cost}}</td>
                   <td>
                     <table class="clean">
                       {{#each attribute in attributes}}
                       <tr class="clean">
-                        <td contenteditable="true" class="clean">{{attribute}}</td>
+                        <td contenteditable="true" class="attribute clean">{{attribute}}</td>
                       </tr>
                       {{/each}}
                     </table>
@@ -269,7 +299,7 @@
                     <table class="clean">
                       {{#each power in powers}}
                       <tr class="clean">
-                        <td contenteditable="true" class="clean">{{power}}</td>
+                        <td contenteditable="true" class="power clean">{{power}}</td>
                       </tr>
                       {{/each}}
                     </table>
@@ -304,11 +334,11 @@
               </thead>
               <tbody>
                 {{#each others}}
-                <tr>
-                  <td contenteditable="true">{{pn}}</td>
-                  <td contenteditable="true">{{desc}}</td>
-                  <td contenteditable="true">{{category}}</td>
-                  <td contenteditable="true">{{cost}}</td>
+                <tr class="others">
+                  <td class="id" contenteditable="true">{{pn}}</td>
+                  <td class="description" contenteditable="true">{{desc}}</td>
+                  <td class="category" contenteditable="true">{{category}}</td>
+                  <td class="cost" contenteditable="true">{{cost}}</td>
                   <td>
                     <button class="table-remove glyphicon glyphicon-remove"></button>
                   </td>
@@ -323,7 +353,7 @@
         <div class="panel-heading" role="tab" id="headingPrices">
           <h2 class="panel-title">
             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrices" aria-expanded="false" aria-controls="collapsePrices">
-              PRICES
+              FACTEURS
             </a>
           </h2>
         </div>
@@ -340,12 +370,12 @@
               </thead>
               <tbody>
                 {{#each prices}}
-                <tr>
-                  <td contenteditable="true">{{multiplierNRG}}</td>
-                  <td contenteditable="true">{{multiplierMaster}}</td>
-                  <td contenteditable="true">{{multiplierProvincial}}</td>
-                  <td contenteditable="true">{{multiplierRegional}}</td>
-                  <td contenteditable="true">{{multiplierClient}}</td>
+                <tr class="prices">
+                  <td class="nrg" contenteditable="true">{{multiplierNRG}}</td>
+                  <td class="master" contenteditable="true">{{multiplierMaster}}</td>
+                  <td class="provincial" contenteditable="true">{{multiplierProvincial}}</td>
+                  <td class="regional" contenteditable="true">{{multiplierRegional}}</td>
+                  <td class="client" contenteditable="true">{{multiplierClient}}</td>
                   <td></td>
                 </tr>
                 {{/each}}

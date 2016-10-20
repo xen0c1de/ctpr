@@ -14,7 +14,7 @@ let nrg = [
   }
 ];
 
-let lumen = [
+let master = [
   {
     name: { first: 'Francois', last: 'Lizotte' },
     email: 'info@nrgqc.com',
@@ -23,12 +23,12 @@ let lumen = [
 ];
 
 let generateAccounts = () => {
-  let usersExist = _checkIfAccountsExist( administrators.length + nrg.length + lumen.length );
+  let usersExist = _checkIfAccountsExist( administrators.length + nrg.length + master.length );
 
   if ( !usersExist ) {
     _createUsers( administrators );
     _createUsers( nrg );
-    _createUsers( lumen );
+    _createUsers( master );
   }
 };
 
@@ -52,7 +52,7 @@ let _createUsers = ( users ) => {
       } else if ( isNrg ) {
         Roles.setUserRoles( userId, 'nrg' );
       } else {
-        Roles.setUserRoles( userId, 'lumen' );
+        Roles.setUserRoles( userId, 'master' );
       }
     }
   }

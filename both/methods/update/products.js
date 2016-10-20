@@ -12,15 +12,15 @@ Meteor.methods({
     });
 
     try {
-      Products.update( { pn: options.pn }, {
-                        desc: product.desc,
-                        category: product.category,
-                        cost: product.cost,
-                        attributes: product.attributes,
-                        powers: product.powers,
-                        colors: product.colors,
-                        ips: product.ips
-                      } );
+      Products.update( { pn: options.pn }, { $set: {
+                        desc: options.desc,
+                        category: options.category,
+                        cost: options.cost,
+                        attributes: options.attributes,
+                        powers: options.powers,
+                        colors: options.colors,
+                        ips: options.ips
+                      }});
     } catch( exception ) {
       return exception;
     }

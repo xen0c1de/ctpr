@@ -100,9 +100,10 @@ th .btn:hover{
 }
 
 .jumbotron {
-  background-color: #8CC63E;
-  color: #ffffff;
-  padding: 100px 25px;
+  /*background-color: #8CC63E;*/
+	background:url('banner.jpg');
+	background-size: cover;
+  color: #fff;
 }
 
 .text-block{
