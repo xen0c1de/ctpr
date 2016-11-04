@@ -189,7 +189,7 @@ Template.ctprCompleteModal.events({
         //if we have numerics, cast them to numbers for math purposes
         len = Number(len);
         qty = Number(qty);
-        //check we have a lenght bigger than a foot
+        //check we have a length of at least a foot
         if(len >= 12) {
           //add new entry in array with table values
           rowArray.push({

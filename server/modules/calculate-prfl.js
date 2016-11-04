@@ -111,36 +111,35 @@ let _createPowerArray = ( len, qty, dimmable, pn ) => {
 
   //split the lengths into max and/or possible cuts
   lenWattArray = _splitLengths( len, qty, dimmable, wattMeter, lenWattArray );
-
   //return the powerArray for all values for driver selection
   return lenWattArray;
 };
 
 /*
-Splits the lengths of the fixtures to manufacturing standards of 10' max
+Splits the lengths of the fixtures to manufacturing standards of 8' max
 and calculates the powerConsumption of each split length for use in finding the
 right driver.
 */
 let _splitLengths = ( len, qty, dimmable, wattMeter, lenWattArray ) => {
-  //while the len is greater than 20 feet (240in)
-  while( len >= 240 ){
-    //insert a new object with len of 10 feet (120in) and the watt per meter value for that lenght
-    //(120in/12 -> feet /3.28084 -> meters /0.8 -> 80% factor for drivers consumption)
-    lenWattArray.push({qty:qty, len:120, watt:(10/feetToMeter*wattMeter/0.8).toFixed(2), dimmable: dimmable});
+  //while the len is greater than 16 feet (192in)
+  while( len >= 192 ){
+    //insert a new object with len of 8 feet (96in) and the watt per meter value for that lenght
+    //(96in/12 -> feet /3.28084 -> meters /0.8 -> 80% factor for drivers consumption)
+    lenWattArray.push({qty:qty, len:96, watt:(10/feetToMeter*wattMeter/0.8).toFixed(2), dimmable: dimmable});
     //reduce the len by 10 feet
-    len -= 120;
+    len -= 96;
   }
-  if( len < 240 && len > 120 ){
+  if( len < 192 && len > 96 ){
     let half = len/2,
-        //div by 12(feet)/3.37(to meters)/0.8(80% power consumption)
+        //div by 12(feet)/3.28084(to meters)/0.8(80% power consumption)
         powerConsumption = half/12/feetToMeter*wattMeter/0.8;
     //push both halves into array
     lenWattArray.push({qty:qty, len:half, watt:powerConsumption.toFixed(2), dimmable: dimmable});
     lenWattArray.push({qty:qty, len:half, watt:powerConsumption.toFixed(2), dimmable: dimmable});
   }
   else {
-    //when the len falls under 10 feet, push it directly
-    //div by 12(feet)/3.37(to meters)/0.8(80% power consumption)
+    //when the len falls under 8 feet, push it directly
+    //div by 12(feet)/3.28084(to meters)/0.8(80% power consumption)
     let powerConsumption = len/12/feetToMeter*wattMeter/0.8;
     lenWattArray.push({qty:qty, len:len, watt:powerConsumption.toFixed(2), dimmable: dimmable});
   }
@@ -149,39 +148,33 @@ let _splitLengths = ( len, qty, dimmable, wattMeter, lenWattArray ) => {
 };
 
 /*
-takes the array of power consumption and calculates the drivers needed.
-This is done by going no more than 200W or 20' long. In the case of individual
-this will mean that unless the fixture is more than 20 feet long, most likely
-there will only be 1 driver for the fixture. (multiply by qty for total).
-In the case of groups, we try and have the most contiguous fixtures powered
-by the same driver. (to max of 200W and 20')
+Takes the drivers array and updates it with the required drivers needed.
+Drivers are wired in parallel. We get a new start at each 16 feet into the
+driver. So a 24 feet continous line will have 2 start wires leading to the
+driver powering them. One for the first 16 feet, one for the rest. In groups,
+we try and get as many fixtures together on one driver and as close to 16 feet
+for the starting wires.
 */
 let _updateDriversArray = ( lenWattArray, drivers ) => {
-  var totalConsumption = 0,
-      totalLength = 0;
+  var totalConsumption = 0;
 
   //loop through array of powerConsumption
   for( let j=0;j<lenWattArray.length;j++ ) {
     let watt = Number(lenWattArray[j].watt),
-        len = Number(lenWattArray[j].len),
         qty = Number(lenWattArray[j].qty),
         dimmable = lenWattArray[j].dimmable;
-    //check if we'd be over 200W (max for drivers) or that the length i greater that 20 feet (max before power loss)
-    if( totalConsumption + watt > 200 || totalLength + len > 240 ){
+    //check if we'd be over 200W (max for drivers)
+    if( totalConsumption + watt > 200 ){
       //select the right driver for the current totalConsumption
       let driver = _selectDriver(totalConsumption, dimmable);
       //add to that driver's qty of value in array.
       _.find(drivers, ['driver',driver]).qty += qty;
       //reset totalConsumption and add current powerConsumption j
       totalConsumption = watt;
-      //reset totalLenght and add current length
-      totalLength = len;
     }
     else {
       //increase total consumption
       totalConsumption += watt;
-      //increase total length
-      totalLength += len;
     }
   }
   //When we exit loop, we calculate driver for the remaining totalConsumption
@@ -196,8 +189,6 @@ let _updateDriversArray = ( lenWattArray, drivers ) => {
 /*
 Select the right driver based on the watt consumption provided
 and the dimmable boolean.
-Drivers are 30 60 100 200 watts non-dimmable
-and 30 45 60 80 100 200 watts dimmable
 */
 let _selectDriver = ( powerConsumption, dimmable ) => {
   //driver lists
@@ -219,8 +210,8 @@ let _selectDriver = ( powerConsumption, dimmable ) => {
   dimDrivers.sort(function(a, b){return b-a});
   nonDimDrivers.sort(function(a, b){return b-a});
 
+  //finally start selecting the right driver
   if( dimmable ) {
-    //no point in starting at 200w because we'll never reach it
     for( let k=1;k<dimDrivers.length;k++ ){
       //if the power is greater than the current driver in the list
       if( powerConsumption > dimDrivers[k] ){
@@ -232,9 +223,6 @@ let _selectDriver = ( powerConsumption, dimmable ) => {
     return dimDrivers[dimDrivers.length-1]+"W dim";
   }
   else {
-    //no point in starting at 200w because we'll never reach it
-    //max is 21.8w/M and we dont go over 20 feet.
-    //20ft is 5.93M | 5.93M*21.8W/M=129.38W | 129.38W/.80(20% more)=161.72W (which is well below 200W)
     for( let k=1;k<nonDimDrivers.length;k++ ){
       //if the power is greater than the current driver in the list
       if( powerConsumption > nonDimDrivers[k] ){
@@ -269,15 +257,14 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       bracketcost = Products.findOne({pn:bracketId, category: "bracket"}).cost;
 
   //calculate price for each driver needed
-  //also calculate the price for starter wires. always will be one per driver.
   for(let i=0;i<drivers.length;i++) {
     var qty = drivers[i].qty;
     //check that we have some of these drivers, no point in calculating prices to multiply by zero afterwards
     if( qty != 0 ){
       //grab this driver from the database
       let driver = Products.findOne({pn:drivers[i].driver, category: "drivers"});
-      //increase total by cost of driver and start times value (which is qty)
-      total += (driver.cost + startcost) * qty;
+      //increase total by cost of drivers
+      total += driver.cost * qty;
     }
   }
 
@@ -287,7 +274,7 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
     for(let i=0;i<individuals.length;i++) {
       var lenWattArray = individuals[i].lenWattArray;
       //this is what a lenWattArray looks like {qty:Number, len:Number, watt:Number, dimmable:boolean}
-      //this is split to 10 feet max lengths (which is why we need to loop over it in case we have a split)
+      //this is split to 8 feet max lengths (which is why we need to loop over it in case we have a split)
       for(let k=0;k<lenWattArray.length;k++) {
         let qty = Number(lenWattArray[k].qty),
             len = Number(lenWattArray[k].len);
@@ -302,7 +289,7 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
         //price for strip
         total += qty * len * stripcost
         //price for bracket (1 every 3 feet)
-        total += qty * (Math.ceil(len/36)) * bracketcost
+        total += qty * Math.ceil(len/36) * bracketcost
       }
     }
   }
@@ -315,9 +302,10 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       let group = sortedGroups[i];
 
       for(let j=0;j<group.length;j++) {
-        var lenWattArray = group[j].lenWattArray;
+        var lenWattArray = group[j].lenWattArray,
+            totalLength = 0;
         //this is what a lenWattArray looks like {qty:Number, len:Number, watt:Number, dimmable:boolean}
-        //this is split to 10 feet max lengths (which is why we need to loop over it in case we have a split)
+        //this is split to 8 feet max lengths (which is why we need to loop over it in case we have a split)
         for(let k=0;k<lenWattArray.length;k++) {
           let qty = Number(lenWattArray[k].qty),
               len = Number(lenWattArray[k].len);
@@ -332,8 +320,12 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
           //price for strip
           total += qty * len * stripcost;
           //price for bracket (1 every 3 feet)
-          total += qty * (Math.ceil(len/36)) * bracketcost;
+          total += qty * Math.ceil(len/36) * bracketcost;
+          //add len to calcutate totalLength per group;
+          totalLength += len * qty;
         }
+        //check how many 16 feet lengths we have total and add that many start
+        total += Math.ceil(totalLength/192) * startcost;
       }
       //we calculate the unions needed for these groups, two cables per union
       total += (group.length - 1) * 2 * unioncost;
@@ -347,13 +339,20 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
     //price for endcaps
     total += qty * 2 * endcapcost;
     //calculate the rest of the possibly needed unions if some individuals
-    //or groups have longer than 10 feet fixtures
-    //floor(len/120)= # of unions needed (237in / 120 = 1.975 floor-> 1)
-    //that's a 19 ish feet fixture which will have to be split in two (1 union)
-    total += Math.floor(len/120) * 2 * qty * unioncost
+    //or groups have longer than 8 feet fixtures
+    //floor(len/96)= # of unions needed (237in / 96 = 2.46 floor-> 2)
+    //that's a 19 ish feet fixture which will have to be split in 3 (2 unions)
+    total += Math.floor(len/96) * 2 * qty * unioncost;
+    //in the case of individual fixtures
+    if( rowArray[i].group === "ind" ) {
+      //calcutate cost for starter wires need to connect to driver.
+      //one wire per 16 feet or less (237/192=1.23 -> 2 wires)
+      total += Math.ceil(len/192) * qty * startcost;
+    }
   }
 
-  //cost is directly the calculated total from the database
+  //cost is the calculated total from the database
+  //we add the multipliers to the other prices
   let oled_total = total.toFixed(2),
       nrg_total = (oled_total / Prices.findOne().multiplierNRG).toFixed(2),
       master_total = (nrg_total / Prices.findOne().multiplierMaster).toFixed(2),
