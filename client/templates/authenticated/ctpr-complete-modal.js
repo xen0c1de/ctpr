@@ -1,3 +1,6 @@
+_ = lodash;
+const feetToMeter =  3.28084;
+
 Template.ctprCompleteModal.onCreated( function() {
   Template.instance().subscribe( 'products' );
   Template.instance().subscribe( 'users' );
@@ -167,8 +170,11 @@ Template.ctprCompleteModal.events({
         groups = [],
         individuals = [],
         breakvalue = false,
+        groupLenTotal = [],
         //get the list of drivers from the database
-        drivers_list = Products.find({ category: "drivers" }).fetch();
+        drivers_list = Products.find({ category: "drivers" }).fetch(),
+        //get the power consumption for the strip from the database.
+        wattMeter = Number(Products.findOne({pn:Session.get("strip_id")}).attributes[2].replace(/\D+$/g, ""));
 
     //grab each driver in database and set up array
     $.each( drivers_list, function(){
@@ -190,7 +196,38 @@ Template.ctprCompleteModal.events({
         len = Number(len);
         qty = Number(qty);
         //check we have a length of at least a foot
-        if(len >= 12) {
+        if( len >= 12 ){
+          //check if dimmable
+          if( dimmable ){
+            //check if individual
+            if( group === "ind" ){
+              //calculate if length is enough for 60% load on 20W driver for dimming
+              if( (len/12/feetToMeter*wattMeter).toFixed(2) < 12 ){
+                //if the load is too small, we can't dim properly so we need to
+                //tell the user to have longer fixtures or a stronger strip.
+                Bert.alert({
+                  hideDelay: 6000,
+                  message: "Gradation impossible avec ce ruban pour les longueurs individuelles. Essayez un ruban plus fort.",
+                  type: 'danger',
+                  style: 'growl-top-right'
+                });
+                breakvalue = true;
+                return false;
+              }
+            } else {
+              //in case of groups we need to add them together to check if the
+              //total will have enough load.
+              let groupObject = _.find(groupLenTotal, ['group',group]);
+              //if we already have this group in the array
+              if( groupObject != undefined ){
+                //add to the length
+                groupObject.len += len;
+              } else {
+                //else we create the entry for this group
+                groupLenTotal.push( { group: group, len: len } );
+              }
+            }
+          }
           //add new entry in array with table values
           rowArray.push({
             len:len,
@@ -215,6 +252,25 @@ Template.ctprCompleteModal.events({
           hideDelay: 4000,
           message: "Longueur et Quantité doivent être numérique.",
           type: 'warning',
+          style: 'growl-top-right'
+        });
+        breakvalue = true;
+        return false;
+      }
+    });
+
+    //time to check if groupLenTotal contains lengths that are too small
+    //to be dimmable and in that case to break from code.
+    $.each( groupLenTotal, function(){
+      let groupLen = $(this)[0];
+      //calculate if length is enough for 60% load on 20W driver for dimming
+      if( (groupLen.len/12/feetToMeter*wattMeter).toFixed(2) < 12 ){
+        //if the load is too small, we can't dim properly so we need to
+        //tell the user to have longer fixtures or a stronger strip.
+        Bert.alert({
+          hideDelay: 6000,
+          message: "Gradation impossible avec ce ruban pour les longueurs du group "+ groupLen.group +". Essayez un ruban plus fort.",
+          type: 'danger',
           style: 'growl-top-right'
         });
         breakvalue = true;
@@ -340,10 +396,14 @@ Template.ctprCompleteModal.events({
     }
   },
   'click .plus-sign' (event) {
-    //count the number of row in the current table
-    let tableRowIds = $(".prfl-len tr").length,
-        //new html to add when we click the plus sign
-        newRowContent = '<tr id="'+tableRowIds+'"><td><select id="group'+tableRowIds+'" name="group"><option value="ind" selected="selected">Individuel</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option><option value="i">I</option><option value="j">J</option><option value="k">K</option><option value="l">L</option><option value="m">M</option><option value="n">N</option><option value="o">O</option></select></td><td><input id="qty'+tableRowIds+'" type="text" class="form-control" name="qty"></td><td><input id="long'+tableRowIds+'" type="text" class="form-control" name="long"></td><td><input id="dim'+tableRowIds+'" type="checkbox" class="form-control" name="dim" value="dim"></td></td><td><button type="button" class="btn minus-sign"><span class="glyphicon glyphicon-minus-sign logo-small-red" aria-hidden="true"></span></button></td></tr>';
+    //Check to add unique id to row (check current highest)
+    let tableRowIds = $('.prfl-len tr').get().reduce(function(a, b){
+      return Math.max(a, b.id)
+    }, Number.NEGATIVE_INFINITY);
+    //inc the row to get a unique number
+    tableRowIds++;
+    //new html to add when we click the plus sign
+    let newRowContent = '<tr id="'+tableRowIds+'"><td><select id="group'+tableRowIds+'" name="group"><option value="ind" selected="selected">Individuel</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option><option value="i">I</option><option value="j">J</option><option value="k">K</option><option value="l">L</option><option value="m">M</option><option value="n">N</option><option value="o">O</option></select></td><td><input id="qty'+tableRowIds+'" type="text" class="form-control" name="qty"></td><td><input id="long'+tableRowIds+'" type="text" class="form-control" name="long"></td><td><input id="dim'+tableRowIds+'" type="checkbox" class="form-control" name="dim" value="dim"></td></td><td><button type="button" class="btn minus-sign"><span class="glyphicon glyphicon-minus-sign logo-small-red" aria-hidden="true"></span></button></td></tr>';
     //append the new table row to the tbody
     $(".prfl-len tbody").append( newRowContent );
   },

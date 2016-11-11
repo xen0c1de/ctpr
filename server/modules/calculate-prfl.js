@@ -1,5 +1,5 @@
 _ = lodash;
-feetToMeter =  3.28084;
+const feetToMeter =  3.28084;
 
 /*
 Calculates the drivers needed to power all the fixtures described in the
@@ -125,7 +125,7 @@ let _splitLengths = ( len, qty, dimmable, wattMeter, lenWattArray ) => {
   while( len >= 192 ){
     //insert a new object with len of 8 feet (96in) and the watt per meter value for that lenght
     //(96in/12 -> feet /3.28084 -> meters /0.8 -> 80% factor for drivers consumption)
-    lenWattArray.push({qty:qty, len:96, watt:(10/feetToMeter*wattMeter/0.8).toFixed(2), dimmable: dimmable});
+    lenWattArray.push({qty:qty, len:96, watt:(8/feetToMeter*wattMeter/0.8).toFixed(2), dimmable: dimmable});
     //reduce the len by 10 feet
     len -= 96;
   }
