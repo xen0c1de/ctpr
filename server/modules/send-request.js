@@ -33,7 +33,6 @@ prepare the email for the user
 needing the name, PRFL he selected which each row entered, the actual code and the total price.
 */
 let _prepareClientEmail = ( name, project, nameDist, phoneDist, emailDist, ctpr, rowArray, drivers, total, code, date ) => {
-  let domain = Meteor.settings.private.domain;
 
   //find all drivers with qty not 0
   let newDrivers = _.filter(drivers, function(o){ return o.qty != 0 });

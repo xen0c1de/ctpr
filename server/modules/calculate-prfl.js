@@ -247,7 +247,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
 
   //grab the starts cost
   var startcost = Products.findOne({pn:"starter", category: "other"}).cost,
-      cutcost = Products.findOne({pn:"cut", category: "other"}).cost,
+      cutprofilecost = Products.findOne({pn:"cutprofile", category: "other"}).cost,
+      cutlenscost = Products.findOne({pn:"cutlens", category: "other"}).cost,
       laborcost = Products.findOne({pn:"labor", category: "other"}).cost,
       unioncost = Products.findOne({pn:"union", category: "other"}).cost,
       profilecost = Products.findOne({pn:profileId, category: "profile"}).cost,
@@ -278,8 +279,13 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       for(let k=0;k<lenWattArray.length;k++) {
         let qty = Number(lenWattArray[k].qty),
             len = Number(lenWattArray[k].len);
-        //price for cuts
-        total += qty * cutcost;
+        //price for profile cut
+        total += qty * cutprofilecost;
+        //if lenscost is 0 then we have "nolens" so we don't charge for cut
+        if( lenscost != 0 ){
+          //price for lens cut
+          total += qty * cutlenscost;
+        }
         //price for labor
         total += qty * laborcost;
         //price for profile
@@ -310,7 +316,12 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
           let qty = Number(lenWattArray[k].qty),
               len = Number(lenWattArray[k].len);
           //price for cuts
-          total += qty * cutcost;
+          total += qty * cutprofilecost;
+          //if lenscost is 0 then we have "nolens" so we don't charge for cut
+          if( lenscost != 0 ){
+            //price for lens cut
+            total += qty * cutlenscost;
+          }
           //price for labor
           total += qty * laborcost;
           //price for profile

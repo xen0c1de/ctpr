@@ -1,6 +1,6 @@
 /*
-Unselects the selected product in passed category if there was one.
-Checks for special case in strip products
+Unselects the selected product in argument category if there was one.
+Checks for special case in strip and lens products
 */
 let unselect = function( category ) {
   //if a product of same category was already selected
@@ -16,6 +16,11 @@ let unselect = function( category ) {
     if( category === "strip" ) {
       //remove greyout from other strips
       $(".strip").removeClass("greyout");
+      //reset options checked on radios
+      $( "input[type=radio]."+old_pn+":checked" ).prop('checked', false);
+    }
+    //if category is lens, do extra cleanup
+    if( category === "lens" ) {
       //reset options checked on radios
       $( "input[type=radio]."+old_pn+":checked" ).prop('checked', false);
     }
@@ -73,13 +78,6 @@ Template.home.helpers({
       return endcaps;
     }
   },
-  brackets: function() {
-    var brackets = Products.find({ category: "bracket" });
-
-    if ( brackets ) {
-      return brackets;
-    }
-  },
   strips: function() {
     var strips = Products.find({ category: "strip" });
 
@@ -129,34 +127,32 @@ Template.home.events({
     $(".greyout").removeClass("greyout");
     //reset options checked on radios
     $( "input[type=radio]:checked" ).prop('checked', false);
+    //hide all lens
+    $(".lens").hide();
     //hide all endcaps
     $(".endcap").hide();
     //empty complete code section
     $(".profile-code").empty();
     $(".lens-code").empty();
     $(".endcap-code").empty();
-    $(".bracket-code").empty();
     $(".strip-code").empty();
     //save ids to session
     Session.set("strip_id","");
     Session.set("profile_id","");
     Session.set("endcap_id","");
     Session.set("lens_id","");
-    Session.set("bracket_id","");
   },
   //clicking the continue button takes you to the next step
   'click .continue' (event) {
     //check items have been selected
     if ( $(".profile").hasClass("selected") && $(".lens").hasClass("selected") &&
-         $(".endcap").hasClass("selected") && $(".bracket").hasClass("selected") &&
-         $(".strip").hasClass("selected") ) {
+         $(".endcap").hasClass("selected") && $(".strip").hasClass("selected") ) {
 
       //get the selected ids
       var strip_id = $(".strip.selected")[0].id;
       var profile_id = $(".profile.selected")[0].id;
       var lens_id = $(".lens.selected")[0].id;
       var endcap_id = $(".endcap.selected")[0].id;
-      var bracket_id = $(".bracket.selected")[0].id;
     } else {
       //else don't open modal window and show message
       event.stopPropagation();
@@ -177,7 +173,6 @@ Template.home.events({
       Session.set("profile_id",profile_id);
       Session.set("endcap_id",endcap_id);
       Session.set("lens_id",lens_id);
-      Session.set("bracket_id",bracket_id);
 
       //grab all items from cart and copy them to modal window cart
       $( ".item-list li" ).each( function(){
@@ -189,7 +184,6 @@ Template.home.events({
         $(".profile-code").text() +
         $(".lens-code").text() +
         $(".endcap-code").text() +
-        $(".bracket-code").text() +
         $(".strip-code").text()
       );
     }
@@ -208,74 +202,36 @@ Template.home.events({
   'click .profile' (event) {
     //get the id of current click target
     var profile_id = event.currentTarget.id;
-    //if this isn't the selected profile
+    //if this isn't the already selected profile
     if( !$("#"+profile_id).hasClass("selected") ) {
       //reset ui by removing all greyout items except for strips
       $(".profile").removeClass("selected");
       $(".lens").removeClass("selected");
-      $(".bracket").removeClass("selected");
       $(".profile").removeClass("greyout");
       $(".lens").removeClass("greyout");
-      $(".bracket").removeClass("greyout");
       //hide all endcaps aside from no-endcap option
       $(".endcap").hide();
       $("#NOE:hidden").show();
       //clear cart except for strips
       $("li.profile").remove();
       $("li.lens").remove();
-      $("li.endcap").remove();
-      $("li.bracket").remove();
       //clear profile part of the complete code except for strips
       $(".profile-code").empty();
       $(".lens-code").empty();
-      $(".endcap-code").empty();
-      $(".bracket-code").empty();
       //select clicked one
       select( profile_id );
+      //show the lens
+      $(".lens").show();
       //do actions depending on which profile selected
       switch (profile_id) {
-        case "1011":
+        case "2020C":
           //greyout non-compatible lens
-          $("#FO").addClass("greyout");
-          $("#WFR").addClass("greyout");
-          $("#WOR").addClass("greyout");
-          $("#WFS").addClass("greyout");
-          $("#WOS").addClass("greyout");
-          //greyout non-compatible brackets
-          $("#2175").addClass("greyout");
-          break;
-        case "1012":
-          //greyout non-compatible lens
-          $("#WFR").addClass("greyout");
-          $("#WOR").addClass("greyout");
-          $("#WFS").addClass("greyout");
-          $("#WOS").addClass("greyout");
-          //greyout non-compatible brackets
-          $("#2175").addClass("greyout");
-          break;
-        case "1013":
-          //greyout non-compatible lens
-          $("#FO").addClass("greyout");
-          $("#WFR").addClass("greyout");
-          $("#WOR").addClass("greyout");
-          $("#WFS").addClass("greyout");
-          $("#WOS").addClass("greyout");
-          //greyout non-compatible brackets
-          $("#2175").addClass("greyout");
-          break;
-        case "2020":
-          //greyout non-compatible lens
-          $("#WO").addClass("greyout");
-          $("#TR").addClass("greyout");
-          $("#WF").addClass("greyout");
-          $("#FO").addClass("greyout");
-          $("#CL").addClass("greyout");
-          //greyout non-compatible brackets
-          $("#2025").addClass("greyout");
-          $("#2050").addClass("greyout");
-          $("#2075").addClass("greyout");
+          $("#STD").addClass("greyout");
           break;
         default:
+          //greyout non-compatible lens
+          $("#CSTD").addClass("greyout");
+          $("#CCR").addClass("greyout");
           break;
       }
     }
@@ -286,12 +242,18 @@ Template.home.events({
     var lens_id = event.currentTarget.id;
         profile_id = $(".profile.selected")[0].id;
 
-    //if this is not a greyout item (which we do nothing with)
+    //if this is not a greyout item (we do nothing)
     if( !$("#"+lens_id).hasClass("greyout") ) {
       //check that a profile was selected first and that this isn't the already selected lens
       if( $(".profile").hasClass("selected") && !$("#"+lens_id).hasClass("selected") ){
         //call selection procedure
         select(lens_id);
+
+        //check if this lens has only one radio option
+        if( $( 'input[type=radio][name="color"].'+lens_id ).length === 1 ) {
+          //if so, select it automatically
+          $( 'input[type=radio][name="color"].'+lens_id ).prop('checked', true).trigger("change");
+        }
 
         //hide all endcaps except the no endcap option
         $(".endcap").hide();
@@ -307,32 +269,26 @@ Template.home.events({
           }
           //depending on which profile was selected
           switch (profile_id) {
-            case "1011":
+            case "1806":
               //show endcap that fit selection
               $("#0200:hidden").show();
               break;
-            case "1012":
-              if( lens_id === "FO" ){
-                //show endcap that fit selection
-                $("#0050:hidden").show();
-              }
-              else {
-                //show endcap that fit selection
-                $("#0025:hidden").show();
-              }
+            case "1811":
+              //show endcap that fit selection
+              $("#0025:hidden").show();
               break;
             case "1013":
               //show endcap that fit selection
               $("#0075:hidden").show();
               break;
-            case "2020":
-              if( lens_id === "WFS" || lens_id === "WOS" ){
-                //show endcap that fit selection
-                $("#0175:hidden").show();
-              }
-              else if( lens_id === "WFR" || lens_id === "WOR" ) {
+            case "2020C":
+              if( lens_id === "CSTD" ){
                 //show endcap that fit selection
                 $("#0150:hidden").show();
+              }
+              else if( lens_id === "CCR" ) {
+                //show endcap that fit selection
+                $("#0175:hidden").show();
               }
               break;
             default:
@@ -353,20 +309,6 @@ Template.home.events({
       if( $(".profile").hasClass("selected") && !$("#"+endcap_id).hasClass("selected") ){
         //call selection procedure
         select(endcap_id);
-      }
-    }
-  },
-  //when we click on a bracket
-  'click .bracket' (event) {
-    //get the id of current click target
-    var bracket_id = event.currentTarget.id;
-
-    //if this is not a greyout item (which we do nothing with)
-    if( !$("#"+bracket_id).hasClass("greyout") ) {
-      //check that a profile was selected first and that this isn't the already selected bracket
-      if( $(".profile").hasClass("selected") && !$("#"+bracket_id).hasClass("selected") ){
-        //call selection procedure
-        select(bracket_id);
       }
     }
   },
@@ -392,27 +334,50 @@ Template.home.events({
   },
   //when a radio change is triggered
   'change input[type=radio]' (event) {
-    //get the strip id
-    let strip_id = $(event.target).prop('class');
-    //remove from sidebar
-    $("li.strip").remove();
-    //clear strip part of the complete code
-    $(".strip-code").empty();
-    //get strip for Description and also get current changed value
-    let strip = Products.find({ pn: strip_id }).fetch();
+    //get the clicked element's id
+    let element_id = $(event.target).prop('class');
+    //check if this is a strip click
+    if( $(event.target).closest("#"+element_id).hasClass('strip') ) {
+      let strip_id = element_id;
+      //remove from sidebar
+      $("li.strip").remove();
+      //clear strip part of the complete code
+      $(".strip-code").empty();
+      //get strip for Description and also get current changed value
+      let strip = Products.find({ pn: strip_id }).fetch();
 
-    //grab currently selected options on this strip if any
-    var options = $( "input[type=radio]."+strip_id+":checked" );
-        toAppend = '<li class="strip">'+strip[0].desc+' ';
-        productCodeAppend = ""+strip_id;
+      //grab currently selected options on this strip if any
+      var options = $( "input[type=radio]."+strip_id+":checked" );
+          toAppend = '<li class="strip">'+strip[0].desc+' ';
+          productCodeAppend = ""+strip_id;
 
-    //grab all options selected and append them to the string
-    for( let i=0;i<options.length;i++ ) {
-      toAppend = toAppend + options[i].value + ' ';
-      productCodeAppend = productCodeAppend + '-' + options[i].value
+      //grab all options selected and append them to the string
+      for( let i=0;i<options.length;i++ ) {
+        toAppend = toAppend + options[i].value + ' ';
+        productCodeAppend = productCodeAppend + '-' + options[i].value
+      }
+      $(".item-list").append(toAppend+'</li>');
+      //building complete product code
+      $(".strip-code").append(productCodeAppend);
     }
-    $(".item-list").append(toAppend+'</li>');
-    //building complete product code
-    $(".strip-code").append(productCodeAppend);
+    //else is it a lens click
+    else if ( $(event.target).closest("#"+element_id).hasClass('lens') ) {
+      let lens_id = element_id;
+      //remove from sidebar
+      $("li.lens").remove();
+      //clear lens part of the complete code
+      $(".lens-code").empty();
+      //get lens for Description and also get current changed value
+      let lens = Products.find({ pn: lens_id }).fetch();
+
+      //grab currently selected options on this lens if any
+      var options = $( "input[type=radio]."+lens_id+":checked" );
+          toAppend = '<li class="lens">'+lens[0].desc+' ' + options[0].value + ' ';
+          productCodeAppend = ""+lens_id + '-' + options[0].value + '-';
+
+      $(".item-list").append(toAppend+'</li>');
+      //building complete product code
+      $(".lens-code").append(productCodeAppend);
+    }
   }
 });

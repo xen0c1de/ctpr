@@ -64,19 +64,31 @@
 <div id="lens" class="container-fluid text-center">
   <div class="row content text-left">
     <h3>Maintenant faite un choix de lentille selon celles disponibles pour le profilé selectionné.</h3>
+    <h3>Une lentille opaline laisse passer 55% de la lumière, une givrée 85% et une claire 98%.</h3>
   </div>
 	<div class="row content">
     {{#each lenses}}
-    <div id="{{pn}}" class="col-sm-2 lens">
+    <div id="{{pn}}" class="col-sm-2 lens" style="display:none;">
       <div class="panel panel-default text-center">
         <div class="panel-heading">
           <h1>{{pn}}</h1>
         </div>
         <div class="panel-body thumbnail">
-          <img src="{{pn}}.png" alt="{{pn}}"/>
+          <img src="{{pn}}.jpg" alt=""/>
         </div>
         <div class="panel-footer">
           <p>{{desc}}</p>
+          <form>
+            {{#if oneColor pn}}
+              {{#each colors}}
+                <input class="{{../pn}}" type="radio" name="color" value="{{this}}" checked> {{this}}<br>
+              {{/each}}
+            {{else}}
+              {{#each colors}}
+                <input class="{{../pn}}" type="radio" name="color" value="{{this}}"> {{this}}<br>
+              {{/each}}
+            {{/if}}
+          </form>
           {{#each attributes}}
             <p>{{this}}</p>
           {{/each}}
@@ -108,31 +120,6 @@
           </div>
         </div>
       </div>
-    {{/each}}
-  </div>
-</div>
-<div id="bracket" class="container-fluid text-center">
-  <div class="row content text-left">
-    <h3>Selectionnez le type de braquette désiré.</h3>
-  </div>
-	<div class="row content">
-    {{#each brackets}}
-    <div id="{{pn}}" class="col-sm-2 bracket">
-      <div class="panel panel-default text-center">
-        <div class="panel-heading">
-          <h1>{{pn}}</h1>
-        </div>
-        <div class="panel-body thumbnail">
-          <img src="{{pn}}.jpg" alt="{{pn}}"/>
-        </div>
-        <div class="panel-footer">
-          <p>{{desc}}</p>
-          {{#each attributes}}
-            <p>{{this}}</p>
-          {{/each}}
-        </div>
-      </div>
-    </div>
     {{/each}}
   </div>
 </div>
