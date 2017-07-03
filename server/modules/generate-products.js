@@ -203,18 +203,18 @@ let products = [
     ips: []
   },
   {
-    pn: '1013',
-    desc: 'Profilé aluminium 1013',
+    pn: '2611R',
+    desc: 'Profilé aluminium encastré 2611R',
     category: 'profile',
-    cost: 10,
-    attributes: [ "Largeur: 18.69 mm", "Hauteur: 11.45 mm" ],
+    cost: 0.15,
+    attributes: [ "Largeur: 26.19 mm", "Hauteur: 11.45 mm" ],
     powers: [],
     colors: [],
     ips: []
   },
   {
     pn: '2020C',
-    desc: 'Profilé aluminium 2020C',
+    desc: 'Profilé aluminium de coin 2020C',
     category: 'profile',
     cost: 0.15,
     attributes: [ "Largeur: 20 mm", "Hauteur: 20 mm" ],

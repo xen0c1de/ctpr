@@ -66,6 +66,7 @@
                 <th>Catégorie</th>
                 <th>Cost</th>
                 <th>Attributes</th>
+                <th>Couleurs</th>
                 <th><button title="Sauvegarder" class="lens-save glyphicon glyphicon-floppy-disk"></button></th>
               </thead>
               <tbody>
@@ -80,6 +81,15 @@
                       {{#each attribute in attributes}}
                       <tr class="clean">
                         <td contenteditable="true" class="attribute clean">{{attribute}}</td>
+                      </tr>
+                      {{/each}}
+                    </table>
+                  </td>
+                  <td>
+                    <table class="clean">
+                      {{#each color in colors}}
+                      <tr class="clean">
+                        <td contenteditable="true" class="color clean">{{color}}</td>
                       </tr>
                       {{/each}}
                     </table>
@@ -116,51 +126,6 @@
               <tbody>
                 {{#each endcaps}}
                 <tr class="endcaps">
-                  <td class="id" contenteditable="true">{{pn}}</td>
-                  <td class="description" contenteditable="true">{{desc}}</td>
-                  <td class="category" contenteditable="true">{{category}}</td>
-                  <td class="cost" contenteditable="true">{{cost}}</td>
-                  <td>
-                    <table class="clean">
-                      {{#each attribute in attributes}}
-                      <tr class="clean">
-                        <td contenteditable="true" class="attribute clean">{{attribute}}</td>
-                      </tr>
-                      {{/each}}
-                    </table>
-                  </td>
-                  <td>
-                    <button class="table-remove glyphicon glyphicon-remove"></button>
-                  </td>
-                </tr>
-                {{/each}}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingBracket">
-          <h2 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBracket" aria-expanded="false" aria-controls="collapseBracket">
-              BRAQUETTES
-            </a>
-          </h2>
-        </div>
-        <div id="collapseBracket" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBracket">
-          <div id="table" class="table-editable">
-            <table class="table">
-              <thead>
-                <th>Produits</th>
-                <th>Description</th>
-                <th>Catégorie</th>
-                <th>Cost</th>
-                <th>Attributes</th>
-                <th><button title="Sauvegarder" class="brackets-save glyphicon glyphicon-floppy-disk"></button></th>
-              </thead>
-              <tbody>
-                {{#each brackets}}
-                <tr class="brackets">
                   <td class="id" contenteditable="true">{{pn}}</td>
                   <td class="description" contenteditable="true">{{desc}}</td>
                   <td class="category" contenteditable="true">{{category}}</td>

@@ -1,9 +1,10 @@
 {
+  "private": true,
   "name": "PRFL",
   "version": "0.0.1",
-  "description": "App pour profilé et rubans custom O-LED",
+  "description": "App pour profile et rubans custom O-LED",
   "scripts": {
-    "start": "meteor --settings settings-development.json"
+    "start": "meteor --settings settings-prod.json"
   },
   "dependencies": {
     "babel-runtime": "^6.18.0",

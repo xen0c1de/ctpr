@@ -14,7 +14,6 @@ let calculatePRFL = ( options ) => {
       profileId = options.profileId,
       lensId = options.lensId,
       endcapId = options.endcapId,
-      bracketId = options.bracketId,
       userId = options.userId,
       groups = [],
       individuals = [],
@@ -93,7 +92,7 @@ let calculatePRFL = ( options ) => {
 
   //calulate the price for this PRFL from all fixtures and drivers.
   //using the split lengths lets us calcutate the cuts and labor
-  let total = _calculatePrice( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId );
+  let total = _calculatePrice( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, userId );
 
   //return object with updated drivers array, grouped and individual fixtures
   return {drivers: drivers, groups: sortedGroups, individuals: individuals, total: total};
@@ -242,7 +241,7 @@ take into account the cuts and labor required for the quote.
 Prices are stored in the database and are per inch or per piece depending
 on the item. Cuts and labor are stored as special products.
 */
-let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId ) => {
+let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, userId ) => {
   var total = 0;
 
   //grab the starts cost
@@ -254,8 +253,7 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       profilecost = Products.findOne({pn:profileId, category: "profile"}).cost,
       stripcost = Products.findOne({pn:stripId, category: "strip"}).cost,
       lenscost = Products.findOne({pn:lensId, category: "lens"}).cost,
-      endcapcost = Products.findOne({pn:endcapId, category: "endcap"}).cost,
-      bracketcost = Products.findOne({pn:bracketId, category: "bracket"}).cost;
+      endcapcost = Products.findOne({pn:endcapId, category: "endcap"}).cost;
 
   //calculate price for each driver needed
   for(let i=0;i<drivers.length;i++) {
@@ -289,13 +287,11 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
         //price for labor
         total += qty * laborcost;
         //price for profile
-        total += qty * len * profilecost
+        total += qty * len * profilecost;
         //price for lens
-        total += qty * len * lenscost
+        total += qty * len * lenscost;
         //price for strip
-        total += qty * len * stripcost
-        //price for bracket (1 every 3 feet)
-        total += qty * Math.ceil(len/36) * bracketcost
+        total += qty * len * stripcost;
       }
     }
   }
@@ -330,8 +326,6 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
           total += qty * len * lenscost;
           //price for strip
           total += qty * len * stripcost;
-          //price for bracket (1 every 3 feet)
-          total += qty * Math.ceil(len/36) * bracketcost;
           //add len to calcutate totalLength per group;
           totalLength += len * qty;
         }

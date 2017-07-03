@@ -25,13 +25,6 @@ Template.managers.helpers({
       return endcaps;
     }
   },
-  brackets: function() {
-    let brackets = Products.find({ category: "bracket" });
-
-    if ( brackets ) {
-      return brackets;
-    }
-  },
   strips: function() {
     let strips = Products.find({ category: "strip" });
 
@@ -126,11 +119,17 @@ Template.managers.events({
   //save the lens
   'click .lens-save' (event) {
     $("tr.lens").each( function() {
-      let attributes = [];
+      let attributes = [],
+          colors = [];
       //find all attribute in subtable
       $(this).find('td.attribute').each( function() {
         //save all attributes for the method call
         attributes.push($(this).text());
+      });
+      //find all colors in subtable
+      $(this).find('td.color').each( function() {
+        //save all colors for the method call
+        colors.push($(this).text());
       });
       //call method to update lens with elements on page
       Meteor.call( "updateProduct", {
@@ -140,7 +139,7 @@ Template.managers.events({
         cost: Number($(this).find('td.cost').text()),
         attributes: attributes,
         powers: [],
-        colors: [],
+        colors: colors,
         ips: []
       }, ( error, response ) => {
         if ( error ) {
@@ -190,43 +189,6 @@ Template.managers.events({
           //send out message
           Bert.alert({
             message: "Embouts sauvegardés!",
-            type: 'success',
-            style: 'growl-top-right'
-          });
-        }
-      });
-    });
-  },
-  //save the brackets
-  'click .brackets-save' (event) {
-    $("tr.brackets").each( function() {
-      let attributes = [];
-      //find all attribute in subtable
-      $(this).find('td.attribute').each( function() {
-        //save all attributes for the method call
-        attributes.push($(this).text());
-      });
-      //call method to update brackets with elements on page
-      Meteor.call( "updateProduct", {
-        pn: $(this).find('td.id').text(),
-        desc: $(this).find('td.description').text(),
-        category: $(this).find('td.category').text(),
-        cost: Number($(this).find('td.cost').text()),
-        attributes: attributes,
-        powers: [],
-        colors: [],
-        ips: []
-      }, ( error, response ) => {
-        if ( error ) {
-          Bert.alert({
-            message: error.reason,
-            type: 'warning',
-            style: 'growl-top-right'
-          });
-        } else {
-          //send out message
-          Bert.alert({
-            message: "Braquettes sauvegardés!",
             type: 'success',
             style: 'growl-top-right'
           });

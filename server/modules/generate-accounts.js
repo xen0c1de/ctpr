@@ -2,33 +2,15 @@ let administrators = [
   {
     name: { first: 'Francois', last: 'Lizotte' },
     email: 'support@o-led.ca',
-    password: 'password'
-  }
-];
-
-let nrg = [
-  {
-    name: { first: 'Francois', last: 'Lizotte' },
-    email: 'francois@nrgqc.com',
-    password: 'password'
-  }
-];
-
-let master = [
-  {
-    name: { first: 'Francois', last: 'Lizotte' },
-    email: 'info@nrgqc.com',
-    password: 'password'
-  }
+    password: 'q1"We3$R'
+  },
 ];
 
 let generateAccounts = () => {
-  let usersExist = _checkIfAccountsExist( administrators.length + nrg.length + master.length );
+  let usersExist = _checkIfAccountsExist( administrators.length );
 
   if ( !usersExist ) {
     _createUsers( administrators );
-    _createUsers( nrg );
-    _createUsers( master );
   }
 };
 
@@ -44,15 +26,10 @@ let _createUsers = ( users ) => {
 
     if ( !userExists ) {
       let userId  = _createUser( user ),
-          isAdmin = _checkIfAdmin( user.email ),
-          isNrg = _checkIfNrg( user.email );
+          isAdmin = _checkIfAdmin( user.email );
 
       if ( isAdmin ) {
         Roles.setUserRoles( userId, 'admin' );
-      } else if ( isNrg ) {
-        Roles.setUserRoles( userId, 'nrg' );
-      } else {
-        Roles.setUserRoles( userId, 'master' );
       }
     }
   }
@@ -77,12 +54,6 @@ let _createUser = ( user ) => {
 let _checkIfAdmin = ( email ) => {
   return _.find( administrators, ( admin ) => {
     return admin.email === email;
-  });
-};
-
-let _checkIfNrg = ( email ) => {
-  return _.find( nrg, ( nrg ) => {
-    return nrg.email === email;
   });
 };
 

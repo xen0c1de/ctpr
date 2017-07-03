@@ -277,7 +277,7 @@ Template.home.events({
               //show endcap that fit selection
               $("#0025:hidden").show();
               break;
-            case "1013":
+            case "2611R":
               //show endcap that fit selection
               $("#0075:hidden").show();
               break;
@@ -373,10 +373,28 @@ Template.home.events({
       //grab currently selected options on this lens if any
       var options = $( "input[type=radio]."+lens_id+":checked" );
           toAppend = '<li class="lens">'+lens[0].desc+' ' + options[0].value + ' ';
-          productCodeAppend = ""+lens_id + '-' + options[0].value + '-';
-
+          lensMaterial = "";
+      //adding item to list
       $(".item-list").append(toAppend+'</li>');
+
+      //check lens material value to put abreviation in code instead of full name
+      //TODO this is ugly, should be in database but lacking time
+      switch (options[0].value) {
+        case "Opaline":
+            lensMaterial = "OP";
+          break;
+        case "Givrée":
+            lensMaterial = "FR";
+          break;
+        case "Claire":
+            lensMaterial = "CL";
+          break;
+        default:
+          break;
+      }
+
       //building complete product code
+      var productCodeAppend = ""+lens_id + '-' + lensMaterial + '-';
       $(".lens-code").append(productCodeAppend);
     }
   }
