@@ -71,13 +71,6 @@ Template.home.helpers({
       return lenses;
     }
   },
-  endcaps: function() {
-    var endcaps = Products.find({ category: "endcap" });
-
-    if ( endcaps ) {
-      return endcaps;
-    }
-  },
   strips: function() {
     var strips = Products.find({ category: "strip" });
 
@@ -129,30 +122,27 @@ Template.home.events({
     $( "input[type=radio]:checked" ).prop('checked', false);
     //hide all lens
     $(".lens").hide();
-    //hide all endcaps
-    $(".endcap").hide();
     //empty complete code section
     $(".profile-code").empty();
     $(".lens-code").empty();
-    $(".endcap-code").empty();
     $(".strip-code").empty();
     //save ids to session
     Session.set("strip_id","");
     Session.set("profile_id","");
     Session.set("endcap_id","");
+    Session.set("bracket_id","");
     Session.set("lens_id","");
   },
   //clicking the continue button takes you to the next step
   'click .continue' (event) {
     //check items have been selected
     if ( $(".profile").hasClass("selected") && $(".lens").hasClass("selected") &&
-         $(".endcap").hasClass("selected") && $(".strip").hasClass("selected") ) {
+         $(".strip").hasClass("selected") ) {
 
       //get the selected ids
       var strip_id = $(".strip.selected")[0].id;
       var profile_id = $(".profile.selected")[0].id;
       var lens_id = $(".lens.selected")[0].id;
-      var endcap_id = $(".endcap.selected")[0].id;
     } else {
       //else don't open modal window and show message
       event.stopPropagation();
@@ -171,7 +161,6 @@ Template.home.events({
       //save ids to session
       Session.set("strip_id",strip_id);
       Session.set("profile_id",profile_id);
-      Session.set("endcap_id",endcap_id);
       Session.set("lens_id",lens_id);
 
       //grab all items from cart and copy them to modal window cart
@@ -183,7 +172,6 @@ Template.home.events({
       $("#codeId").append(
         $(".profile-code").text() +
         $(".lens-code").text() +
-        $(".endcap-code").text() +
         $(".strip-code").text()
       );
     }
@@ -209,9 +197,6 @@ Template.home.events({
       $(".lens").removeClass("selected");
       $(".profile").removeClass("greyout");
       $(".lens").removeClass("greyout");
-      //hide all endcaps aside from no-endcap option
-      $(".endcap").hide();
-      $("#NOE:hidden").show();
       //clear cart except for strips
       $("li.profile").remove();
       $("li.lens").remove();
@@ -227,11 +212,15 @@ Template.home.events({
         case "2020C":
           //greyout non-compatible lens
           $("#STD").addClass("greyout");
+          //set bracket
+          Session.set("bracket_id","2175");
           break;
         default:
           //greyout non-compatible lens
           $("#CSTD").addClass("greyout");
           $("#CCR").addClass("greyout");
+          //set bracket
+          Session.set("bracket_id","2025");
           break;
       }
     }
@@ -242,73 +231,43 @@ Template.home.events({
     var lens_id = event.currentTarget.id;
         profile_id = $(".profile.selected")[0].id;
 
-    //if this is not a greyout item (we do nothing)
-    if( !$("#"+lens_id).hasClass("greyout") ) {
-      //check that a profile was selected first and that this isn't the already selected lens
-      if( $(".profile").hasClass("selected") && !$("#"+lens_id).hasClass("selected") ){
-        //call selection procedure
-        select(lens_id);
+    //check that a profile was selected first and that this isn't the already selected lens
+    if( $(".profile").hasClass("selected") && !$("#"+lens_id).hasClass("selected") ){
+      //call selection procedure
+      select(lens_id);
 
-        //check if this lens has only one radio option
-        if( $( 'input[type=radio][name="color"].'+lens_id ).length === 1 ) {
-          //if so, select it automatically
-          $( 'input[type=radio][name="color"].'+lens_id ).prop('checked', true).trigger("change");
-        }
-
-        //hide all endcaps except the no endcap option
-        $(".endcap").hide();
-        $("#NOE:hidden").show();
-        //if no lens option is selected
-        if(lens_id === "NOL") {
-          select("NOE");
-        }
-        else {
-          //if NOE was selected unselect it
-          if( $("#NOE").hasClass("selected") ) {
-            unselect("endcap");
-          }
-          //depending on which profile was selected
-          switch (profile_id) {
-            case "1806":
-              //show endcap that fit selection
-              $("#0200:hidden").show();
-              break;
-            case "1811":
-              //show endcap that fit selection
-              $("#0025:hidden").show();
-              break;
-            case "2611R":
-              //show endcap that fit selection
-              $("#0075:hidden").show();
-              break;
-            case "2020C":
-              if( lens_id === "CSTD" ){
-                //show endcap that fit selection
-                $("#0150:hidden").show();
-              }
-              else if( lens_id === "CCR" ) {
-                //show endcap that fit selection
-                $("#0175:hidden").show();
-              }
-              break;
-            default:
-              break;
-          }
-        }
+      //check if this lens has only one radio option
+      if( $( 'input[type=radio][name="color"].'+lens_id ).length === 1 ) {
+        //if so, select it automatically
+        $( 'input[type=radio][name="color"].'+lens_id ).prop('checked', true).trigger("change");
       }
-    }
-  },
-  //when we click on an endcap
-  'click .endcap' (event) {
-    //get the id of current click target
-    var endcap_id = event.currentTarget.id;
 
-    //if this is not a greyout item (which we do nothing with)
-    if( !$("#"+endcap_id).hasClass("greyout") ) {
-      //check that a profile was selected first and that this isn't the already selected endcap
-      if( $(".profile").hasClass("selected") && !$("#"+endcap_id).hasClass("selected") ){
-        //call selection procedure
-        select(endcap_id);
+      //depending on which profile was selected
+      switch (profile_id) {
+        case "1806":
+          //set endcap
+          Session.set("endcap_id","0200");
+          break;
+        case "1811":
+          //set endcap
+          Session.set("endcap_id","0025");
+          break;
+        case "2611R":
+          //set endcap
+          Session.set("endcap_id","0075");
+          break;
+        case "2020C":
+          if( lens_id === "CSTD" ){
+            //set endcap
+            Session.set("endcap_id","0150");
+          }
+          else if( lens_id === "CCR" ) {
+            //set endcap
+            Session.set("endcap_id","0175");
+          }
+          break;
+        default:
+          break;
       }
     }
   },

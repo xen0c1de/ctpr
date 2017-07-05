@@ -21,7 +21,7 @@
     </div>
     <div class="text-left">
       <b>Produit selectionné:</b><br>
-      <span class="product-code">OLED-PRFL-</span><span class="profile-code"></span><span class="lens-code"></span><span class="endcap-code"></span><span class="strip-code"></span>
+      <span class="product-code">OLED-PRFL-</span><span class="profile-code"></span><span class="lens-code"></span><span class="strip-code"></span>
     </div>
   </div>
   <div class="footer" style="display:none;">
@@ -95,31 +95,6 @@
         </div>
       </div>
     </div>
-    {{/each}}
-  </div>
-</div>
-<div id="endcap" class="container-fluid text-center">
-  <div class="row content text-left">
-    <h3>Ensuite, choisissez si votre PRFL aura des embouts ou non.</h3>
-  </div>
-	<div class="row content">
-    {{#each endcaps}}
-      <div id="{{pn}}" class="col-sm-2 endcap" style="display:none;">
-        <div class="panel panel-default text-center">
-          <div class="panel-heading">
-            <h1>{{pn}}</h1>
-          </div>
-          <div class="panel-body thumbnail">
-            <img src="{{pn}}.jpg" alt="{{pn}}"/>
-          </div>
-          <div class="panel-footer">
-            <p>{{desc}}</p>
-            {{#each attributes}}
-              <p>{{this}}</p>
-            {{/each}}
-          </div>
-        </div>
-      </div>
     {{/each}}
   </div>
 </div>

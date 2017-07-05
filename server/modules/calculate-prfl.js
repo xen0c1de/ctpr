@@ -14,6 +14,7 @@ let calculatePRFL = ( options ) => {
       profileId = options.profileId,
       lensId = options.lensId,
       endcapId = options.endcapId,
+      bracketId = options.bracketId,
       userId = options.userId,
       groups = [],
       individuals = [],
@@ -241,7 +242,7 @@ take into account the cuts and labor required for the quote.
 Prices are stored in the database and are per inch or per piece depending
 on the item. Cuts and labor are stored as special products.
 */
-let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, userId ) => {
+let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId ) => {
   var total = 0;
 
   //grab the starts cost
@@ -250,10 +251,13 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       cutlenscost = Products.findOne({pn:"cutlens", category: "other"}).cost,
       laborcost = Products.findOne({pn:"labor", category: "other"}).cost,
       unioncost = Products.findOne({pn:"union", category: "other"}).cost,
+      tapecost = Products.findOne({pn:"tape", category: "other"}).cost,
+      packagingcost = Products.findOne({pn:"package", category: "other"}).cost,
       profilecost = Products.findOne({pn:profileId, category: "profile"}).cost,
       stripcost = Products.findOne({pn:stripId, category: "strip"}).cost,
       lenscost = Products.findOne({pn:lensId, category: "lens"}).cost,
-      endcapcost = Products.findOne({pn:endcapId, category: "endcap"}).cost;
+      endcapcost = Products.findOne({pn:endcapId, category: "endcap"}).cost,
+      bracketcost = Products.findOne({pn:braketId, category: "bracket"}).cost;
 
   //calculate price for each driver needed
   for(let i=0;i<drivers.length;i++) {
@@ -279,11 +283,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
             len = Number(lenWattArray[k].len);
         //price for profile cut
         total += qty * cutprofilecost;
-        //if lenscost is 0 then we have "nolens" so we don't charge for cut
-        if( lenscost != 0 ){
-          //price for lens cut
-          total += qty * cutlenscost;
-        }
+        //price for lens cut
+        total += qty * cutlenscost;
         //price for labor
         total += qty * laborcost;
         //price for profile
@@ -313,11 +314,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
               len = Number(lenWattArray[k].len);
           //price for cuts
           total += qty * cutprofilecost;
-          //if lenscost is 0 then we have "nolens" so we don't charge for cut
-          if( lenscost != 0 ){
-            //price for lens cut
-            total += qty * cutlenscost;
-          }
+          //price for lens cut
+          total += qty * cutlenscost;
           //price for labor
           total += qty * laborcost;
           //price for profile

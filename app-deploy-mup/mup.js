@@ -30,7 +30,7 @@ module.exports = {
       MONGO_URL: 'mongodb://localhost/meteor',
     },
 
-  /*  ssl: { // (optional)
+    /*ssl: { // (optional)
       // Enables let's encrypt (optional)
       autogenerate: {
         email: 'support@o-led.ca',

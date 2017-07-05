@@ -130,6 +130,7 @@ Template.ctprCompleteModal.events({
           Session.set("lens_id","");
           Session.set("profile_id","");
           Session.set("endcap_id","");
+          Session.set("bracket_id","");
           //just create the first row to remplace the current table with
           let newRowContent = '<tr id="0"><td><select id="group0" name="group"><option value="ind" selected="selected">Individuel</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option><option value="i">I</option><option value="j">J</option><option value="k">K</option><option value="l">L</option><option value="m">M</option><option value="n">N</option><option value="o">O</option></select></td><td><input id="qty0" type="text" class="form-control" name="qty"></td><td><input id="long0" type="text" class="form-control" name="long"></td><td><input id="dim0" type="checkbox" class="form-control" name="dim" value="dim"></td><td><button type="button" class="btn minus-sign"><span class="glyphicon glyphicon-minus-sign logo-small-red" aria-hidden="true"></span></button></td></tr>';
           //empty the current table
@@ -294,6 +295,7 @@ Template.ctprCompleteModal.events({
       profileId: Session.get("profile_id"),
       lensId: Session.get("lens_id"),
       endcapId: Session.get("endcap_id"),
+      bracketId: Session.get("bracket_id"),
       drivers: drivers,
       userId: Meteor.userId()
     }, ( error, response ) => {
