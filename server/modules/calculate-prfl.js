@@ -271,6 +271,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
     }
   }
 
+  //TODO add counter for packaging. Count 1 packaging cost for every ten fixture
+
   //check if we have any individuals in the entries
   if( individuals.length != 0 ){
     //calcutate price for the individuals
@@ -285,6 +287,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
         total += qty * cutprofilecost;
         //price for lens cut
         total += qty * cutlenscost;
+        //price for tape
+        total += qty * len * tapecost;
         //price for labor
         total += qty * laborcost;
         //price for profile
@@ -293,6 +297,9 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
         total += qty * len * lenscost;
         //price for strip
         total += qty * len * stripcost;
+        //price for brackets (minimum of 2 brackets with 1 every 24 inches)
+        let numBraket = Math.ceil(len/24);
+        total += qty * (numBraket < 2 ? 2 : numBraket) * bracketcost;
       }
     }
   }
@@ -316,6 +323,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
           total += qty * cutprofilecost;
           //price for lens cut
           total += qty * cutlenscost;
+          //price for tape
+          total += qty * len * tapecost;
           //price for labor
           total += qty * laborcost;
           //price for profile
@@ -324,14 +333,19 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
           total += qty * len * lenscost;
           //price for strip
           total += qty * len * stripcost;
+          //price for endcaps
+          total += qty * 2 * endcapcost;
+          //price for brackets (minimum of 2 brackets with 1 every 24 inches)
+          let numBraket = Math.ceil(len/24);
+          total += qty * (numBraket < 2 ? 2 : numBraket) * bracketcost;
           //add len to calcutate totalLength per group;
           totalLength += len * qty;
         }
         //check how many 16 feet lengths we have total and add that many start
         total += Math.ceil(totalLength/192) * startcost;
+        //we calculate the unions needed for these groups, two cables per union
+        total += (group[j].length - Math.ceil(totalLength/192)) * 2 * unioncost;
       }
-      //we calculate the unions needed for these groups, two cables per union
-      total += (group.length - 1) * 2 * unioncost;
     }
   }
 
@@ -339,18 +353,19 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
   for(let i=0;i<rowArray.length;i++) {
     let qty = rowArray[i].qty,
         len = rowArray[i].len;
-    //price for endcaps
-    total += qty * 2 * endcapcost;
-    //calculate the rest of the possibly needed unions if some individuals
-    //or groups have longer than 8 feet fixtures
-    //floor(len/96)= # of unions needed (237in / 96 = 2.46 floor-> 2)
-    //that's a 19 ish feet fixture which will have to be split in 3 (2 unions)
-    total += Math.floor(len/96) * 2 * qty * unioncost;
     //in the case of individual fixtures
     if( rowArray[i].group === "ind" ) {
+      //price for endcaps
+      total += qty * 2 * endcapcost;
       //calcutate cost for starter wires need to connect to driver.
       //one wire per 16 feet or less (237/192=1.23 -> 2 wires)
       total += Math.ceil(len/192) * qty * startcost;
+      //calculate the needed unions
+      //ceiling(len/96)= # of unions needed (237in / 96 = 2.46 ceil-> 3) minus the number of starter
+      //that's a 19 ish feet fixture which will have to be split in 3
+      //it will have to starter wire because it's bigger than 16 feet.
+      //so it will only need 1 union. (so 2 6 inch cable on each side)
+      total += Math.ceil(len/96) - Math.ceil(len/192) * 2 * qty * unioncost;
     }
   }
 
