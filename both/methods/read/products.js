@@ -6,6 +6,7 @@ Meteor.methods({
       profileId: String,
       lensId: String,
       endcapId: String,
+      bracketId: String,
       drivers: Array,
       userId:String
     });

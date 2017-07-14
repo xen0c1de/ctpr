@@ -93,7 +93,7 @@ let calculatePRFL = ( options ) => {
 
   //calulate the price for this PRFL from all fixtures and drivers.
   //using the split lengths lets us calcutate the cuts and labor
-  let total = _calculatePrice( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, userId );
+  let total = _calculatePrice( rowArray, sortedGroups, individuals, drivers, stripId, profileId, lensId, endcapId, bracketId, userId );
 
   //return object with updated drivers array, grouped and individual fixtures
   return {drivers: drivers, groups: sortedGroups, individuals: individuals, total: total};
@@ -257,7 +257,7 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       stripcost = Products.findOne({pn:stripId, category: "strip"}).cost,
       lenscost = Products.findOne({pn:lensId, category: "lens"}).cost,
       endcapcost = Products.findOne({pn:endcapId, category: "endcap"}).cost,
-      bracketcost = Products.findOne({pn:braketId, category: "bracket"}).cost;
+      bracketcost = Products.findOne({pn:bracketId, category: "bracket"}).cost;
 
   //calculate price for each driver needed
   for(let i=0;i<drivers.length;i++) {
@@ -268,10 +268,11 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       let driver = Products.findOne({pn:drivers[i].driver, category: "drivers"});
       //increase total by cost of drivers
       total += driver.cost * qty;
+      console.log("driver="+total);
     }
   }
 
-  //TODO add counter for packaging. Count 1 packaging cost for every ten fixture
+  let packagingCount = 0;
 
   //check if we have any individuals in the entries
   if( individuals.length != 0 ){
@@ -283,23 +284,38 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       for(let k=0;k<lenWattArray.length;k++) {
         let qty = Number(lenWattArray[k].qty),
             len = Number(lenWattArray[k].len);
-        //price for profile cut
-        total += qty * cutprofilecost;
-        //price for lens cut
-        total += qty * cutlenscost;
+
+        //Only calculate cutting if we need it.
+        //lens and profile come in 8 footers)
+        if( len != 96 ) {
+          //price for profile cut
+          total += qty * cutprofilecost;
+          console.log("cut prof="+qty * cutprofilecost);
+          //price for lens cut
+          total += qty * cutlenscost;
+          console.log("cut lens="+qty * cutlenscost);
+        }
         //price for tape
         total += qty * len * tapecost;
+        console.log("tape="+qty * len * tapecost);
         //price for labor
         total += qty * laborcost;
+        console.log("labor="+qty * laborcost);
         //price for profile
         total += qty * len * profilecost;
+        console.log("profile="+qty * len * profilecost);
         //price for lens
         total += qty * len * lenscost;
+        console.log("lens="+qty * len * lenscost);
         //price for strip
         total += qty * len * stripcost;
+        console.log("strip="+qty * len * stripcost);
         //price for brackets (minimum of 2 brackets with 1 every 24 inches)
         let numBraket = Math.ceil(len/24);
         total += qty * (numBraket < 2 ? 2 : numBraket) * bracketcost;
+        console.log("bracket="+qty * (numBraket < 2 ? 2 : numBraket) * bracketcost);
+        //update packaging counter
+        packagingCount += qty;
       }
     }
   }
@@ -309,43 +325,63 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
     //calcutate price for sorted groups
     for(let i=0;i<sortedGroups.length;i++) {
       //each sorted group is also an array with {group, lenWattArray} objects
-      let group = sortedGroups[i];
+      var group = sortedGroups[i],
+          totalLength = 0,
+          totalQty = 0;
 
       for(let j=0;j<group.length;j++) {
-        var lenWattArray = group[j].lenWattArray,
-            totalLength = 0;
+        var lenWattArray = group[j].lenWattArray;
+
         //this is what a lenWattArray looks like {qty:Number, len:Number, watt:Number, dimmable:boolean}
         //this is split to 8 feet max lengths (which is why we need to loop over it in case we have a split)
         for(let k=0;k<lenWattArray.length;k++) {
           let qty = Number(lenWattArray[k].qty),
               len = Number(lenWattArray[k].len);
-          //price for cuts
-          total += qty * cutprofilecost;
-          //price for lens cut
-          total += qty * cutlenscost;
+
+          //Only calculate cutting if we need it.
+          //lens and profile come in 8 footers)
+          if( len != 96 ) {
+            //price for profile cut
+            total += qty * cutprofilecost;
+            console.log("cut prof="+qty * cutprofilecost);
+            //price for lens cut
+            total += qty * cutlenscost;
+            console.log("cut lens="+qty * cutlenscost);
+          }
           //price for tape
           total += qty * len * tapecost;
+          console.log("tape="+qty * len * tapecost);
           //price for labor
           total += qty * laborcost;
+          console.log("labor="+qty * laborcost);
           //price for profile
           total += qty * len * profilecost;
+          console.log("profile="+qty * len * profilecost);
           //price for lens
           total += qty * len * lenscost;
+          console.log("lens="+qty * len * lenscost);
           //price for strip
           total += qty * len * stripcost;
+          console.log("strip="+qty * len * stripcost);
           //price for endcaps
           total += qty * 2 * endcapcost;
+          console.log("endcap="+qty * 2 * endcapcost);
           //price for brackets (minimum of 2 brackets with 1 every 24 inches)
           let numBraket = Math.ceil(len/24);
           total += qty * (numBraket < 2 ? 2 : numBraket) * bracketcost;
+          console.log("bracket="+qty * (numBraket < 2 ? 2 : numBraket) * bracketcost);
           //add len to calcutate totalLength per group;
           totalLength += len * qty;
+          //update packaging counter
+          packagingCount += qty;
         }
-        //check how many 16 feet lengths we have total and add that many start
-        total += Math.ceil(totalLength/192) * startcost;
-        //we calculate the unions needed for these groups, two cables per union
-        total += (group[j].length - Math.ceil(totalLength/192)) * 2 * unioncost;
       }
+      //check how many 16 feet lengths we have total and add that many start
+      total += Math.ceil(totalLength/192) * startcost * 12;
+      console.log("start="+Math.ceil(totalLength/192) * startcost * 12);
+      //we calculate the unions needed for these groups, two cables per union
+      total += (packagingCount - Math.ceil(totalLength/192)) * 2 * unioncost * 12;
+      console.log("union="+(packagingCount - Math.ceil(totalLength/192)) * 2 * unioncost * 12);
     }
   }
 
@@ -357,17 +393,25 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
     if( rowArray[i].group === "ind" ) {
       //price for endcaps
       total += qty * 2 * endcapcost;
+      console.log("endcap="+qty * 2 * endcapcost);
       //calcutate cost for starter wires need to connect to driver.
       //one wire per 16 feet or less (237/192=1.23 -> 2 wires)
-      total += Math.ceil(len/192) * qty * startcost;
+      total += Math.ceil(len/192) * qty * startcost * 12;
+      console.log("start="+Math.ceil(len/192) * qty * startcost * 12);
       //calculate the needed unions
       //ceiling(len/96)= # of unions needed (237in / 96 = 2.46 ceil-> 3) minus the number of starter
       //that's a 19 ish feet fixture which will have to be split in 3
       //it will have to starter wire because it's bigger than 16 feet.
       //so it will only need 1 union. (so 2 6 inch cable on each side)
-      total += Math.ceil(len/96) - Math.ceil(len/192) * 2 * qty * unioncost;
+      total += (Math.ceil(len/96) - Math.ceil(len/192)) * 2 * qty * unioncost * 12;
+      console.log("union="+ (Math.ceil(len/96) - Math.ceil(len/192)) * 2 * qty * unioncost * 12);
     }
   }
+
+  //add in total packaging cost
+  total += Math.ceil(packagingCount/10) * packagingcost;
+  console.log("packaging="+Math.ceil(packagingCount/10) * packagingcost);
+  console.log("total="+total);
 
   //cost is the calculated total from the database
   //we add the multipliers to the other prices
