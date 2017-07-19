@@ -19,4 +19,5 @@
 # ignore key file
 prfl-meteor-app-key.pem
 settings-prod.json
+settings-development.json
 /app-deploy-mup/*
