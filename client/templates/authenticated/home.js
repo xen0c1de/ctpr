@@ -112,26 +112,14 @@ Template.home.events({
   },
   //clicking the reset button resets everything
   'click .reset' () {
-    //empty cart
-    $(".item-list").empty();
-    //remove all selection
-    $(".selected").removeClass("selected");
-    //ungreyout all items
-    $(".greyout").removeClass("greyout");
-    //reset options checked on radios
-    $( "input[type=radio]:checked" ).prop('checked', false);
-    //hide all lens
-    $(".lens").hide();
-    //empty complete code section
-    $(".profile-code").empty();
-    $(".lens-code").empty();
-    $(".strip-code").empty();
     //save ids to session
     Session.set("strip_id","");
     Session.set("profile_id","");
     Session.set("endcap_id","");
     Session.set("bracket_id","");
     Session.set("lens_id","");
+    //refresh page
+    location.reload();
   },
   //clicking the continue button takes you to the next step
   'click .continue' (event) {
@@ -205,7 +193,8 @@ Template.home.events({
       $(".lens-code").empty();
       //select clicked one
       select( profile_id );
-      //show the lens
+      //show the lens section
+      $("#lens").show();
       $(".lens").show();
       //do actions depending on which profile selected
       switch (profile_id) {
