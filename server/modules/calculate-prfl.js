@@ -200,7 +200,7 @@ let _selectDriver = ( powerConsumption, dimmable ) => {
   //loop over them and push the power value in number format into the array.
   drivers.forEach(function(driver){
     //push them into proper array based on dimmable attribute
-    if( driver.attributes[0] === "dimmable" ){
+    if( driver.attributes[0] === "Gradable" ){
       dimDrivers.push(Number(driver.powers[0]));
     } else {
       nonDimDrivers.push(Number(driver.powers[0]));
@@ -372,6 +372,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
           console.log("bracket="+qty * (numBraket < 2 ? 2 : numBraket) * bracketcost);
           //add len to calcutate totalLength per group;
           totalLength += len * qty;
+          //calculate total qty of fixture for unions
+          totalQty += qty;
           //update packaging counter
           packagingCount += qty;
         }
@@ -380,8 +382,8 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
       total += Math.ceil(totalLength/192) * startcost * 12;
       console.log("start="+Math.ceil(totalLength/192) * startcost * 12);
       //we calculate the unions needed for these groups, two cables per union
-      total += (packagingCount - Math.ceil(totalLength/192)) * 2 * unioncost * 12;
-      console.log("union="+(packagingCount - Math.ceil(totalLength/192)) * 2 * unioncost * 12);
+      total += (totalQty - Math.ceil(totalLength/192)) * 2 * unioncost * 12;
+      console.log("union="+(totalQty - Math.ceil(totalLength/192)) * 2 * unioncost * 12);
     }
   }
 

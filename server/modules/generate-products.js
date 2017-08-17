@@ -4,7 +4,7 @@ let products = [
     pn: '12W',
     desc: 'Driver 12W',
     category: 'drivers',
-    cost: 5.6942,
+    cost: 6.972,
     attributes: [],
     powers: ["12"],
     colors: [],
@@ -14,7 +14,7 @@ let products = [
     pn: '20W',
     desc: 'Driver 20W',
     category: 'drivers',
-    cost: 10.1602,
+    cost: 12.444,
     attributes: [],
     powers: ["20"],
     colors: [],
@@ -24,7 +24,7 @@ let products = [
     pn: '30W',
     desc: 'Driver 30W',
     category: 'drivers',
-    cost: 14.1674,
+    cost: 17.346,
     attributes: [],
     powers: ["30"],
     colors: [],
@@ -34,7 +34,7 @@ let products = [
     pn: '60W',
     desc: 'Driver 60W',
     category: 'drivers',
-    cost: 18.6862,
+    cost: 22.884,
     attributes: [],
     powers: ["60"],
     colors: [],
@@ -44,7 +44,7 @@ let products = [
     pn: '100W',
     desc: 'Driver 100W',
     category: 'drivers',
-    cost: 32.6617,
+    cost: 39.996,
     attributes: [],
     powers: ["100"],
     colors: [],
@@ -54,7 +54,7 @@ let products = [
     pn: '200W',
     desc: 'Driver 200W',
     category: 'drivers',
-    cost: 56.2716,
+    cost: 68.904,
     attributes: [],
     powers: ["200"],
     colors: [],
@@ -64,8 +64,8 @@ let products = [
     pn: '30W dim',
     desc: 'Driver 30W gradable',
     category: 'drivers',
-    cost: 12.8531,
-    attributes: ["dimmable"],
+    cost: 15.738,
+    attributes: ["Gradable"],
     powers: ["30"],
     colors: [],
     ips: []
@@ -74,8 +74,8 @@ let products = [
     pn: '45W dim',
     desc: 'Driver 45W gradable',
     category: 'drivers',
-    cost: 19.2796,
-    attributes: ["dimmable"],
+    cost: 23.61,
+    attributes: ["Gradable"],
     powers: ["45"],
     colors: [],
     ips: []
@@ -84,8 +84,8 @@ let products = [
     pn: '60W dim',
     desc: 'Driver 60W gradable',
     category: 'drivers',
-    cost: 25.2915,
-    attributes: ["dimmable"],
+    cost: 30.972,
+    attributes: ["Gradable"],
     powers: ["60"],
     colors: [],
     ips: []
@@ -94,8 +94,8 @@ let products = [
     pn: '80W dim',
     desc: 'Driver 80W gradable',
     category: 'drivers',
-    cost: 33.7221,
-    attributes: ["dimmable"],
+    cost: 41.292,
+    attributes: ["Gradable"],
     powers: ["80"],
     colors: [],
     ips: []
@@ -104,8 +104,8 @@ let products = [
     pn: '100W dim',
     desc: 'Driver 100W gradable',
     category: 'drivers',
-    cost: 46.6620,
-    attributes: ["dimmable"],
+    cost: 50.772,
+    attributes: ["Gradable"],
     powers: ["100"],
     colors: [],
     ips: []
@@ -114,8 +114,8 @@ let products = [
     pn: '200W dim',
     desc: 'Driver 200W gradable',
     category: 'drivers',
-    cost: 80.1590,
-    attributes: ["dimmable"],
+    cost: 98.154,
+    attributes: ["Gradable"],
     powers: ["200"],
     colors: [],
     ips: []
@@ -197,7 +197,7 @@ let products = [
     desc: 'Profilé aluminium 1806',
     category: 'profile',
     cost: 0.075,
-    attributes: [ "Largeur: 18.69 mm", "Hauteur: 6.25 mm" ],
+    attributes: [ "Largeur : 18.69 mm", "Hauteur : 6.25 mm" ],
     powers: [],
     colors: [],
     ips: []
@@ -207,7 +207,7 @@ let products = [
     desc: 'Profilé aluminium 1811',
     category: 'profile',
     cost: 0.075,
-    attributes: [ "Largeur: 18.69 mm", "Hauteur: 11.43 mm" ],
+    attributes: [ "Largeur : 18.69 mm", "Hauteur : 11.43 mm" ],
     powers: [],
     colors: [],
     ips: []
@@ -217,7 +217,7 @@ let products = [
     desc: 'Profilé aluminium encastré 2611R',
     category: 'profile',
     cost: 0.0911,
-    attributes: [ "Largeur: 26.19 mm", "Hauteur: 11.45 mm" ],
+    attributes: [ "Largeur : 26.19 mm", "Largeur interne : 18.69 mm", "Hauteur : 11.45 mm" ],
     powers: [],
     colors: [],
     ips: []
@@ -227,7 +227,7 @@ let products = [
     desc: 'Profilé aluminium de coin 2020C',
     category: 'profile',
     cost: 0.115,
-    attributes: [ "Largeur: 20 mm", "Hauteur: 20 mm" ],
+    attributes: [ "Largeur : 20 mm", "Hauteur : 20 mm" ],
     powers: [],
     colors: [],
     ips: []
@@ -340,7 +340,7 @@ let products = [
     pn: '3528-60',
     desc: 'RUBAN 3528-60',
     category: 'strip',
-    cost: 0.1077,
+    cost: 0.1349,
     attributes: [ "60 DEL AU MÈTRE", "312 LM/M", "4.8 W/M", "CHAQUE 3 DEL", "8MM DE LARGEUR", "120 DEGRÉS" ],
     powers: [ "24VDC" ],
     colors: [ "30K", "35K", "40K" ],
@@ -350,7 +350,7 @@ let products = [
     pn: '3528-120',
     desc: 'RUBAN 3528-120',
     category: 'strip',
-    cost: 0.1767,
+    cost: 0.2216,
     attributes: [ "120 DEL AU MÈTRE", "720 LM/M", "9.6 W/M", "CHAQUE 3 DEL", "9MM DE LARGEUR", "120 DEGRÉS" ],
     powers: [ "24VDC" ],
     colors: [ "30K", "35K", "40K" ],
@@ -360,7 +360,7 @@ let products = [
     pn: '2835-120',
     desc: 'RUBAN 2835-120',
     category: 'strip',
-    cost: 0.1756,
+    cost: 0.2138,
     attributes: [ "120 DEL AU MÈTRE", "1200 LM/M", "14.4 W/M", "CHAQUE 6 DEL (24V)", "10MM DE LARGEUR", "120 DEGRÉS" ],
     powers: [ "24VDC" ],
     colors: [ "30K", "35K", "40K" ],
@@ -370,7 +370,7 @@ let products = [
     pn: '5050-72',
     desc: 'RUBAN 5050-72',
     category: 'strip',
-    cost: 0.392,
+    cost: 0.1856,
     attributes: [ "72 DEL AU MÈTRE", "1602 LM/M", "17.8 W/M", "CHAQUE DEL", "10MM DE LARGEUR", "120 DEGRÉS" ],
     powers: [ "24VDC" ],
     colors: [ "30K", "35K", "40K" ],
@@ -380,7 +380,7 @@ let products = [
 
 let prices = [
   {
-    //from cost to get to NRG prices
+    //from OLED cost to get to NRG prices
     multiplierNRG: 0.6,
     //from NRG to get to master prices
     multiplierMaster: 0.7,
@@ -388,7 +388,7 @@ let prices = [
     multiplierProvincial: 0.65,
     //from NRG to get to regional prices
     multiplierRegional: 0.6,
-    //from any of the levels prices to client prices
+    //from any of the level prices (master, provincial, regional) to client prices
     multiplierClient: 0.8
   }
 ];

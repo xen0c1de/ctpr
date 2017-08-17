@@ -208,6 +208,8 @@ Template.home.events({
           //greyout non-compatible lens
           $("#CSTD").addClass("greyout");
           $("#CCR").addClass("greyout");
+          //call selection procedure since only one lens is available
+          $("#STD").trigger("click");
           //set bracket
           Session.set("bracket_id","2025");
           break;
@@ -220,8 +222,10 @@ Template.home.events({
     var lens_id = event.currentTarget.id;
         profile_id = $(".profile.selected")[0].id;
 
-    //check that a profile was selected first and that this isn't the already selected lens
-    if( $(".profile").hasClass("selected") && !$("#"+lens_id).hasClass("selected") ){
+    //check that a profile was selected first
+    //and that this isn't the already selected lens
+    //and that it isn't greyed out (invalid selection)
+    if( $(".profile").hasClass("selected") && !$("#"+lens_id).hasClass("selected") && !$("#"+lens_id).hasClass("greyout") ){
       //call selection procedure
       select(lens_id);
 

@@ -89,6 +89,16 @@ th .btn:hover{
   }
 }
 
+.glyphicon-plus {
+  color: darkgreen;
+  cursor: pointer;
+	padding: 10px 5px;
+
+  &:hover {
+    color: green;
+  }
+}
+
 .glyphicon-floppy-disk {
 	color: darkblue;
   cursor: pointer;
