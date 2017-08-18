@@ -206,7 +206,7 @@ let products = [
     pn: '1811',
     desc: 'Profilé aluminium 1811',
     category: 'profile',
-    cost: 0.075,
+    cost: 0.0833,
     attributes: [ "Largeur : 18.69 mm", "Hauteur : 11.43 mm" ],
     powers: [],
     colors: [],

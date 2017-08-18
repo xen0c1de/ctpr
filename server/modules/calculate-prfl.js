@@ -285,16 +285,12 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
         let qty = Number(lenWattArray[k].qty),
             len = Number(lenWattArray[k].len);
 
-        //Only calculate cutting if we need it.
-        //lens and profile come in 8 footers)
-        if( len != 96 ) {
-          //price for profile cut
-          total += qty * cutprofilecost;
-          console.log("cut prof="+qty * cutprofilecost);
-          //price for lens cut
-          total += qty * cutlenscost;
-          console.log("cut lens="+qty * cutlenscost);
-        }
+        //price for profile cut
+        total += qty * cutprofilecost;
+        console.log("cut prof="+qty * cutprofilecost);
+        //price for lens cut
+        total += qty * cutlenscost;
+        console.log("cut lens="+qty * cutlenscost);
         //price for tape
         total += qty * len * tapecost;
         console.log("tape="+qty * len * tapecost);
@@ -338,16 +334,12 @@ let _calculatePrice = ( rowArray, sortedGroups, individuals, drivers, stripId, p
           let qty = Number(lenWattArray[k].qty),
               len = Number(lenWattArray[k].len);
 
-          //Only calculate cutting if we need it.
-          //lens and profile come in 8 footers)
-          if( len != 96 ) {
-            //price for profile cut
-            total += qty * cutprofilecost;
-            console.log("cut prof="+qty * cutprofilecost);
-            //price for lens cut
-            total += qty * cutlenscost;
-            console.log("cut lens="+qty * cutlenscost);
-          }
+          //price for profile cut
+          total += qty * cutprofilecost;
+          console.log("cut prof="+qty * cutprofilecost);
+          //price for lens cut
+          total += qty * cutlenscost;
+          console.log("cut lens="+qty * cutlenscost);
           //price for tape
           total += qty * len * tapecost;
           console.log("tape="+qty * len * tapecost);
